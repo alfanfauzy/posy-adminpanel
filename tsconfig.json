@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "importHelpers": true,
+    "allowSyntheticDefaultImports": true,
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -16,9 +18,24 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "api/*": ["internals/api/*"],
+      "pages/*": ["pages/*"],
+      "services/*": ["src/services/*"],
+      "config/*": ["src/config/*"],
+      "utils/*": ["src/utils/*"],
+      "store/*": ["src/store/*"],
+      "containers/*": ["src/containers/*"],
+      "@/atoms/*": ["src/components/atoms/*"],
+      "@/molecules/*": ["src/components/molecules/*"],
+      "@/organisms/*": ["src/components/organisms/*"],
+      "@/pages/*": ["src/components/pages/*"],
+      "@/templates/*": ["src/components/templates/*"],
+      "@/constants/*": ["src/constants/*"],
+      "@/types/*": ["src/types/*"],
+      "@/hooks/*": ["src/hooks/*"],
+      "@/schemas/*": ["src/schemas/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/index.jsx"],
   "exclude": ["node_modules"]
 }
