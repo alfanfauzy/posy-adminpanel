@@ -1,15 +1,17 @@
 import React from 'react'
 import MoleculesMetaHeader from '@/molecules/meta-header'
+import GeneralLayout from '@/templates/layouts'
 
-const dashboard = () => (
+const Dashboard = () => (
   <>
     <MoleculesMetaHeader
-      title="Admin Panel Fnb - Dashboard"
-      description="Admin Panel Fnb - Dashboard"
+      title="Dashboard - Admin Panel Fnb"
+      description="Dashboard - Admin Panel Fnb"
     />
-
-    <span className="flex items-center justify-center">Dashboard</span>
+    <GeneralLayout>
+      <span className="flex items-center justify-center">Dashboard</span>
+    </GeneralLayout>
   </>
 )
 
-export default dashboard
+export default Dashboard

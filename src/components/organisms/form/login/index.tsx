@@ -5,25 +5,23 @@ import {
   AiOutlineCheckSquare,
 } from 'react-icons/ai'
 
-import { Button, Input } from 'posy-fnb-ds'
+import { Button, Input } from 'posy-fnb-core'
 import { useRouter } from 'next/router'
+import { SubmitHandler } from 'react-hook-form'
 import { IconLoginEntities } from './entities'
 import AtomDefaultCard from '@/atoms/card'
 import Footer from '@/atoms/footer'
-import { loginSchema } from '@/schemas/login'
+import { loginSchema, ValidationLoginSchema } from '@/schemas/login'
 import { useForm } from '@/hooks/useForm'
-
-const Icon = (props: IconLoginEntities) => {
-  const { value, handlePassword } = props
-
-  return value ? (
-    <AiFillEyeInvisible onClick={handlePassword} />
-  ) : (
-    <AiFillEye onClick={handlePassword} />
-  )
-}
+import { useDispatchApp } from 'store/hooks'
+import { authSuccess } from 'store/slice/auth'
+import { useLogin } from '@/hooks/query/useLogin'
+import IconEye from '@/atoms/icon/IconEye'
 
 const MoleculesLogin = () => {
+  const router = useRouter()
+  //   const dispatch = useDispatchApp()
+
   const [showPassword, setShowPassword] = useState(true)
 
   const {
@@ -34,8 +32,6 @@ const MoleculesLogin = () => {
     schema: loginSchema,
   })
 
-  const router = useRouter()
-
   const handleGoDashboard = () => {
     router.push('/dashboard')
   }
@@ -44,7 +40,18 @@ const MoleculesLogin = () => {
     setShowPassword(!showPassword)
   }
 
-  const onLogin = () => {
+  const onLogin: SubmitHandler<ValidationLoginSchema> = () => {
+    // dispatch(
+    //   authSuccess({
+    //     expired_at: {
+    //       nanos: 12,
+    //       seconds: 123,
+    //     },
+    //     refresh_token: '123123',
+    //     token: '12312312',
+    //     uuid: '12312',
+    //   }),
+    // )
     handleGoDashboard()
   }
 
@@ -75,7 +82,7 @@ const MoleculesLogin = () => {
               className="flex justify-center items-center"
               type={showPassword ? 'password' : 'text'}
               endAdornment={
-                <Icon
+                <IconEye
                   value={showPassword}
                   handlePassword={handleShowPassword}
                 />

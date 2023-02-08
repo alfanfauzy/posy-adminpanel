@@ -2,7 +2,7 @@ import axios from '.'
 
 interface Post {
   endpoint: string
-  data: { [key: string]: any }
+  payload: { [key: string]: any }
   baseURL?: string
   headers?: { [key: string]: string }
   isAuth?: boolean
@@ -21,9 +21,9 @@ interface Post {
  *  },
  * });
  */
-const Post = async ({ baseURL, endpoint, data, headers = {} }: Post) => {
+const Post = async ({ baseURL, endpoint, payload, headers = {} }: Post) => {
   const { status, ...response } =
-    (await axios.post(endpoint, data, {
+    (await axios.post(endpoint, payload, {
       headers: headers || {},
       baseURL,
     })) || {}

@@ -10,7 +10,6 @@ const Page: NextPageWithLayout = () => (
       title="Admin Panel Fnb - Login"
       description="Admin Panel FnB"
     />
-    {/* <MoleculesLogin /> */}
     <LoginPage />
   </>
 )

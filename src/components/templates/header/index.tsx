@@ -1,11 +1,9 @@
-import { Avatar, Badge, Dropdown, Layout, MenuProps } from 'antd'
+import { Avatar, Badge, Dropdown, MenuProps } from 'antd'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { AiOutlineLogout } from 'react-icons/ai'
 
 const TemplatesHeader = () => {
-  const { Header } = Layout
-
   const router = useRouter()
 
   const items: MenuProps['items'] = [
@@ -19,7 +17,7 @@ const TemplatesHeader = () => {
     },
   ]
   return (
-    <Header className="flex justify-end p-2 w-full bg-white drop-shadow-lg">
+    <header className="flex justify-end p-2 w-full bg-white drop-shadow-lg">
       <Dropdown menu={{ items }} trigger={['click']} className="w-12">
         <a
           role="button"
@@ -32,7 +30,7 @@ const TemplatesHeader = () => {
           </Badge>
         </a>
       </Dropdown>
-    </Header>
+    </header>
   )
 }
 

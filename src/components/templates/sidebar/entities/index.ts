@@ -5,13 +5,14 @@ export interface SideBarTopEntities {
 export interface MenuItemEntities {
   label: string
   icon: any
+  path?: string
 }
 
 export interface MenusEntities {
   label: string
   icon: any
   type: string
-  items?: MenuItemEntities[]
+  items: [{ label: string; icon: any; path?: string }]
 }
 
 export interface SidebarEntities {
@@ -20,8 +21,10 @@ export interface SidebarEntities {
 
 export interface SingleMenuEntities {
   itemMenu: MenuItemEntities
+  goToPage: (path: string) => void
 }
 
 export interface SubMenuEntities {
   itemMenu: MenusEntities
+  goToPage: (path: string) => void
 }

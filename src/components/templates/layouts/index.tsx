@@ -3,34 +3,33 @@ import { ProSidebarProvider } from 'react-pro-sidebar'
 import TemplatesHeader from '@/templates/header'
 import OrganismSidebar from '@/templates/sidebar'
 import AtomDefaultCard from '@/atoms/card'
+import MoleculesBreadcrumb from '@/molecules/breadcrumb'
+import { useAppSelector } from 'store/hooks'
 
 export interface GeneralLayoutProps {
   children: React.ReactNode
-  titleHeader?: string
 }
 
-const GeneralLayout = (props: GeneralLayoutProps) => {
-  const { children, titleHeader } = props
+const GeneralLayout = ({ children }: GeneralLayoutProps) => (
+  //   const auth = useAppSelector((state) => state.auth)
 
-  return (
-    <ProSidebarProvider>
-      <main className="bg-gray-300 bg-opacity-40 w-full flex h-screen">
-        <OrganismSidebar />
+  //   console.log(auth)
 
-        <section className="flex flex-col w-full">
-          <TemplatesHeader />
+  <ProSidebarProvider>
+    <main className="bg-gray-300 bg-opacity-40 w-full flex min-h-screen">
+      <OrganismSidebar />
 
-          <div className="bg-slate-100 h-screen p-7 border-2 rounded-tl-lg">
-            <h1 className="mb-2 text-lg font-medium">{titleHeader}</h1>
+      <section className="flex flex-col w-full">
+        <TemplatesHeader />
 
-            <AtomDefaultCard className="drop-shadow-lg w-full">
-              {children}
-            </AtomDefaultCard>
-          </div>
-        </section>
-      </main>
-    </ProSidebarProvider>
-  )
-}
+        <div className="bg-slate-100 p-7 border-2 rounded-tl-lg">
+          <MoleculesBreadcrumb />
+
+          <AtomDefaultCard className="w-full">{children}</AtomDefaultCard>
+        </div>
+      </section>
+    </main>
+  </ProSidebarProvider>
+)
 
 export default GeneralLayout

@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url(../node_modules/posy-fnb-ds/src/styles/typography.css);
-
 * {
   box-sizing: border-box;
   padding: 0;
@@ -17,7 +15,7 @@ body {
 }
 
 .ps-sidebar-root {
-  border: unset;
+  border: unset !important;
 }
 
 .ps-sidebar-container {
@@ -39,4 +37,12 @@ body {
 
 .ps-menuitem-root {
   padding: 0 12px;
+}
+
+.ps-submenu-content li.ps-menuitem-root {
+  margin-left: 2rem;
+}
+
+.ps-menu-icon {
+  font-size: 1.5rem;
 }
