@@ -36,6 +36,7 @@
     "posy-fnb-core": "^1.0.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-highlight-words": "^0.20.0",
     "react-hook-form": "^7.43.0",
     "react-icons": "^4.7.1",
     "react-pro-sidebar": "^1.0.0",
@@ -49,6 +50,7 @@
     "zod": "^3.20.2"
   },
   "devDependencies": {
+    "@types/react-highlight-words": "^0.16.4",
     "@types/redux-logger": "^3.0.9",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
