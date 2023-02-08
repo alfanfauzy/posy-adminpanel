@@ -1,41 +1,42 @@
-import React, { createRef, useEffect, useRef, useState } from 'react'
-import { ColumnsType } from 'antd/es/table'
-import dynamic from 'next/dynamic'
+import React, { useRef, useState } from 'react'
+import type { InputRef } from 'antd'
 import { Button } from 'posy-fnb-core'
-import { AiFillDelete, AiFillEdit, AiOutlineSearch } from 'react-icons/ai'
-import { Input } from 'antd'
-import { toast } from 'react-toastify'
+import type { ColumnsType } from 'antd/es/table'
 import type { FilterConfirmProps } from 'antd/es/table/interface'
+import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
+import dynamic from 'next/dynamic'
+import { toast } from 'react-toastify'
 import { DataType } from './entities'
-import FilterInput from '@/atoms/table/filter/input'
-import AtomTable from '@/atoms/table'
-import HeaderContent from '@/templates/header/header-content'
-import useToggle from '@/hooks/useToggle'
+import { dummy } from 'src/data'
 import { timeStampConverter } from '@/constants/utils'
-import ModalConfirmation from '@/molecules/modal/confirmation'
 import AtomTag from '@/atoms/tag'
+import AtomTable from '@/atoms/table'
+import FilterTable from '@/atoms/table/filter/input'
+import useToggle from '@/hooks/useToggle'
+import HeaderContent from '@/templates/header/header-content'
 
 const ModalFormAdmin = dynamic(() => import('@/organisms/form/admin'))
+const ModalConfirmation = dynamic(
+  () => import('@/molecules/modal/confirmation'),
+)
 
-const AdminListPage = () => {
+type DataIndex = keyof DataType
+
+const AdminListPage: React.FC = () => {
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(10)
+  const [searchText, setSearchText] = useState('')
+  const [searchedColumn, setSearchedColumn] = useState('')
+  const ref = useRef<InputRef>(null)
+
   const [selectedData, setSelectedData] = useState<DataType>({})
-  const [dataAdmin, setDataAdmin] = useState([])
   const [isEdit, setIsEdit] = useState(false)
 
   const { value: openModal, toggle: handleOpenModal } = useToggle(false)
   const { value: openModalConfirmation, toggle: handleOpenModalConfirmation } =
     useToggle(false)
 
-  const [searchText, setSearchText] = useState('')
-  const [searchedColumn, setSearchedColumn] = useState('')
-  const searchInput = useRef(null)
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const getData = JSON.parse(localStorage.getItem('items'))
-      setDataAdmin(getData)
-    }
-  }, [])
+  const searchInput = useRef<InputRef>(null)
 
   /** Modal Confirmation Action */
 
@@ -75,93 +76,68 @@ const AdminListPage = () => {
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
+    dataIndex: DataIndex,
   ) => {
     confirm()
     setSearchText(selectedKeys[0])
+    setSearchedColumn(dataIndex)
   }
 
-  const handleReset = (clearFilters) => {
+  const handleReset = (clearFilters: () => void) => {
     clearFilters()
     setSearchText('')
   }
 
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => (
-      <div className="custom-filter-dropdown">
-        <Input
-          ref={(node) => {
-            console.log(node)
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() => handleSearch(selectedKeys as string[], confirm)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Button
-          type="primary"
-          onClick={() => handleSearch(selectedKeys, confirm)}
-          icon="search"
-          size="small"
-          style={{ width: 90, marginRight: 8 }}
-        >
-          Search
-        </Button>
-        <Button
-          onClick={() => handleReset(clearFilters)}
-          size="small"
-          style={{ width: 90 }}
-        >
-          Reset
-        </Button>
-      </div>
-    ),
-    filterIcon: (filtered) => <AiOutlineSearch />,
-    onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownVisibleChange: (visible) => {
-      if (visible) {
-        // setTimeout(() => searchInput.select())
-      }
-    },
-  })
-
-  const columns: ColumnsType = [
+  const columns: ColumnsType<DataType> = [
     {
       title: '#',
       dataIndex: '',
       filterMode: 'tree',
       filterSearch: true,
-      render: (dataValue, record, id) => id + 1,
+      render: (value, item, index) => (page - 1) * 10 + index + 1,
     },
     {
-      title: 'Email',
+      title: 'Username',
+      key: 'username',
       dataIndex: 'username',
-      ...getColumnSearchProps('username'),
+      ...FilterTable(
+        'username',
+        ref,
+        handleSearch,
+        handleReset,
+        searchText,
+        searchedColumn,
+      ),
     },
     {
       title: 'Full Name',
+      key: 'fullname',
       dataIndex: 'fullname',
+      ...FilterTable(
+        'fullname',
+        ref,
+        handleSearch,
+        handleReset,
+        searchText,
+        searchedColumn,
+      ),
     },
     {
       title: 'Role',
-      render: (dataValue, record, index) => (
+      key: 'role',
+      render: (dataValue, record: any) => (
         <AtomTag status={record?.role[0]?.name} />
       ),
     },
     {
       title: 'Created At',
-      dataIndex: 'address',
-      render: (dataValue, record, index) =>
-        timeStampConverter(record?.created_at?.seconds, 'yyyy-mm-DD HH:mm'),
+      key: 'created_at',
+      dataIndex: 'created_at',
+      sorter: (a: any, b: any) => a.created_at.seconds - b.created_at.seconds,
+      render: (dataValue, record: any) =>
+        timeStampConverter(record?.created_at?.seconds, 'DD-MM-YYYY HH:mm'),
     },
+
     {
       title: 'Action',
       render: (dataValue, record, index) => (
@@ -187,14 +163,7 @@ const AdminListPage = () => {
     },
   ]
 
-  const onChange: TableProps<DataType>['onChange'] = (
-    pagination,
-    filters,
-    sorter,
-    extra,
-  ) => {
-    console.log('params', pagination, filters, sorter, extra)
-  }
+  console.log(limit)
 
   return (
     <div>
@@ -212,7 +181,17 @@ const AdminListPage = () => {
         onClose={handleCloseModalConfirmation}
         onOk={handleDeleteAdmin}
       />
-      <AtomTable columns={columns} dataSource={dataAdmin} onChange />
+      <AtomTable
+        columns={columns}
+        dataSource={dummy}
+        onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}
+        limitSize={limit}
+        pagination={{
+          current: page,
+          pageSize: limit,
+          total: dummy.length,
+        }}
+      />
     </div>
   )
 }
