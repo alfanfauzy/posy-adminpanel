@@ -26,10 +26,10 @@ const ModalConfirmation = ({
   onOk,
 }: ModalConfirmation) => (
   <Modal open={isOpenModal}>
-    <article className="h-44 text-center p-3">
+    <article className="h-44 p-3 text-center">
       <p className="text-xl-semibold">{title}</p>
-      <span className="flex justify-center items-center h-20">{text}</span>
-      <footer className="flex p-3 gap-1 justify-center absolute bottom-0 right-0 left-0">
+      <span className="flex h-20 items-center justify-center">{text}</span>
+      <footer className="absolute bottom-0 right-0 left-0 flex justify-center gap-1 p-3">
         <Button size="m" variant="red-accent" onClick={onClose}>
           {textCancel}
         </Button>

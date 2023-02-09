@@ -12,7 +12,7 @@ const HeaderContent = ({ onClick }: HeaderContentProps) => (
       type="submit"
       variant="primary"
       size="l"
-      className="flex justify-center items-center gap-2 text-sm"
+      className="justify flex items-center  gap-2 text-sm"
       onClick={onClick}
     >
       <AiOutlineUserAdd />

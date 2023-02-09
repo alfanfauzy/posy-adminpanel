@@ -14,7 +14,7 @@ const Footer = ({ isFixed = false }: FooterProps) => {
 
   return (
     <footer
-      className={`mt-4 text-xs text-slate-500 text-center w-full ${
+      className={`w-full mt-4 text-center text-xs text-slate-500 ${
         isFixed && 'absolute bottom-0 mb-3 p-2'
       }`}
     >

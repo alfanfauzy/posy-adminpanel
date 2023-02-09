@@ -36,8 +36,6 @@ const AdminListPage: React.FC = () => {
   const { value: openModalConfirmation, toggle: handleOpenModalConfirmation } =
     useToggle(false)
 
-  const searchInput = useRef<InputRef>(null)
-
   /** Modal Confirmation Action */
 
   const handleShowConfirmationModal = (data: DataType) => {
@@ -70,7 +68,7 @@ const AdminListPage: React.FC = () => {
      */
 
     handleCloseModalConfirmation()
-    toast.success('Sucessfully remove data')
+    toast.success(`Sucessfully remove data ${uuid}`)
   }
 
   const handleSearch = (
@@ -163,8 +161,6 @@ const AdminListPage: React.FC = () => {
     },
   ]
 
-  console.log(limit)
-
   return (
     <div>
       <HeaderContent onClick={handleOpenFormModal} />
@@ -190,6 +186,7 @@ const AdminListPage: React.FC = () => {
           current: page,
           pageSize: limit,
           total: dummy.length,
+          onChange: setPage,
         }}
       />
     </div>

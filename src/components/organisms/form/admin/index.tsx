@@ -43,7 +43,6 @@ const MoleculesFormAdmin = ({
     register,
     reset,
     setValue,
-    watch,
     formState: { errors },
   } = useForm({
     schema: formSchema,
@@ -65,8 +64,6 @@ const MoleculesFormAdmin = ({
      */
 
     const getData = JSON.parse(localStorage.getItem('items') || '')
-
-    delete data.confirmPassword
 
     getData.push(data)
 
@@ -105,7 +102,7 @@ const MoleculesFormAdmin = ({
       setValue('fullname', fullname)
       setValue('role_uuid', role)
     }
-  }, [selectedData, isEdit])
+  }, [selectedData, isEdit, setValue])
 
   const titleText = isEdit ? 'Edit User' : 'Create New User'
 
@@ -114,7 +111,7 @@ const MoleculesFormAdmin = ({
       open={isOpenModal}
       handleClose={overlay ? handleCloseModal : undefined}
     >
-      <p className="text-heading-s-regular p-2 border-b border-b-stone-400 leading-5">
+      <p className="border-b border-b-stone-400 p-2 text-heading-s-regular leading-5">
         {titleText}
       </p>
       <section className="w-big-500 p-4">
@@ -138,7 +135,7 @@ const MoleculesFormAdmin = ({
                   {...register('password')}
                   labelText="Password"
                   placeholder="Input your password"
-                  className="flex justify-center items-center"
+                  className="flex items-center justify-center"
                   type={showPassword ? 'password' : 'text'}
                   endAdornment={
                     <IconEye
@@ -155,7 +152,7 @@ const MoleculesFormAdmin = ({
                   {...register('confirmPassword')}
                   labelText="Confirm Password"
                   placeholder="Input your confirm password"
-                  className="flex justify-center items-center"
+                  className="flex items-center justify-center"
                   type={showConfirmPassword ? 'password' : 'text'}
                   endAdornment={
                     <IconEye
@@ -174,7 +171,7 @@ const MoleculesFormAdmin = ({
               {...register('fullname')}
               labelText="Fullname"
               placeholder="ex: John Doe"
-              className="flex justify-center items-center"
+              className="flex items-center justify-center"
               error={!!errors.fullname}
               helperText={errors?.fullname?.message}
             />
@@ -189,7 +186,7 @@ const MoleculesFormAdmin = ({
               ]}
               labelText="Role"
               placeholder="ex: John Doe"
-              className="flex justify-center items-center"
+              className="flex items-center justify-center"
               error={!!errors.role_uuid}
               helperText={errors?.role_uuid?.message}
             />
@@ -200,7 +197,7 @@ const MoleculesFormAdmin = ({
             variant="primary"
             size="l"
             fullWidth
-            className="flex justify-center items-center gap-2"
+            className="flex items-center justify-center gap-2"
           >
             <AiOutlineCheckSquare />
             Submit

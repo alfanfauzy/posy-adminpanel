@@ -9,7 +9,7 @@ const TemplatesHeader = () => {
   const items: MenuProps['items'] = [
     {
       label: (
-        <p className="flex justify-center items-center gap-1">
+        <p className="flex items-center justify-center gap-1">
           <AiOutlineLogout /> Logout
         </p>
       ),
@@ -17,7 +17,7 @@ const TemplatesHeader = () => {
     },
   ]
   return (
-    <header className="flex justify-end p-2 w-full bg-white drop-shadow-lg">
+    <header className="w-full flex justify-end bg-white p-2 drop-shadow-lg">
       <Dropdown menu={{ items }} trigger={['click']} className="w-12">
         <a
           role="button"

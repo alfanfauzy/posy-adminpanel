@@ -22,7 +22,7 @@ const SidebarTop = ({ onClick }: SideBarTopEntities) => (
   <span
     tabIndex={0}
     role="button"
-    className="p-5 mb-3 flex items-center justify-center cursor-pointer"
+    className="mb-3 flex cursor-pointer items-center justify-center p-5"
     onClick={() => onClick()}
     onKeyDown={() => onClick()}
   >
@@ -35,7 +35,7 @@ const SingleMenuContent = ({ itemMenu, goToPage }: SingleMenuEntities) => {
   return (
     <MenuItem
       icon={icon}
-      className="text-m-bold text-neutral hover:bg-[#ebebeb] px-4"
+      className="text-neutral px-4 text-m-bold hover:bg-[#ebebeb]"
       onClick={() => goToPage(path)}
     >
       {label}
@@ -49,7 +49,7 @@ const SubMenuMenuContent = ({ itemMenu, goToPage }: SubMenuEntities) => {
     <SubMenu
       label={label}
       icon={icon}
-      className="text-m-bold text-neutral hover:bg-[#ebebeb] px-4"
+      className="text-neutral px-4 text-m-bold hover:bg-[#ebebeb]"
     >
       {items.map((item) => (
         <MenuItem key={nanoid()} onClick={() => goToPage(item.path ?? '')}>
@@ -105,10 +105,10 @@ const OrganismSidebar = () => {
   const { collapseSidebar } = useProSidebar()
 
   return (
-    <Sidebar breakPoint="lg" className="bg-white border-r-2">
+    <Sidebar breakPoint="lg" className="border-r-2 bg-white">
       <SidebarTop onClick={collapseSidebar} />
-      <div className="flex flex-col w-full">
-        <div className="flex-1 mb-8 h-full">
+      <div className="w-full flex flex-col">
+        <div className="mb-8 h-full flex-1">
           <SidebarContent listMenus={MENU_LIST} />
         </div>
       </div>
