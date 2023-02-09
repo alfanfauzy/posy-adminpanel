@@ -1,12 +1,19 @@
 import { Button } from 'posy-fnb-core'
-import React from 'react'
-import { AiOutlineUserAdd } from 'react-icons/ai'
+import React, { ReactNode } from 'react'
 
 interface HeaderContentProps {
   onClick: () => void
+  textButton: string
+  withIconButton?: boolean
+  iconElement?: ReactNode | JSX.Element
 }
 
-const HeaderContent = ({ onClick }: HeaderContentProps) => (
+const HeaderContent = ({
+  onClick,
+  textButton,
+  withIconButton = true,
+  iconElement,
+}: HeaderContentProps) => (
   <header className="mb-5">
     <Button
       type="submit"
@@ -15,8 +22,8 @@ const HeaderContent = ({ onClick }: HeaderContentProps) => (
       className="justify flex items-center  gap-2 text-sm"
       onClick={onClick}
     >
-      <AiOutlineUserAdd />
-      Add New User
+      {withIconButton && iconElement}
+      {textButton}
     </Button>
   </header>
 )

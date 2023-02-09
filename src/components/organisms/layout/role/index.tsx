@@ -3,26 +3,25 @@ import type { InputRef } from 'antd'
 import { Button } from 'posy-fnb-core'
 import type { ColumnsType } from 'antd/es/table'
 import type { FilterConfirmProps } from 'antd/es/table/interface'
-import { AiFillDelete, AiFillEdit, AiOutlineUserAdd } from 'react-icons/ai'
+import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
 import { DataType } from './entities'
-import { dummy } from 'src/data'
+import { dummyRoleList } from 'src/data/role'
 import { timeStampConverter } from '@/constants/utils'
-import AtomTag from '@/atoms/tag'
 import AtomTable from '@/atoms/table'
 import FilterTable from '@/atoms/table/filter/input'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
 
-const ModalFormAdmin = dynamic(() => import('@/organisms/form/admin'))
+const ModalFormRole = dynamic(() => import('@/organisms/form/role'))
 const ModalConfirmation = dynamic(
   () => import('@/molecules/modal/confirmation'),
 )
 
 type DataIndex = keyof DataType
 
-const AdminListPage: React.FC = () => {
+const RoleLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [searchText, setSearchText] = useState('')
@@ -61,7 +60,7 @@ const AdminListPage: React.FC = () => {
 
   /** ------------------------- */
 
-  const handleDeleteAdmin = () => {
+  const handleDeleteRole = () => {
     const { uuid } = selectedData
     /**
      * Todo Remove
@@ -95,11 +94,11 @@ const AdminListPage: React.FC = () => {
       render: (value, item, index) => (page - 1) * 10 + index + 1,
     },
     {
-      title: 'Username',
-      key: 'username',
-      dataIndex: 'username',
+      title: 'Role Name',
+      key: 'name',
+      dataIndex: 'name',
       ...FilterTable(
-        'username',
+        '',
         ref,
         handleSearch,
         handleReset,
@@ -108,23 +107,16 @@ const AdminListPage: React.FC = () => {
       ),
     },
     {
-      title: 'Full Name',
-      key: 'fullname',
-      dataIndex: 'fullname',
+      title: 'Description',
+      key: 'description',
+      dataIndex: 'description',
       ...FilterTable(
-        'fullname',
+        'description',
         ref,
         handleSearch,
         handleReset,
         searchText,
         searchedColumn,
-      ),
-    },
-    {
-      title: 'Role',
-      key: 'role',
-      render: (dataValue, record: any) => (
-        <AtomTag status={record?.role[0]?.name} />
       ),
     },
     {
@@ -162,13 +154,13 @@ const AdminListPage: React.FC = () => {
   ]
 
   return (
-    <div>
+    <main className="mt-4">
       <HeaderContent
         onClick={handleOpenFormModal}
-        textButton="Create Admin"
-        iconElement={<AiOutlineUserAdd />}
+        textButton="Create Role"
+        iconElement={<AiOutlinePlus />}
       />
-      <ModalFormAdmin
+      <ModalFormRole
         isOpenModal={openModal}
         handleClose={handleOpenFormModal}
         isEdit={isEdit}
@@ -179,22 +171,22 @@ const AdminListPage: React.FC = () => {
         title="Modal Confirmation"
         text="Are you sure want to remove ?"
         onClose={handleCloseModalConfirmation}
-        onOk={handleDeleteAdmin}
+        onOk={handleDeleteRole}
       />
       <AtomTable
         columns={columns}
-        dataSource={dummy}
+        dataSource={dummyRoleList}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}
         limitSize={limit}
         pagination={{
           current: page,
           pageSize: limit,
-          total: dummy.length,
+          total: dummyRoleList.length,
           onChange: setPage,
         }}
       />
-    </div>
+    </main>
   )
 }
 
-export default AdminListPage
+export default RoleLayout

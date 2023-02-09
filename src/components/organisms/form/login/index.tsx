@@ -38,10 +38,10 @@ const MoleculesLogin = () => {
   return (
     <div className="w-full flex h-screen items-center justify-center bg-gray-300 bg-opacity-40">
       <AtomDefaultCard
-        className="w-1/3 mb-10 h-auto drop-shadow-lg"
+        className="mb-10 h-auto w-big-500 drop-shadow-lg"
         bordered={false}
       >
-        <p className="heading-s-semibold mb-10 text-center">Login</p>
+        <p className="mb-10 text-center text-heading-s-bold">Login</p>
 
         <form onSubmit={handleSubmit(onLogin)}>
           <div className="mb-6">

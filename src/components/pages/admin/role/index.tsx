@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Tabs } from 'posy-fnb-core'
 import dynamic from 'next/dynamic'
 
 const TabsComponent = dynamic(
@@ -9,12 +8,12 @@ const TabsComponent = dynamic(
   },
 )
 
+const RoleListLayout = dynamic(() => import('@/organisms/layout/role'))
+
 const RolePermissionGeneral = () => {
   const Item = [{ label: 'Role' }, { label: 'Permission' }]
 
   const [tabsVal, setTabsVal] = useState(0)
-
-  console.log(tabsVal)
 
   return (
     <section>
@@ -26,7 +25,7 @@ const RolePermissionGeneral = () => {
         />
       </div>
 
-      {tabsVal === 0 && <p>Role</p>}
+      {tabsVal === 0 && <RoleListLayout />}
       {tabsVal === 1 && <p>Permission</p>}
     </section>
   )
