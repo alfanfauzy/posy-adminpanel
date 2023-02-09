@@ -1,30 +1,41 @@
+import { ReactNode } from 'react'
+
 export interface SideBarTopEntities {
   onClick: () => void
 }
-
-export interface MenuItemEntities {
-  label: string
-  icon: any
-  path?: string
-}
-
-export interface MenusEntities {
-  label: string
-  icon: any
-  type: string
-  items: [{ label: string; icon: any; path?: string }]
-}
-
-export interface SidebarEntities {
-  listMenus: MenusEntities[]
-}
-
 export interface SingleMenuEntities {
-  itemMenu: MenuItemEntities
+  itemMenu: {
+    label: string
+    icon: ReactNode | JSX.Element
+    type: string
+    path: string
+  }
   goToPage: (path: string) => void
 }
-
 export interface SubMenuEntities {
-  itemMenu: MenusEntities
+  itemMenu: {
+    label: string
+    icon?: ReactNode | JSX.Element
+    type: string
+    path?: string
+    items?: [
+      {
+        label: string
+        icon?: ReactNode | JSX.Element
+        path?: string
+      },
+    ]
+  }
   goToPage: (path: string) => void
+}
+export interface MenuSidebar {
+  listMenus: [
+    {
+      label: string
+      icon: ReactNode | JSX.Element
+      type: string
+      path: string
+      items?: [{ label: string; path?: string; icon?: ReactNode }]
+    },
+  ]
 }

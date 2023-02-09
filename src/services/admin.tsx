@@ -12,7 +12,7 @@ export const getListAdmin = async () => {
       data: response.data,
     }
   } catch (error) {
-    throw new Error(error)
+    throw new Error('Error')
   }
 }
 
@@ -28,6 +28,6 @@ export const createAdmin = async () => {
       data: response.data,
     }
   } catch (error) {
-    throw new Error(error)
+    throw new Error('Error')
   }
 }

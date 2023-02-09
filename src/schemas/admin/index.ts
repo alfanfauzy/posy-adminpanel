@@ -32,9 +32,6 @@ export const AdminFormSchema = z
 
 export const EditAdminFormSchema = z.object({
   email: z.string().email('Please Input valid email'),
-
   fullname: z.string().min(3),
   role_uuid: z.object({ value: z.string(), label: z.string() }),
 })
-
-export type ValidationAdminFormSchema = z.infer<typeof AdminFormSchema>

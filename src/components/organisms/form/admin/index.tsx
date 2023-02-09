@@ -98,13 +98,18 @@ const MoleculesFormAdmin = ({
   useEffect(() => {
     if (isEdit) {
       const { username, fullname, role } = selectedData
-      setValue('email', username)
-      setValue('fullname', fullname)
-      setValue('role_uuid', role)
+      setValue('email', username || '')
+      setValue('fullname', fullname || '')
+      setValue('role_uuid', {
+        label: role?.[0].name || '',
+        value: role?.[0].name || '',
+      })
     }
   }, [selectedData, isEdit, setValue])
 
   const titleText = isEdit ? 'Edit User' : 'Create New User'
+
+  console.log(errors)
 
   return (
     <Modal
@@ -143,7 +148,7 @@ const MoleculesFormAdmin = ({
                       handlePassword={handleShowPassword}
                     />
                   }
-                  error={!!errors.password}
+                  error={!isEdit && !!errors.password}
                   helperText={errors?.password?.message}
                 />
               </div>

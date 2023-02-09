@@ -12,6 +12,6 @@ export const Login = async () => {
       endpoint: response.data,
     }
   } catch (error) {
-    throw new Error(error)
+    throw new Error('Error')
   }
 }

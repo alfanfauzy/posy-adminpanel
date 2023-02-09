@@ -1,6 +1,7 @@
 import React from 'react'
 import MoleculesMetaHeader from '@/molecules/meta-header'
 import GeneralLayout from '@/templates/layouts'
+import RolePermissionGeneral from '@/pages/role'
 
 const RolePermissionPage = () => (
   <>
@@ -8,7 +9,9 @@ const RolePermissionPage = () => (
       title="Role Permission - Admin Panel FnB"
       description="Role Permission - Admin Panel FnB"
     />
-    <GeneralLayout>Role & Permission</GeneralLayout>
+    <GeneralLayout>
+      <RolePermissionGeneral />
+    </GeneralLayout>
   </>
 )
 

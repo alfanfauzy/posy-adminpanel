@@ -7,10 +7,10 @@ import {
   useProSidebar,
 } from 'react-pro-sidebar'
 import Image from 'next/image'
-import { nanoid } from 'nanoid'
 import { useRouter } from 'next/router'
+import { nanoid } from 'nanoid'
 import {
-  SidebarEntities,
+  MenuSidebar,
   SideBarTopEntities,
   SingleMenuEntities,
   SubMenuEntities,
@@ -61,7 +61,7 @@ const SubMenuMenuContent = ({ itemMenu, goToPage }: SubMenuEntities) => {
   )
 }
 
-const SidebarContent = ({ listMenus }: SidebarEntities) => {
+const SidebarContent = ({ listMenus }: MenuSidebar) => {
   const router = useRouter()
 
   const goToPage = (path: string) => {
