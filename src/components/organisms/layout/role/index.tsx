@@ -1,8 +1,6 @@
-import React, { useRef, useState } from 'react'
-import type { InputRef } from 'antd'
+import React, { useState } from 'react'
 import { Button } from 'posy-fnb-core'
 import type { ColumnsType } from 'antd/es/table'
-import type { FilterConfirmProps } from 'antd/es/table/interface'
 import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
@@ -10,7 +8,6 @@ import { DataType } from './entities'
 import { dummyRoleList } from 'src/data/role'
 import { timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
-import FilterTable from '@/atoms/table/filter/input'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
 
@@ -19,14 +16,9 @@ const ModalConfirmation = dynamic(
   () => import('@/molecules/modal/confirmation'),
 )
 
-type DataIndex = keyof DataType
-
 const RoleLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchText, setSearchText] = useState('')
-  const [searchedColumn, setSearchedColumn] = useState('')
-  const ref = useRef<InputRef>(null)
 
   const [selectedData, setSelectedData] = useState<DataType>({})
   const [isEdit, setIsEdit] = useState(false)
@@ -70,21 +62,6 @@ const RoleLayout: React.FC = () => {
     toast.success(`Sucessfully remove data ${uuid}`)
   }
 
-  const handleSearch = (
-    selectedKeys: string[],
-    confirm: (param?: FilterConfirmProps) => void,
-    dataIndex: DataIndex,
-  ) => {
-    confirm()
-    setSearchText(selectedKeys[0])
-    setSearchedColumn(dataIndex)
-  }
-
-  const handleReset = (clearFilters: () => void) => {
-    clearFilters()
-    setSearchText('')
-  }
-
   const columns: ColumnsType<DataType> = [
     {
       title: '#',
@@ -94,30 +71,14 @@ const RoleLayout: React.FC = () => {
       render: (value, item, index) => (page - 1) * 10 + index + 1,
     },
     {
-      title: 'Role Name',
+      title: 'RoleName',
       key: 'name',
       dataIndex: 'name',
-      ...FilterTable(
-        '',
-        ref,
-        handleSearch,
-        handleReset,
-        searchText,
-        searchedColumn,
-      ),
     },
     {
       title: 'Description',
       key: 'description',
       dataIndex: 'description',
-      ...FilterTable(
-        'description',
-        ref,
-        handleSearch,
-        handleReset,
-        searchText,
-        searchedColumn,
-      ),
     },
     {
       title: 'Created At',

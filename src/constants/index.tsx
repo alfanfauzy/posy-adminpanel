@@ -14,8 +14,8 @@ export const MENU_LIST = [
   },
   {
     label: 'Admin',
-    type: 'sub-menu',
     icon: <MdOutlineGroup />,
+    type: 'sub-menu',
     items: [
       {
         label: 'List Admin',

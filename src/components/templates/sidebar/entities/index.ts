@@ -6,7 +6,7 @@ export interface SideBarTopEntities {
 export interface SingleMenuEntities {
   itemMenu: {
     label: string
-    icon: ReactNode | JSX.Element
+    icon: JSX.Element
     type: string
     path: string
   }
@@ -15,13 +15,13 @@ export interface SingleMenuEntities {
 export interface SubMenuEntities {
   itemMenu: {
     label: string
-    icon?: ReactNode | JSX.Element
+    icon?: JSX.Element
     type: string
     path?: string
     items?: [
       {
         label: string
-        icon?: ReactNode | JSX.Element
+        icon?: JSX.Element
         path?: string
       },
     ]
@@ -32,10 +32,10 @@ export interface MenuSidebar {
   listMenus: [
     {
       label: string
-      icon: ReactNode | JSX.Element
+      icon: JSX.Element
       type: string
       path: string
-      items?: [{ label: string; path?: string; icon?: ReactNode }]
+      items?: [{ label: string; path?: string; icon?: JSX.Element }]
     },
   ]
 }
