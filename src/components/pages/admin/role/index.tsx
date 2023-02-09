@@ -9,6 +9,7 @@ const TabsComponent = dynamic(
 )
 
 const RoleListLayout = dynamic(() => import('@/organisms/layout/role'))
+const PermissionLayout = dynamic(() => import('@/organisms/layout/permission'))
 
 const RolePermissionGeneral = () => {
   const Item = [{ label: 'Role' }, { label: 'Permission' }]
@@ -26,7 +27,7 @@ const RolePermissionGeneral = () => {
       </div>
 
       {tabsVal === 0 && <RoleListLayout />}
-      {tabsVal === 1 && <p>Permission</p>}
+      {tabsVal === 1 && <PermissionLayout />}
     </section>
   )
 }
