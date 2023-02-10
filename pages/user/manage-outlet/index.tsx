@@ -1,7 +1,7 @@
 import React from 'react'
 import MoleculesMetaHeader from '@/molecules/meta-header'
 import GeneralLayout from '@/templates/layouts'
-import ListUserRestaurantPages from '@/pages/user/listUserRestaurant'
+import ManageOutletPages from '@/pages/user/manageOutlet'
 
 const ManageOutletPage = () => (
   <>
@@ -10,7 +10,7 @@ const ManageOutletPage = () => (
       description="Manage Outlet - Admin Panel FnB"
     />
     <GeneralLayout menu="User" subMenu="Manage Outlet">
-      <ListUserRestaurantPages />
+      <ManageOutletPages />
     </GeneralLayout>
   </>
 )
