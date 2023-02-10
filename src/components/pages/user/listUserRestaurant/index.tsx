@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button } from 'posy-fnb-core'
 import type { ColumnsType } from 'antd/es/table'
-import { AiFillDelete, AiFillEdit, AiOutlineUserAdd } from 'react-icons/ai'
+import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
 import { DataType } from './entities'
@@ -136,7 +136,7 @@ const ListUserRestaurantPages: React.FC = () => {
       <HeaderContent
         onClick={handleOpenFormModal}
         textButton="Add New User Restaurant"
-        iconElement={<AiOutlineUserAdd />}
+        iconElement={<AiOutlinePlus />}
       />
       <MoleculesFormUserRestaurant
         isOpenModal={openModal}
