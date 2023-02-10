@@ -7,18 +7,20 @@ import MoleculesBreadcrumb from '@/molecules/breadcrumb'
 
 export interface GeneralLayoutProps {
   children: React.ReactNode
+  menu: string
+  subMenu?: string
 }
 
-const GeneralLayout = ({ children }: GeneralLayoutProps) => (
+const GeneralLayout = ({ children, menu, subMenu }: GeneralLayoutProps) => (
   <ProSidebarProvider>
-    <main className="w-full flex min-h-screen bg-gray-300 bg-opacity-40">
+    <main className="flex min-h-screen w-full bg-gray-300 bg-opacity-40">
       <OrganismSidebar />
 
-      <section className="w-full flex flex-col">
+      <section className="flex w-full flex-col">
         <TemplatesHeader />
 
         <div className="rounded-tl-lg border-2 bg-slate-100 p-7">
-          <MoleculesBreadcrumb />
+          <MoleculesBreadcrumb menu={menu} subMenu={subMenu} />
 
           <AtomDefaultCard className="w-full">{children}</AtomDefaultCard>
         </div>

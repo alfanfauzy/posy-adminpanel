@@ -9,7 +9,7 @@ const ListAdminPage = () => (
       title="List Admin - Admin Panel FnB"
       description="List Admin - Admin Panel FnB"
     />
-    <GeneralLayout>
+    <GeneralLayout menu="Admin" subMenu="List Admin">
       <AdminListPage />
     </GeneralLayout>
   </>

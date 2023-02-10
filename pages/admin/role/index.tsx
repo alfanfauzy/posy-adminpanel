@@ -9,7 +9,7 @@ const RolePermissionPage = () => (
       title="Role Permission - Admin Panel FnB"
       description="Role Permission - Admin Panel FnB"
     />
-    <GeneralLayout>
+    <GeneralLayout menu="Admin" subMenu="Role & Permission">
       <RolePermissionGeneral />
     </GeneralLayout>
   </>

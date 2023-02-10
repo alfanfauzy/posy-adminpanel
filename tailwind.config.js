@@ -10,9 +10,10 @@ module.exports = {
   ],
   presets: [preset],
   theme: {
-    extend: {},
-    width: {
-      'big-500': '500px',
+    extend: {
+      width: {
+        'big-500': '500px',
+      },
     },
   },
   plugins: [],

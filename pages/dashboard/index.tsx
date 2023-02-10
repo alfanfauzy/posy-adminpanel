@@ -8,7 +8,7 @@ const Dashboard = () => (
       title="Dashboard - Admin Panel Fnb"
       description="Dashboard - Admin Panel Fnb"
     />
-    <GeneralLayout>
+    <GeneralLayout menu="Dashboard">
       <span className="flex items-center justify-center">Dashboard</span>
     </GeneralLayout>
   </>

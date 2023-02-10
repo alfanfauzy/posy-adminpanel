@@ -3,16 +3,16 @@ import MoleculesMetaHeader from '@/molecules/meta-header'
 import GeneralLayout from '@/templates/layouts'
 import ListUserRestaurantPages from '@/pages/user/listUserRestaurant'
 
-const ListUserRestaurantPage = () => (
+const ManageOutletPage = () => (
   <>
     <MoleculesMetaHeader
-      title="List User Restaurant - Admin Panel FnB"
-      description="List User Restaurant - Admin Panel FnB"
+      title="Manage Outlet - Admin Panel FnB"
+      description="Manage Outlet - Admin Panel FnB"
     />
-    <GeneralLayout menu="User" subMenu="List User Restaurant">
+    <GeneralLayout menu="User" subMenu="Manage Outlet">
       <ListUserRestaurantPages />
     </GeneralLayout>
   </>
 )
 
-export default ListUserRestaurantPage
+export default ManageOutletPage
