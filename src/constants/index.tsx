@@ -42,7 +42,7 @@ export const MENU_LIST = [
       },
       {
         label: 'List User',
-        path: '/user/manage-outlet',
+        path: '/user/list-user-restaurant',
       },
       {
         label: 'Role User',

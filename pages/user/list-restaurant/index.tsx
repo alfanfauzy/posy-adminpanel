@@ -6,8 +6,8 @@ import ListRestaurantPages from '@/pages/user/listRestaurant'
 const ListRestaurantPage = () => (
   <>
     <MoleculesMetaHeader
-      title="List Admin - Admin Panel FnB"
-      description="List Admin - Admin Panel FnB"
+      title="List Restaurant - Admin Panel FnB"
+      description="List Restaurant - Admin Panel FnB"
     />
     <GeneralLayout>
       <ListRestaurantPages />
