@@ -15,6 +15,7 @@ import {
   SingleMenuEntities,
   SubMenuEntities,
 } from './entities'
+import { hexToRgba, menuClasses, themes } from './utils'
 import { MENU_LIST } from '@/constants/index'
 import Footer from '@/atoms/footer'
 
@@ -33,11 +34,7 @@ const SidebarTop = ({ onClick }: SideBarTopEntities) => (
 const SingleMenuContent = ({ itemMenu, goToPage }: SingleMenuEntities) => {
   const { icon, label, path = '' } = itemMenu
   return (
-    <MenuItem
-      icon={icon}
-      className="text-neutral px-4 text-m-bold hover:bg-[#ebebeb]"
-      onClick={() => goToPage(path)}
-    >
+    <MenuItem icon={icon} onClick={() => goToPage(path)}>
       {label}
     </MenuItem>
   )
@@ -46,11 +43,7 @@ const SingleMenuContent = ({ itemMenu, goToPage }: SingleMenuEntities) => {
 const SubMenuMenuContent = ({ itemMenu, goToPage }: SubMenuEntities) => {
   const { icon, label, items = [] } = itemMenu
   return (
-    <SubMenu
-      label={label}
-      icon={icon}
-      className="text-neutral px-4 text-m-bold hover:bg-[#ebebeb]"
-    >
+    <SubMenu label={label} icon={icon}>
       {items.map((item) => (
         <MenuItem key={nanoid()} onClick={() => goToPage(item.path ?? '')}>
           {' '}
@@ -61,7 +54,7 @@ const SubMenuMenuContent = ({ itemMenu, goToPage }: SubMenuEntities) => {
   )
 }
 
-const SidebarContent = ({ listMenus }: MenuSidebar) => {
+const SidebarContent = ({ listMenus, menuItemStyles }: MenuSidebar) => {
   const router = useRouter()
 
   const goToPage = (path: string) => {
@@ -70,13 +63,16 @@ const SidebarContent = ({ listMenus }: MenuSidebar) => {
 
   return (
     <Menu
-      transitionDuration={1000}
+      transitionDuration={500}
       rootStyles={{
+        [`.ps-submenu-content`]: {
+          overflow: 'hidden !important',
+        },
         [`.ps-menu-icon`]: {
-          backgroundColor: '#e1e1e1',
-          color: '#344cff',
+          color: '#01B89D',
         },
       }}
+      menuItemStyles={menuItemStyles}
     >
       {listMenus.map((menu) => {
         if (menu.type === 'single-menu') {
@@ -102,14 +98,53 @@ const SidebarContent = ({ listMenus }: MenuSidebar) => {
 }
 
 const OrganismSidebar = () => {
-  const { collapseSidebar } = useProSidebar()
+  const { collapseSidebar, collapsed } = useProSidebar()
+
+  const menuItemStyles = {
+    root: {
+      fontSize: '12px',
+      fontWeight: 400,
+    },
+    icon: {
+      color: '#0098e5',
+      [`&.${menuClasses.disabled}`]: {
+        color: themes.light.menu.disabled.color,
+      },
+    },
+    SubMenuExpandIcon: {
+      color: '#b6b7b9',
+    },
+    subMenuContent: ({ level }) => ({
+      backgroundColor:
+        level === 0
+          ? hexToRgba(themes.light.menu.menuContent, !collapsed ? 0.4 : 1)
+          : 'transparent',
+    }),
+    button: {
+      [`&.${menuClasses.disabled}`]: {
+        color: themes.light.menu.disabled.color,
+      },
+      '&:hover': {
+        backgroundColor: hexToRgba(themes.light.menu.hover.backgroundColor, 1),
+        color: themes.light.menu.hover.color,
+      },
+    },
+    label: ({ open }) => ({
+      fontWeight: open ? 600 : undefined,
+    }),
+  }
 
   return (
-    <Sidebar breakPoint="lg" className="border-r-2 bg-white">
+    <Sidebar
+      breakPoint="lg"
+      className="border-r-2 bg-white"
+      transitionDuration={1000}
+      rootStyles={{ [`.ps-menu-root`]: { fontSize: '0.9rem !important' } }}
+    >
       <SidebarTop onClick={collapseSidebar} />
       <div className="w-full flex flex-col">
         <div className="mb-8 h-full flex-1">
-          <SidebarContent listMenus={MENU_LIST} />
+          <SidebarContent listMenus={MENU_LIST} menuStyles={menuItemStyles} />
         </div>
       </div>
       <Footer isFixed />

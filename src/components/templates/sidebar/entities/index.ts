@@ -38,4 +38,5 @@ export interface MenuSidebar {
       items?: [{ label: string; path?: string; icon?: JSX.Element }]
     },
   ]
+  menuItemStyles: any
 }
