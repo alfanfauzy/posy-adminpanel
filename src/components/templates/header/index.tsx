@@ -17,12 +17,12 @@ const TemplatesHeader = () => {
     },
   ]
   return (
-    <header className="w-full flex justify-end bg-white p-2 drop-shadow-lg">
+    <header className="flex w-full justify-end bg-white p-2 drop-shadow-lg">
       <Dropdown menu={{ items }} trigger={['click']} className="w-12">
         <a
           role="button"
           tabIndex={0}
-          onClick={() => router.push('/auth-login')}
+          onClick={() => router.push('/auth/login')}
           onKeyDown={(e) => e.preventDefault()}
         >
           <Badge>

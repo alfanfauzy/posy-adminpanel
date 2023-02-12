@@ -12,7 +12,7 @@ const MoleculesBreadcrumb = ({ menu, subMenu }: MoleculesBreadcrumbProps) => (
     aria-label="Breadcrumb"
   >
     <ol className="inline-flex w-auto items-center">
-      <li className="inline-flex items-center gap-2 text-base font-medium text-gray-700">
+      <li className="inline-flex items-center gap-2 text-m-regular font-medium text-gray-700">
         <a href="#" className="inline-flex items-center gap-2 ">
           <AiFillHome />
           {menu}
