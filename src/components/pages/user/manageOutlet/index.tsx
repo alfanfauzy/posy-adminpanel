@@ -5,7 +5,7 @@ import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
 import { DataType } from './entities'
-import { dummy } from 'src/data'
+import { dummy } from 'src/data/outlet'
 import { timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
@@ -79,7 +79,7 @@ const ManageOutletPages: React.FC = () => {
     },
     {
       title: 'Outlet',
-      key: 'Outlet',
+      key: 'outlet',
       dataIndex: 'outlet',
     },
     {

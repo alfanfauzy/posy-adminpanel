@@ -5,7 +5,7 @@ import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
 import { DataType } from './entities'
-import { dummy } from 'src/data'
+import { dummyRoleList } from 'src/data/role'
 import { timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
@@ -136,13 +136,13 @@ const RoleUserPages: React.FC = () => {
       />
       <AtomTable
         columns={columns}
-        dataSource={dummy}
+        dataSource={dummyRoleList}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}
         limitSize={limit}
         pagination={{
           current: page,
           pageSize: limit,
-          total: dummy.length,
+          total: dummyRoleList.length,
           onChange: setPage,
         }}
       />
