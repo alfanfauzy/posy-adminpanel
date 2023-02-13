@@ -9,6 +9,7 @@ export interface SingleMenuEntities {
     icon: JSX.Element
     type: string
     path: string
+    disabled?: boolean
   }
   goToPage: (path: string) => void
 }
@@ -18,6 +19,7 @@ export interface SubMenuEntities {
     icon?: JSX.Element
     type: string
     path?: string
+    disabled?: boolean
     items?: [
       {
         label: string
@@ -35,6 +37,7 @@ export interface MenuSidebar {
       icon: JSX.Element
       type: string
       path: string
+      disabled?: boolean
       items?: [{ label: string; path?: string; icon?: JSX.Element }]
     },
   ]

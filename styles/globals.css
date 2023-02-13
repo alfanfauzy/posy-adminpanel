@@ -39,8 +39,8 @@ body {
   padding: 0 12px;
 }
 
-.ps-submenu-content li.ps-menuitem-root {
-  margin-left: 2rem;
+.ps-submenu-content ul {
+  padding-left: 2rem;
 }
 
 .ps-menu-icon {

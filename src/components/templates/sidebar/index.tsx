@@ -32,9 +32,22 @@ const SidebarTop = ({ onClick }: SideBarTopEntities) => (
 )
 
 const SingleMenuContent = ({ itemMenu, goToPage }: SingleMenuEntities) => {
-  const { icon, label, path = '' } = itemMenu
+  const { icon, label, path = '', disabled } = itemMenu
+
+  const { asPath } = useRouter()
+
   return (
-    <MenuItem icon={icon} onClick={() => goToPage(path)}>
+    <MenuItem
+      icon={icon}
+      onClick={() => goToPage(path)}
+      disabled={disabled}
+      className={`py-1.5 transition-all duration-300 ease-in-out ${
+        asPath.indexOf(path) !== -1
+          ? 'rounded-lg bg-neutral-20'
+          : 'hover:rounded-lg hover:bg-neutral-20'
+      }`}
+      active={asPath.indexOf(path) !== -1}
+    >
       {label}
     </MenuItem>
   )
@@ -42,10 +55,26 @@ const SingleMenuContent = ({ itemMenu, goToPage }: SingleMenuEntities) => {
 
 const SubMenuMenuContent = ({ itemMenu, goToPage }: SubMenuEntities) => {
   const { icon, label, items = [] } = itemMenu
+  const { asPath } = useRouter()
+
+  const firstPath = asPath.split('/')[1]
+
   return (
-    <SubMenu label={label} icon={icon}>
-      {items.map((item) => (
-        <MenuItem key={nanoid()} onClick={() => goToPage(item.path ?? '')}>
+    <SubMenu
+      label={label}
+      icon={icon}
+      defaultOpen={firstPath === label.toLocaleLowerCase()}
+    >
+      {items?.map((item) => (
+        <MenuItem
+          key={nanoid()}
+          onClick={() => goToPage(item.path ?? '')}
+          className={`py-1.5 transition-all duration-300 ease-in-out ${
+            asPath.indexOf(item.path!) !== -1
+              ? 'rounded-lg bg-neutral-20 font-semibold'
+              : 'hover:rounded-lg hover:bg-neutral-20'
+          }`}
+        >
           {' '}
           {item.label}
         </MenuItem>
@@ -54,7 +83,7 @@ const SubMenuMenuContent = ({ itemMenu, goToPage }: SubMenuEntities) => {
   )
 }
 
-const SidebarContent = ({ listMenus, menuItemStyles }: MenuSidebar) => {
+const SidebarContent = ({ listMenus }: MenuSidebar) => {
   const router = useRouter()
 
   const goToPage = (path: string) => {
@@ -71,8 +100,11 @@ const SidebarContent = ({ listMenus, menuItemStyles }: MenuSidebar) => {
         [`.ps-menu-icon`]: {
           color: '#01B89D',
         },
+        [`.ps-active`]: {
+          backgroundColor: '#eeeee4',
+          fontWeight: '600',
+        },
       }}
-      menuItemStyles={menuItemStyles}
     >
       {listMenus.map((menu) => {
         if (menu.type === 'single-menu') {
@@ -98,41 +130,7 @@ const SidebarContent = ({ listMenus, menuItemStyles }: MenuSidebar) => {
 }
 
 const OrganismSidebar = () => {
-  const { collapseSidebar, collapsed } = useProSidebar()
-
-  const menuItemStyles = {
-    root: {
-      fontSize: '12px',
-      fontWeight: 400,
-    },
-    icon: {
-      color: '#0098e5',
-      [`&.${menuClasses.disabled}`]: {
-        color: themes.light.menu.disabled.color,
-      },
-    },
-    SubMenuExpandIcon: {
-      color: '#b6b7b9',
-    },
-    subMenuContent: ({ level }) => ({
-      backgroundColor:
-        level === 0
-          ? hexToRgba(themes.light.menu.menuContent, !collapsed ? 0.4 : 1)
-          : 'transparent',
-    }),
-    button: {
-      [`&.${menuClasses.disabled}`]: {
-        color: themes.light.menu.disabled.color,
-      },
-      '&:hover': {
-        backgroundColor: hexToRgba(themes.light.menu.hover.backgroundColor, 1),
-        color: themes.light.menu.hover.color,
-      },
-    },
-    label: ({ open }) => ({
-      fontWeight: open ? 600 : undefined,
-    }),
-  }
+  const { collapseSidebar } = useProSidebar()
 
   return (
     <Sidebar
@@ -142,9 +140,9 @@ const OrganismSidebar = () => {
       rootStyles={{ [`.ps-menu-root`]: { fontSize: '0.9rem !important' } }}
     >
       <SidebarTop onClick={collapseSidebar} />
-      <div className="w-full flex flex-col">
+      <div className="flex w-full flex-col">
         <div className="mb-8 h-full flex-1">
-          <SidebarContent listMenus={MENU_LIST} menuStyles={menuItemStyles} />
+          <SidebarContent listMenus={MENU_LIST} />
         </div>
       </div>
       <Footer isFixed />
