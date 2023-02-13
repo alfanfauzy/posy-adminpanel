@@ -25,7 +25,7 @@ interface MoleculesFormAdminProps {
 }
 
 const MoleculesFormAdmin = ({
-  isEdit,
+  isEdit = false,
   isOpenModal,
   handleClose,
   selectedData,
@@ -34,7 +34,7 @@ const MoleculesFormAdmin = ({
   const { value: showConfirmPassword, toggle: handleShowConfirmPassword } =
     useToggle(true)
 
-  const formSchema = isEdit ? EditAdminFormSchema : AdminFormSchema
+  const FormSchema = isEdit ? EditAdminFormSchema : AdminFormSchema
 
   const {
     handleSubmit,
@@ -43,7 +43,7 @@ const MoleculesFormAdmin = ({
     setValue,
     formState: { errors },
   } = useForm({
-    schema: formSchema,
+    schema: FormSchema,
     mode: 'onChange',
   })
 
@@ -142,7 +142,7 @@ const MoleculesFormAdmin = ({
                       handlePassword={handleShowPassword}
                     />
                   }
-                  error={!isEdit && !!errors.password}
+                  error={!isEdit && !!errors?.password}
                   helperText={errors?.password?.message}
                 />
               </div>

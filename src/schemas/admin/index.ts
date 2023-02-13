@@ -34,4 +34,6 @@ export const EditAdminFormSchema = z.object({
   email: z.string().email('Please Input valid email'),
   fullname: z.string().min(3),
   role_uuid: z.object({ value: z.string(), label: z.string() }),
+  password: z.string(),
+  confirmPassword: z.string(),
 })
