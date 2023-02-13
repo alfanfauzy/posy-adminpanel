@@ -10,7 +10,7 @@ import { FormManageOutletEntities } from './entities'
 import { useForm } from '@/hooks/useForm'
 import { ManageOutletFormSchema } from '@/schemas/outlet'
 
-const Modal = dynamic(() => import('posy-fnb-core').then((el) => el.Modal), {
+const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
 })
 
@@ -27,8 +27,6 @@ const MoleculesFormManageOutlet = ({
   handleClose,
   selectedData,
 }: MoleculesFormManageOutletProps) => {
-  const overlay = true
-
   const {
     handleSubmit,
     register,
@@ -100,13 +98,11 @@ const MoleculesFormManageOutlet = ({
   const titleText = isEdit ? 'Edit Outlet' : 'Create New Outlet'
 
   return (
-    <Modal
-      open={isOpenModal}
-      handleClose={overlay ? handleCloseModal : undefined}
+    <ModalForm
+      isOpenModal={isOpenModal}
+      handleCloseModal={handleCloseModal}
+      title={titleText}
     >
-      <p className="border-b border-b-stone-400 p-2 text-heading-s-regular leading-5">
-        {titleText}
-      </p>
       <section className="w-big-500 p-4">
         <form onSubmit={handleSubmit((data) => handleSubmitForm(data))}>
           <div className="mb-6">
@@ -185,7 +181,7 @@ const MoleculesFormManageOutlet = ({
           </Button>
         </form>
       </section>
-    </Modal>
+    </ModalForm>
   )
 }
 

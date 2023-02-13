@@ -10,7 +10,7 @@ import { FormRestaurantEntities } from './entities'
 import { useForm } from '@/hooks/useForm'
 import { RestaurantFormSchema } from '@/schemas/restaurant'
 
-const Modal = dynamic(() => import('posy-fnb-core').then((el) => el.Modal), {
+const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
 })
 
@@ -27,8 +27,6 @@ const MoleculesFormRestaurant = ({
   handleClose,
   selectedData,
 }: MoleculesFormRestaurantProps) => {
-  const overlay = true
-
   const {
     handleSubmit,
     register,
@@ -113,13 +111,11 @@ const MoleculesFormRestaurant = ({
   const titleText = isEdit ? 'Edit Restaurant' : 'Create New Restaurant'
 
   return (
-    <Modal
-      open={isOpenModal}
-      handleClose={overlay ? handleCloseModal : undefined}
+    <ModalForm
+      isOpenModal={isOpenModal}
+      handleCloseModal={handleCloseModal}
+      title={titleText}
     >
-      <p className="border-b border-b-stone-400 p-2 text-heading-s-regular leading-5">
-        {titleText}
-      </p>
       <section className="w-big-500 p-4">
         <form onSubmit={handleSubmit((data) => handleSubmitForm(data))}>
           <div className="mb-6">
@@ -230,7 +226,7 @@ const MoleculesFormRestaurant = ({
           </Button>
         </form>
       </section>
-    </Modal>
+    </ModalForm>
   )
 }
 

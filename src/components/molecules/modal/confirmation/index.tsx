@@ -6,7 +6,7 @@ const Modal = dynamic(() => import('posy-fnb-core').then((el) => el.Modal), {
   ssr: false,
 })
 
-interface ModalConfirmation {
+interface ModalConfirmationProps {
   isOpenModal: boolean
   title?: string | React.ReactElement
   text?: string | React.ReactElement
@@ -24,7 +24,7 @@ const ModalConfirmation = ({
   textOk = 'Submit',
   onClose,
   onOk,
-}: ModalConfirmation) => (
+}: ModalConfirmationProps) => (
   <Modal open={isOpenModal}>
     <article className="h-44 p-3 text-center">
       <p className="text-xl-semibold">{title}</p>

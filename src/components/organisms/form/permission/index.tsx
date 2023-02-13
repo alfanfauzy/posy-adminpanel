@@ -4,14 +4,14 @@
 import React, { useEffect } from 'react'
 import { Button, Input } from 'posy-fnb-core'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
-import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
+import dynamic from 'next/dynamic'
 import { FormPermissionEntities } from './entities'
 import { useForm } from '@/hooks/useForm'
 import { PermissionFormSchema } from '@/schemas/permission'
 import { DataType } from '@/organisms/layout/permission/entities'
 
-const Modal = dynamic(() => import('posy-fnb-core').then((el) => el.Modal), {
+const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
 })
 
@@ -28,8 +28,6 @@ const MoleculesFormPermission = ({
   handleClose,
   selectedData,
 }: MoleculesFormPermissionProps) => {
-  const overlay = true
-
   const {
     handleSubmit,
     register,
@@ -99,13 +97,11 @@ const MoleculesFormPermission = ({
   const titleText = isEdit ? 'Edit Permission' : 'Create New Permission'
 
   return (
-    <Modal
-      open={isOpenModal}
-      handleClose={overlay ? handleCloseModal : undefined}
+    <ModalForm
+      isOpenModal={isOpenModal}
+      handleCloseModal={handleCloseModal}
+      title={titleText}
     >
-      <p className="border-b border-b-stone-400 p-2 text-heading-s-regular leading-5">
-        {titleText}
-      </p>
       <section className="w-big-500 p-4">
         <form onSubmit={handleSubmit((data) => handleSubmitForm(data))}>
           <div className="mb-6">
@@ -163,7 +159,7 @@ const MoleculesFormPermission = ({
           </Button>
         </form>
       </section>
-    </Modal>
+    </ModalForm>
   )
 }
 

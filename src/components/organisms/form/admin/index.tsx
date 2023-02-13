@@ -13,7 +13,7 @@ import useToggle from '@/hooks/useToggle'
 import { DataType } from '@/pages/admin/list/entities'
 import IconEye from '@/atoms/icon/IconEye'
 
-const Modal = dynamic(() => import('posy-fnb-core').then((el) => el.Modal), {
+const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
 })
 
@@ -30,8 +30,6 @@ const MoleculesFormAdmin = ({
   handleClose,
   selectedData,
 }: MoleculesFormAdminProps) => {
-  const overlay = true
-
   const { value: showPassword, toggle: handleShowPassword } = useToggle(true)
   const { value: showConfirmPassword, toggle: handleShowConfirmPassword } =
     useToggle(true)
@@ -110,13 +108,11 @@ const MoleculesFormAdmin = ({
   const titleText = isEdit ? 'Edit User' : 'Create New User'
 
   return (
-    <Modal
-      open={isOpenModal}
-      handleClose={overlay ? handleCloseModal : undefined}
+    <ModalForm
+      handleCloseModal={handleCloseModal}
+      isOpenModal={isOpenModal}
+      title={titleText}
     >
-      <p className="border-b border-b-stone-400 p-2 text-heading-s-regular leading-5">
-        {titleText}
-      </p>
       <section className="w-big-500 p-4">
         <form onSubmit={handleSubmit((data) => handleSubmitForm(data))}>
           <div className="mb-6">
@@ -207,7 +203,7 @@ const MoleculesFormAdmin = ({
           </Button>
         </form>
       </section>
-    </Modal>
+    </ModalForm>
   )
 }
 
