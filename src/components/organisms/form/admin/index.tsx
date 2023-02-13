@@ -42,6 +42,7 @@ const MoleculesFormAdmin = ({
     reset,
     setValue,
     formState: { errors },
+    watch,
   } = useForm({
     schema: FormSchema,
     mode: 'onChange',
@@ -102,10 +103,15 @@ const MoleculesFormAdmin = ({
         label: role?.[0].name || '',
         value: role?.[0].name || '',
       })
+      setValue('password', '')
+      setValue('confirmPassword', '')
     }
   }, [selectedData, isEdit, setValue])
 
   const titleText = isEdit ? 'Edit User' : 'Create New User'
+
+  console.log(errors)
+  console.log(watch())
 
   return (
     <ModalForm
@@ -179,6 +185,7 @@ const MoleculesFormAdmin = ({
             <Select
               name="role_uuid"
               onChange={(e) => setValue('role_uuid', e)}
+              value={watch('role_uuid')}
               options={[
                 { label: 'Role 1', value: 'Role 1' },
                 { label: 'Role 2', value: 'Role 2' },
