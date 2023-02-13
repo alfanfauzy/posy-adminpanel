@@ -31,6 +31,7 @@ export const MENU_LIST = [
     label: 'User',
     icon: <MdGroups />,
     type: 'sub-menu',
+    path: '/user',
     items: [
       {
         label: 'List Restaurant',

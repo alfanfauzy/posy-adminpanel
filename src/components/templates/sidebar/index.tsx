@@ -15,7 +15,6 @@ import {
   SingleMenuEntities,
   SubMenuEntities,
 } from './entities'
-import { hexToRgba, menuClasses, themes } from './utils'
 import { MENU_LIST } from '@/constants/index'
 import Footer from '@/atoms/footer'
 
@@ -32,7 +31,7 @@ const SidebarTop = ({ onClick }: SideBarTopEntities) => (
 )
 
 const SingleMenuContent = ({ itemMenu, goToPage }: SingleMenuEntities) => {
-  const { icon, label, path = '', disabled } = itemMenu
+  const { icon, label, path = '' } = itemMenu
 
   const { asPath } = useRouter()
 
@@ -40,7 +39,6 @@ const SingleMenuContent = ({ itemMenu, goToPage }: SingleMenuEntities) => {
     <MenuItem
       icon={icon}
       onClick={() => goToPage(path)}
-      disabled={disabled}
       className={`py-1.5 transition-all duration-300 ease-in-out ${
         asPath.indexOf(path) !== -1
           ? 'rounded-lg bg-neutral-20'
