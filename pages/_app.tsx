@@ -8,7 +8,7 @@ import 'posy-fnb-core/dist/index.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
 import { Provider } from 'react-redux'
-import { store } from 'src/store'
+import { storeRedux } from 'src/store'
 import { dummy } from 'src/data'
 import LoadingBar from '@/atoms/loadingBar'
 import { useLoading } from '@/hooks/useLoading'
@@ -39,7 +39,8 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     ((page) => <Suspense fallback={<p>Loading . . . .</p>}>{page}</Suspense>)
 
   return getLayout(
-    <Provider store={store}>
+    <Provider store={storeRedux}>
+      {/* <PersistGate persistor={persistor}> */}
       <LoadingBar
         isRouteChanging={loadingState.isRouteChanging}
         key={loadingState.loadingKey}
@@ -57,6 +58,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
         pauseOnHover
         theme="light"
       />
+      {/* </PersistGate> */}
     </Provider>,
   )
 }
