@@ -1,3 +1,4 @@
+// import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface AuthData {
@@ -28,7 +29,34 @@ const initialState: AuthState = {
   },
 }
 
-export const AuthSlice = createSlice({
+// export const AuthSlice = createSlice({
+//   name: 'auth',
+//   initialState,
+//   reducers: {
+//     authSuccess: (state: AuthState, action: PayloadAction<AuthData>) => {
+//       state.isLoggedIn = true
+//       state.authData = action.payload
+//     },
+//     onLogout: (state: AuthState) => {
+//       state.isLoggedIn = false
+//       state.authData = {
+//         uuid: '',
+//         token: '',
+//         refresh_token: '',
+//         expired_at: {
+//           seconds: 0,
+//           nanos: 0,
+//         },
+//       }
+//     },
+//   },
+// })
+
+// export const { authSuccess, onLogout } = AuthSlice.actions
+
+// export default AuthSlice.reducer
+
+export const themeSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
@@ -51,6 +79,5 @@ export const AuthSlice = createSlice({
   },
 })
 
-export const { authSuccess, onLogout } = AuthSlice.actions
-
-export default AuthSlice.reducer
+export const { authSuccess, onLogout } = themeSlice.actions
+export default themeSlice.reducer
