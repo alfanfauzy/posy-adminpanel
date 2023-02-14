@@ -4,7 +4,7 @@ import { AiOutlineCheckSquare } from 'react-icons/ai'
 import { Button, Input } from 'posy-fnb-core'
 import { useRouter } from 'next/router'
 import { SubmitHandler } from 'react-hook-form'
-import AtomDefaultCard from '@/atoms/card'
+import { motion } from 'framer-motion'
 import Footer from '@/atoms/footer'
 import { loginSchema, ValidationLoginSchema } from '@/schemas/login'
 import { useForm } from '@/hooks/useForm'
@@ -36,10 +36,12 @@ const MoleculesLogin = () => {
   }
 
   return (
-    <div className="w-full flex h-screen items-center justify-center bg-gray-300 bg-opacity-40">
-      <AtomDefaultCard
-        className="mb-10 h-auto w-big-500 drop-shadow-lg"
-        bordered={false}
+    <div className="flex h-screen w-full items-center justify-center bg-gray-300 bg-opacity-40">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.5 }}
+        className="mb-10 h-auto w-big-500 rounded-md border border-slate-300 p-7 shadow-md"
       >
         <p className="mb-10 text-center text-heading-s-bold">Login</p>
 
@@ -85,7 +87,7 @@ const MoleculesLogin = () => {
         </form>
 
         <Footer />
-      </AtomDefaultCard>
+      </motion.div>
     </div>
   )
 }
