@@ -9,15 +9,19 @@ import Footer from '@/atoms/footer'
 import { loginSchema, ValidationLoginSchema } from '@/schemas/login'
 import { useForm } from '@/hooks/useForm'
 import IconEye from '@/atoms/icon/IconEye'
+import { useDispatchApp } from 'store/hooks'
+import { authSuccess } from 'store/slice/auth'
 
 const MoleculesLogin = () => {
   const router = useRouter()
+  const dispatch = useDispatchApp()
 
   const [showPassword, setShowPassword] = useState(true)
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     schema: loginSchema,
@@ -32,6 +36,18 @@ const MoleculesLogin = () => {
   }
 
   const onLogin: SubmitHandler<ValidationLoginSchema> = () => {
+    const { email } = watch()
+
+    const payload = {
+      uuid: email,
+      token: '123123',
+      refresh_token: '123123',
+      expired_at: {
+        seconds: 0,
+        nanos: 0,
+      },
+    }
+    dispatch(authSuccess(payload))
     handleGoDashboard()
   }
 
