@@ -1,5 +1,9 @@
 import { AiFillHome } from 'react-icons/ai'
-import { MdOutlineGroup, MdGroups } from 'react-icons/md'
+import {
+  MdOutlineGroup,
+  MdGroups,
+  MdAccountBalanceWallet,
+} from 'react-icons/md'
 
 export const TITLE = {
   DEFAULT_TITLE: 'Admin Panel - Posy FNB',
@@ -31,7 +35,6 @@ export const MENU_LIST = [
     label: 'User',
     icon: <MdGroups />,
     type: 'sub-menu',
-    path: '/user',
     items: [
       {
         label: 'List Restaurant',
@@ -48,6 +51,17 @@ export const MENU_LIST = [
       {
         label: 'Role User',
         path: '/user/role-user',
+      },
+    ],
+  },
+  {
+    label: 'History',
+    icon: <MdAccountBalanceWallet />,
+    type: 'sub-menu',
+    items: [
+      {
+        label: 'Transaction',
+        path: '/history/transaction',
       },
     ],
   },
