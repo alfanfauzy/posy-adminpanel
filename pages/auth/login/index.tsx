@@ -4,19 +4,11 @@ import React, { useEffect } from 'react'
 import MoleculesMetaHeader from '@/molecules/meta-header'
 import AuthLayout from '@/templates/layouts/auth-layout'
 import LoginPage from '@/pages/login'
-import { useAppSelector } from 'store/hooks'
+import useAuthentication from '@/hooks/useAuthentication'
 
 const Page: NextPageWithLayout = () => {
-  const router = useRouter()
-  const { isLoggedIn } = useAppSelector((state) => state.auth)
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      router.push('/dashboard')
-    } else {
-      router.push('/auth/login')
-    }
-  }, [isLoggedIn])
+  // Handle Authentication
+  useAuthentication()
 
   return (
     <>

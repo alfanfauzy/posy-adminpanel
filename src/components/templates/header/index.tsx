@@ -2,9 +2,18 @@ import { Avatar, Badge, Dropdown, MenuProps } from 'antd'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { AiOutlineLogout } from 'react-icons/ai'
+import { useDispatchApp } from 'store/hooks'
+import { onLogout } from 'store/slice/auth'
 
 const TemplatesHeader = () => {
   const router = useRouter()
+  const dispatch = useDispatchApp()
+
+  const handleLogout = () => {
+    console.log('click here')
+    dispatch(onLogout())
+    router.push('/auth/login')
+  }
 
   const items: MenuProps['items'] = [
     {
@@ -22,7 +31,7 @@ const TemplatesHeader = () => {
         <a
           role="button"
           tabIndex={0}
-          onClick={() => router.push('/auth/login')}
+          onClick={() => handleLogout()}
           onKeyDown={(e) => e.preventDefault()}
         >
           <Badge>
