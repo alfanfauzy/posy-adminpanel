@@ -13,7 +13,7 @@ const ModalFormSubscription = dynamic(
   () => import('@/organisms/form/subscription'),
 )
 
-const SubscriotionPage: React.FC = () => {
+const SubscriptionLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
 
@@ -96,4 +96,4 @@ const SubscriotionPage: React.FC = () => {
   )
 }
 
-export default SubscriotionPage
+export default SubscriptionLayout

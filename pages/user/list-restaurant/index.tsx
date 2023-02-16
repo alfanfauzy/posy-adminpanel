@@ -1,8 +1,8 @@
 import React from 'react'
 import MoleculesMetaHeader from '@/molecules/meta-header'
 import GeneralLayout from '@/templates/layouts'
-import ListRestaurantPages from '@/pages/user/listRestaurant'
 import useAuthentication from '@/hooks/useAuthentication'
+import ListRestaurantLayout from '@/pages/user/listRestaurant'
 
 const ListRestaurantPage = () => {
   // Handle Authentication
@@ -15,7 +15,7 @@ const ListRestaurantPage = () => {
         description="List Restaurant - Admin Panel FnB"
       />
       <GeneralLayout menu="User" subMenu="List Restaurant">
-        <ListRestaurantPages />
+        <ListRestaurantLayout />
       </GeneralLayout>
     </>
   )

@@ -9,7 +9,6 @@ import { timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
-import AtomDatePicker from '@/atoms/datepicker'
 
 const MoleculesFormUserSubscription = dynamic(
   () => import('@/organisms/form/userSubscription'),
@@ -18,11 +17,9 @@ const ModalConfirmation = dynamic(
   () => import('@/molecules/modal/confirmation'),
 )
 
-const UserSubscription: React.FC = () => {
+const UserSubscriptionLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-
-  const [startDate, setStartDate] = useState()
 
   const [selectedData, setSelectedData] = useState<DataType>({})
   const [isEdit, setIsEdit] = useState(false)
@@ -135,4 +132,4 @@ const UserSubscription: React.FC = () => {
   )
 }
 
-export default UserSubscription
+export default UserSubscriptionLayout

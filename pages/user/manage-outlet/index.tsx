@@ -1,8 +1,8 @@
 import React from 'react'
 import MoleculesMetaHeader from '@/molecules/meta-header'
 import GeneralLayout from '@/templates/layouts'
-import ManageOutletPages from '@/pages/user/manageOutlet'
 import useAuthentication from '@/hooks/useAuthentication'
+import ManageOutletLayout from '@/pages/user/manageOutlet'
 
 const ManageOutletPage = () => {
   // Handle Authentication
@@ -15,7 +15,7 @@ const ManageOutletPage = () => {
         description="Manage Outlet - Admin Panel FnB"
       />
       <GeneralLayout menu="User" subMenu="Manage Outlet">
-        <ManageOutletPages />
+        <ManageOutletLayout />
       </GeneralLayout>
     </>
   )

@@ -16,7 +16,7 @@ const ModalConfirmation = dynamic(
   () => import('@/molecules/modal/confirmation'),
 )
 
-const ListRestaurantPages: React.FC = () => {
+const ListRestaurantLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
 
@@ -150,4 +150,4 @@ const ListRestaurantPages: React.FC = () => {
   )
 }
 
-export default ListRestaurantPages
+export default ListRestaurantLayout

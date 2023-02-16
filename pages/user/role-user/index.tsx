@@ -1,8 +1,8 @@
 import React from 'react'
 import MoleculesMetaHeader from '@/molecules/meta-header'
 import GeneralLayout from '@/templates/layouts'
-import RoleUserPages from '@/pages/user/role'
 import useAuthentication from '@/hooks/useAuthentication'
+import RoleUserLayout from '@/pages/user/role'
 
 const RoleUserPage = () => {
   // Handle Authentication
@@ -15,7 +15,7 @@ const RoleUserPage = () => {
         description="Role User - Admin Panel FnB"
       />
       <GeneralLayout menu="User" subMenu="Role User">
-        <RoleUserPages />
+        <RoleUserLayout />
       </GeneralLayout>
     </>
   )

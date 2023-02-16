@@ -22,7 +22,7 @@ const ModalConfirmation = dynamic(
 
 type DataIndex = keyof DataType
 
-const AdminListPage: React.FC = () => {
+const AdminListLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [searchText, setSearchText] = useState('')
@@ -197,4 +197,4 @@ const AdminListPage: React.FC = () => {
   )
 }
 
-export default AdminListPage
+export default AdminListLayout

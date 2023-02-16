@@ -18,7 +18,7 @@ const ModalConfirmation = dynamic(
   () => import('@/molecules/modal/confirmation'),
 )
 
-const ManageOutletPages: React.FC = () => {
+const ManageOutletLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
 
@@ -167,4 +167,4 @@ const ManageOutletPages: React.FC = () => {
   )
 }
 
-export default ManageOutletPages
+export default ManageOutletLayout

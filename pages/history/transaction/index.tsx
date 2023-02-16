@@ -1,8 +1,8 @@
 import React from 'react'
 import MoleculesMetaHeader from '@/molecules/meta-header'
 import GeneralLayout from '@/templates/layouts'
-import HistoryTransactionPage from '@/pages/history/transaction'
 import useAuthentication from '@/hooks/useAuthentication'
+import HistoryTransactionLayout from '@/pages/history/transaction'
 
 const TransactionPage = () => {
   // Handle Authentication
@@ -15,7 +15,7 @@ const TransactionPage = () => {
         description="Dashboard - Admin Panel Fnb"
       />
       <GeneralLayout menu="Transaction" subMenu="History">
-        <HistoryTransactionPage />
+        <HistoryTransactionLayout />
       </GeneralLayout>
     </>
   )

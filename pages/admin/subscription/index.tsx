@@ -1,10 +1,10 @@
 import React from 'react'
 import MoleculesMetaHeader from '@/molecules/meta-header'
 import GeneralLayout from '@/templates/layouts'
-import SubscriotionPage from '@/pages/admin/subscription'
+import SubscriptionLayout from '@/pages/admin/subscription'
 import useAuthentication from '@/hooks/useAuthentication'
 
-const SubscriptionPageLayout = () => {
+const SubscriptionPage = () => {
   // Handle Authentication
   useAuthentication()
 
@@ -15,10 +15,10 @@ const SubscriptionPageLayout = () => {
         description="Subscription - Admin Panel FnB"
       />
       <GeneralLayout menu="Admin" subMenu="Subscription">
-        <SubscriotionPage />
+        <SubscriptionLayout />
       </GeneralLayout>
     </>
   )
 }
 
-export default SubscriptionPageLayout
+export default SubscriptionPage

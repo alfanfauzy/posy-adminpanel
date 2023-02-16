@@ -10,7 +10,7 @@ import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
 
-const HistoryTransactionPage: React.FC = () => {
+const HistoryTransactionLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
 
@@ -118,4 +118,4 @@ const HistoryTransactionPage: React.FC = () => {
   )
 }
 
-export default HistoryTransactionPage
+export default HistoryTransactionLayout

@@ -16,7 +16,7 @@ const ModalConfirmation = dynamic(
   () => import('@/molecules/modal/confirmation'),
 )
 
-const RoleUserPages: React.FC = () => {
+const RoleUserLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
 
@@ -150,4 +150,4 @@ const RoleUserPages: React.FC = () => {
   )
 }
 
-export default RoleUserPages
+export default RoleUserLayout

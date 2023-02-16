@@ -11,7 +11,7 @@ const TabsComponent = dynamic(
 const RoleListLayout = dynamic(() => import('@/organisms/layout/role'))
 const PermissionLayout = dynamic(() => import('@/organisms/layout/permission'))
 
-const RolePermissionGeneral = () => {
+const RolePermissionLayout = () => {
   const Item = [{ label: 'Role' }, { label: 'Permission' }]
 
   const [tabsVal, setTabsVal] = useState(0)
@@ -32,4 +32,4 @@ const RolePermissionGeneral = () => {
   )
 }
 
-export default RolePermissionGeneral
+export default RolePermissionLayout
