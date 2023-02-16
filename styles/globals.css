@@ -50,3 +50,11 @@ body {
 .ant-picker-dropdown {
   z-index: 1300 !important;
 }
+
+.ant-switch {
+  background-color: #e9e9e9 !important;
+}
+
+.ant-switch-checked {
+  background-color: #00bb9a !important;
+}
