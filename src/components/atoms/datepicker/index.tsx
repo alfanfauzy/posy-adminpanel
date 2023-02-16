@@ -3,7 +3,7 @@ import React from 'react'
 
 interface AtomDatePickerProps {
   type: 'single' | 'range'
-  onChange: () => void
+  onChange: (val: any) => number | string
   value: any
   label?: string
   className: string
@@ -13,7 +13,7 @@ interface AtomDatePickerProps {
 
 interface RenderComponentProps {
   type: 'single' | 'range'
-  onChange: () => void
+  onChange: (val: any) => number | string
   value: any
   className: string
   placeholder: string
