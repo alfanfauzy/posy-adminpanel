@@ -56,6 +56,10 @@ export const MENU_LIST = [
         label: 'Role User',
         path: '/user/role-user',
       },
+      {
+        label: 'User Subscription',
+        path: '/user/subscription',
+      },
     ],
   },
   {
