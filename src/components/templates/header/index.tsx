@@ -10,7 +10,6 @@ const TemplatesHeader = () => {
   const dispatch = useDispatchApp()
 
   const handleLogout = () => {
-    console.log('click here')
     dispatch(onLogout())
     router.push('/auth/login')
   }
@@ -18,22 +17,23 @@ const TemplatesHeader = () => {
   const items: MenuProps['items'] = [
     {
       label: (
-        <p className="flex items-center justify-center gap-1">
+        <a
+          tabIndex={0}
+          role="button"
+          className="flex items-center justify-center gap-1 rounded-lg border border-gray-200 bg-red-700 p-2 text-l-medium text-white hover:text-white"
+          onClick={() => handleLogout()}
+          onKeyDown={() => handleLogout()}
+        >
           <AiOutlineLogout /> Logout
-        </p>
+        </a>
       ),
       key: '0',
     },
   ]
   return (
     <header className="flex w-full justify-end bg-white p-2 drop-shadow-lg">
-      <Dropdown menu={{ items }} trigger={['click']} className="w-12">
-        <a
-          role="button"
-          tabIndex={0}
-          onClick={() => handleLogout()}
-          onKeyDown={(e) => e.preventDefault()}
-        >
+      <Dropdown menu={{ items }} trigger={['hover']} className="w-12">
+        <a role="button" tabIndex={0} onKeyDown={(e) => e.preventDefault()}>
           <Badge>
             <Avatar size="large" src="https://i.pravatar.cc/30" />
           </Badge>

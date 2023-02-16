@@ -110,9 +110,6 @@ const MoleculesFormAdmin = ({
 
   const titleText = isEdit ? 'Edit User' : 'Create New User'
 
-  console.log(errors)
-  console.log(watch())
-
   return (
     <ModalForm
       handleCloseModal={handleCloseModal}

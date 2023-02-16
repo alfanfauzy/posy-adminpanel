@@ -89,8 +89,6 @@ const MoleculesFormSubscription = ({
 
   const titleText = isEdit ? 'Edit User' : 'Register Subscription Plan'
 
-  console.log(errors)
-
   return (
     <ModalForm
       handleCloseModal={handleCloseModal}

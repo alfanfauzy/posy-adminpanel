@@ -7,7 +7,6 @@ const useAuthentication = () => {
   const { isLoggedIn } = useAppSelector((state) => state.auth)
 
   useEffect(() => {
-    console.log(isLoggedIn)
     if (!isLoggedIn) {
       router.push('/auth/login')
     }
