@@ -8,7 +8,6 @@ import {
 } from 'react-pro-sidebar'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { nanoid } from 'nanoid'
 import {
   MenuSidebar,
   SideBarTopEntities,
@@ -17,6 +16,7 @@ import {
 } from './entities'
 import { MENU_LIST } from '@/constants/index'
 import Footer from '@/atoms/footer'
+import { generateUniqueId } from '@/constants/utils'
 
 const SidebarTop = ({ onClick }: SideBarTopEntities) => (
   <span
@@ -65,7 +65,7 @@ const SubMenuMenuContent = ({ itemMenu, goToPage }: SubMenuEntities) => {
     >
       {items?.map((item) => (
         <MenuItem
-          key={nanoid()}
+          key={generateUniqueId(5)}
           onClick={() => goToPage(item.path ?? '')}
           className={`py-1.5 transition-all duration-300 ease-in-out ${
             asPath.indexOf(item.path!) !== -1
@@ -108,7 +108,7 @@ const SidebarContent = ({ listMenus }: MenuSidebar) => {
         if (menu.type === 'single-menu') {
           return (
             <SingleMenuContent
-              key={nanoid()}
+              key={generateUniqueId(5)}
               itemMenu={menu}
               goToPage={goToPage}
             />
@@ -117,7 +117,7 @@ const SidebarContent = ({ listMenus }: MenuSidebar) => {
 
         return (
           <SubMenuMenuContent
-            key={nanoid()}
+            key={generateUniqueId(5)}
             itemMenu={menu}
             goToPage={goToPage}
           />

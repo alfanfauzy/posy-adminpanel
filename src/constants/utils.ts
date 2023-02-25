@@ -1,11 +1,14 @@
-import { customAlphabet } from 'nanoid'
 import moment from 'moment'
 
-export const getNanoId = (length: number) => {
-  const alphanumeric =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmopqrstuvwxyz1234567890'
-  const nanoid = customAlphabet(alphanumeric, length)
-  return nanoid(length)
+export const generateUniqueId = (length: number) => {
+  let result = ''
+  const characters = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-?/><:;}{[]\\|`
+  const charactersLength = characters.length
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength))
+  }
+  return result
 }
 
 export const PASSWORD_REGEX =
