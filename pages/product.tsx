@@ -2,6 +2,7 @@ import React from 'react'
 import useAuthentication from '@/hooks/useAuthentication'
 import MoleculesMetaHeader from '@/molecules/meta-header'
 import GeneralLayout from '@/templates/layouts'
+import OrganismFormProduct from '@/organisms/form/product'
 
 const ProductPage = () => (
   // Handle Authentication
@@ -13,7 +14,7 @@ const ProductPage = () => (
       description="Product Menu - Admin Panel FnB"
     />
     <GeneralLayout menu="-" subMenu="Product Menu">
-      {/* <UserSubscriptionLayout /> */}
+      <OrganismFormProduct />
     </GeneralLayout>
   </>
 )
