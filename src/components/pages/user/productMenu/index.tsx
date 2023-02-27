@@ -1,22 +1,30 @@
 import React, { useState } from 'react'
 import { Button } from 'posy-fnb-core'
 import type { ColumnsType } from 'antd/es/table'
-import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
+import {
+  AiFillDelete,
+  AiFillEdit,
+  AiOutlineFolderOpen,
+  AiOutlinePlus,
+} from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import { DataType } from './entities'
 import { dummy } from 'src/data/restaurant'
 import { timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
+import AtomSwitch from '@/atoms/switch'
 
-const ModalFormCategory = dynamic(() => import('@/organisms/form/category'))
+const ModalFormProduct = dynamic(() => import('@/organisms/form/product'))
 const ModalConfirmation = dynamic(
   () => import('@/molecules/modal/confirmation'),
 )
 
-const CategoryLayout: React.FC = () => {
+const ListProductMenuLayout: React.FC = () => {
+  const router = useRouter()
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
 
@@ -25,6 +33,8 @@ const CategoryLayout: React.FC = () => {
 
   const { value: openModal, toggle: handleOpenModal } = useToggle(false)
   const { value: openModalConfirmation, toggle: handleOpenModalConfirmation } =
+    useToggle(false)
+  const { value: switchActiveMenu, toggle: handleSwitchActiveMenu } =
     useToggle(false)
 
   /** Modal Confirmation Action */
@@ -64,36 +74,41 @@ const CategoryLayout: React.FC = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: '#',
+      title: 'No',
       dataIndex: '',
       filterMode: 'tree',
       filterSearch: true,
       render: (value, item, index) => (page - 1) * 10 + index + 1,
     },
     {
-      title: 'Name',
-      key: 'name',
-      dataIndex: 'name',
+      title: 'Product Name',
+      key: 'product_name',
+      dataIndex: 'product_name',
     },
     {
-      title: 'Category',
-      key: 'category',
-      dataIndex: 'category',
+      title: 'Price',
+      key: 'price',
+      dataIndex: 'price',
     },
     {
-      title: 'Display',
-      key: 'display',
-      dataIndex: 'display',
-    },
-    {
-      title: 'Created At',
-      key: 'created_at',
-      dataIndex: 'created_at',
+      title: 'Discounted Price',
+      key: 'price_after_discount',
+      dataIndex: 'price_after_discount',
       sorter: (a: any, b: any) => a.created_at.seconds - b.created_at.seconds,
       render: (dataValue, record: any) =>
         timeStampConverter(record?.created_at?.seconds, 'DD-MM-YYYY HH:mm'),
     },
-
+    {
+      title: 'Cooking Duration',
+      key: 'cooking_duration',
+      dataIndex: 'cooking_duration',
+    },
+    {
+      title: 'Active',
+      key: 'is_active',
+      dataIndex: 'is_active',
+      render: () => <AtomSwitch onChange={handleSwitchActiveMenu} />,
+    },
     {
       title: 'Action',
       render: (dataValue, record, index) => (
@@ -120,13 +135,13 @@ const CategoryLayout: React.FC = () => {
   ]
 
   return (
-    <div>
+    <div className="pt-5">
       <HeaderContent
         onClick={handleOpenFormModal}
-        textButton="Add New Category"
+        textButton="Add Product"
         iconElement={<AiOutlinePlus />}
       />
-      <ModalFormCategory
+      <ModalFormProduct
         isOpenModal={openModal}
         handleClose={handleOpenFormModal}
         isEdit={isEdit}
@@ -155,4 +170,4 @@ const CategoryLayout: React.FC = () => {
   )
 }
 
-export default CategoryLayout
+export default ListProductMenuLayout

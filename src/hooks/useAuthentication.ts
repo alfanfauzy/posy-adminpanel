@@ -10,7 +10,7 @@ const useAuthentication = () => {
     if (!isLoggedIn) {
       router.push('/auth/login')
     }
-  }, [])
+  }, [isLoggedIn])
 }
 
 export default useAuthentication

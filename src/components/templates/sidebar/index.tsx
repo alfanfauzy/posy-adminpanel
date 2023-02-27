@@ -68,6 +68,7 @@ const SubMenuMenuContent = ({ itemMenu, goToPage }: SubMenuEntities) => {
           key={generateUniqueId(5)}
           onClick={() => goToPage(item.path ?? '')}
           className={`py-1.5 transition-all duration-300 ease-in-out ${
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             asPath.indexOf(item.path!) !== -1
               ? 'rounded-lg bg-neutral-20 font-semibold'
               : 'hover:rounded-lg hover:bg-neutral-20'

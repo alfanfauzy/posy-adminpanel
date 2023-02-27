@@ -1,6 +1,6 @@
 import { Button, Input } from 'posy-fnb-core'
 import React, { useState } from 'react'
-import { AiFillDelete } from 'react-icons/ai'
+import { AiFillDelete, AiOutlineDelete } from 'react-icons/ai'
 import { generateUniqueId } from '@/constants/utils'
 
 const MoleculesFormVariant = () => {
@@ -23,9 +23,9 @@ const MoleculesFormVariant = () => {
   }
 
   return (
-    <div className="border-t-2 border-black p-5 py-2">
-      <section className="inline-flex w-full items-baseline justify-start gap-3">
-        <p className="mb-3 text-xl-bold">Variant</p>
+    <div className="">
+      <section className="inline-flex w-full items-baseline justify-between gap-3">
+        <p className="mb-3 text-m-bold">Variant</p>
         <Button
           size="xs"
           onClick={(e) => {
@@ -33,15 +33,18 @@ const MoleculesFormVariant = () => {
             handleAddVariant()
           }}
         >
-          Add More Variant
+          Add Variant
         </Button>
       </section>
 
       {variant.map((data) => (
         <div
-          className="flex items-end justify-start gap-3 align-bottom"
+          className="mb-3 flex items-center justify-start gap-3 align-bottom"
           key={generateUniqueId(10)}
         >
+          <span className="rounded-full border bg-red-500 p-2 text-l-medium text-white">
+            <AiOutlineDelete />
+          </span>
           <div>
             <Input
               name="variant_name"
@@ -57,19 +60,6 @@ const MoleculesFormVariant = () => {
               placeholder="ex: 10, 20"
               className="flex items-center justify-center"
             />
-          </div>
-          <div>
-            <Input
-              name="variant_priority"
-              labelText="Variant Priority:"
-              placeholder="ex: 1, 2, 3"
-              className="flex items-center justify-center"
-            />
-          </div>
-          <div>
-            <Button variant="red-accent" size="m" className="mb-[2px]">
-              <AiFillDelete />
-            </Button>
           </div>
         </div>
       ))}

@@ -1,23 +1,22 @@
 import React, { useState } from 'react'
+import { Button } from 'posy-fnb-core'
 import type { ColumnsType } from 'antd/es/table'
-import { AiOutlinePlus } from 'react-icons/ai'
+import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
 import { DataType } from './entities'
-import { dummyRoleList } from 'src/data/role'
+import { dummy } from 'src/data/restaurant'
 import { timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
 
-const MoleculesFormUserSubscription = dynamic(
-  () => import('@/organisms/form/userSubscription'),
-)
+const ModalFormCategory = dynamic(() => import('@/organisms/form/category'))
 const ModalConfirmation = dynamic(
   () => import('@/molecules/modal/confirmation'),
 )
 
-const UserSubscriptionLayout: React.FC = () => {
+const CategoryLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
 
@@ -29,6 +28,11 @@ const UserSubscriptionLayout: React.FC = () => {
     useToggle(false)
 
   /** Modal Confirmation Action */
+
+  const handleShowConfirmationModal = (data: DataType) => {
+    handleOpenModalConfirmation()
+    setSelectedData(data)
+  }
 
   const handleCloseModalConfirmation = () => {
     handleOpenModalConfirmation()
@@ -67,24 +71,19 @@ const UserSubscriptionLayout: React.FC = () => {
       render: (value, item, index) => (page - 1) * 10 + index + 1,
     },
     {
-      title: 'Restaurant Name',
+      title: 'Name',
       key: 'name',
       dataIndex: 'name',
     },
     {
-      title: 'Subscription Plan',
-      key: 'subscription_plan',
-      dataIndex: 'subscription_plan',
+      title: 'Category',
+      key: 'category',
+      dataIndex: 'category',
     },
     {
-      title: 'Start Date',
-      key: 'start_date',
-      dataIndex: 'start_date',
-    },
-    {
-      title: 'Start End',
-      key: 'start_end',
-      dataIndex: 'start_end',
+      title: 'Display',
+      key: 'display',
+      dataIndex: 'display',
     },
     {
       title: 'Created At',
@@ -94,16 +93,40 @@ const UserSubscriptionLayout: React.FC = () => {
       render: (dataValue, record: any) =>
         timeStampConverter(record?.created_at?.seconds, 'DD-MM-YYYY HH:mm'),
     },
+
+    {
+      title: 'Action',
+      render: (dataValue, record, index) => (
+        <span className="flex gap-1">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              handleOpenFormModal()
+              setIsEdit(true)
+              setSelectedData(dataValue)
+            }}
+          >
+            <AiFillEdit />
+          </Button>
+          <Button
+            variant="red-accent"
+            onClick={() => handleShowConfirmationModal(dataValue)}
+          >
+            <AiFillDelete />
+          </Button>
+        </span>
+      ),
+    },
   ]
 
   return (
     <div className="pt-5">
       <HeaderContent
         onClick={handleOpenFormModal}
-        textButton="Create New Subscription"
+        textButton="Add New Category"
         iconElement={<AiOutlinePlus />}
       />
-      <MoleculesFormUserSubscription
+      <ModalFormCategory
         isOpenModal={openModal}
         handleClose={handleOpenFormModal}
         isEdit={isEdit}
@@ -118,13 +141,13 @@ const UserSubscriptionLayout: React.FC = () => {
       />
       <AtomTable
         columns={columns}
-        dataSource={dummyRoleList}
+        dataSource={dummy}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}
         limitSize={limit}
         pagination={{
           current: page,
           pageSize: limit,
-          total: dummyRoleList.length,
+          total: dummy.length,
           onChange: setPage,
         }}
       />
@@ -132,4 +155,4 @@ const UserSubscriptionLayout: React.FC = () => {
   )
 }
 
-export default UserSubscriptionLayout
+export default CategoryLayout

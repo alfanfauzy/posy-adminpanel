@@ -1,6 +1,5 @@
 import { NextPageWithLayout } from '../../_app'
-import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import React from 'react'
 import MoleculesMetaHeader from '@/molecules/meta-header'
 import AuthLayout from '@/templates/layouts/auth-layout'
 import LoginPage from '@/pages/login'

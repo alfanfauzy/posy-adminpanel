@@ -38,7 +38,7 @@ const Pagination = ({
   total,
   limitSize,
 }: PaginationProps) => (
-  <span className="w-64 absolute left-0 flex items-center justify-center gap-2">
+  <span className="absolute left-0 flex w-64 items-center justify-center gap-2">
     Showing
     <PaginationSelect
       onChangePagination={onChangePagination}

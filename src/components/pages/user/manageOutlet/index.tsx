@@ -132,7 +132,7 @@ const ManageOutletLayout: React.FC = () => {
   ]
 
   return (
-    <div>
+    <div className="pt-5">
       <HeaderContent
         onClick={handleOpenFormModal}
         textButton="Add New Outlet"

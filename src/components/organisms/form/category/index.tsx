@@ -1,7 +1,7 @@
 /**
- * Admin Form Modal
+ * Category Form Modal
  */
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Button, Input } from 'posy-fnb-core'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
@@ -28,7 +28,6 @@ const MoleculesFormCategory = ({
   isEdit = false,
   isOpenModal,
   handleClose,
-  selectedData,
 }: MoleculesFormCategoryProps) => {
   const { value: iSDisplayToggle, toggle: handleDisplayToggle } =
     useToggle(false)
@@ -37,7 +36,6 @@ const MoleculesFormCategory = ({
     handleSubmit,
     register,
     reset,
-    setValue,
     formState: { errors },
   } = useForm({
     schema: categorySchema,

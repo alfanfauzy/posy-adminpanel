@@ -11,8 +11,9 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, store } from 'src/store'
 import { dummy } from 'src/data'
-import LoadingBar from '@/atoms/loadingBar'
+import LoadingBar from '@/atoms/loading/loadingBar'
 import { useLoading } from '@/hooks/useLoading'
+import { Loading } from '@/atoms/loading'
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -37,7 +38,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   const getLayout =
     Component.getLayout ??
-    ((page) => <Suspense fallback={<p>Loading . . . .</p>}>{page}</Suspense>)
+    ((page) => <Suspense fallback={<Loading size={100} />}>{page}</Suspense>)
 
   return getLayout(
     <Provider store={store}>
