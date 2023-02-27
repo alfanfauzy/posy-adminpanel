@@ -17,15 +17,15 @@ const TemplatesHeader = () => {
   const items: MenuProps['items'] = [
     {
       label: (
-        <a
+        <span
           tabIndex={0}
           role="button"
-          className="flex items-center justify-center gap-1 rounded-lg border border-gray-200 bg-red-700 p-2 text-l-medium text-white hover:text-white"
+          className="text-m-reguler flex items-center justify-center gap-1 rounded-lg border border-gray-200 bg-red-400 p-2 text-white"
           onClick={() => handleLogout()}
           onKeyDown={() => handleLogout()}
         >
           <AiOutlineLogout /> Logout
-        </a>
+        </span>
       ),
       key: '0',
     },

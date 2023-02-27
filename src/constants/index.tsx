@@ -11,12 +11,6 @@ export const TITLE = {
 
 export const MENU_LIST = [
   {
-    label: 'Dashboard',
-    icon: <AiFillHome />,
-    type: 'single-menu',
-    path: '/dashboard',
-  },
-  {
     label: 'Admin',
     icon: <MdOutlineGroup />,
     type: 'sub-menu',
