@@ -20,12 +20,8 @@ const ModalForm = ({
     showCloseButton
     overflow
     className="overflow-auto"
+    title={title}
   >
-    {title && (
-      <p className="absolute top-[0.7rem] p-2 text-heading-s-regular leading-5">
-        {title}
-      </p>
-    )}
     {children}
   </Modal>
 )
