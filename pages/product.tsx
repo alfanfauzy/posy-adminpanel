@@ -4,19 +4,21 @@ import MoleculesMetaHeader from '@/molecules/meta-header'
 import GeneralLayout from '@/templates/layouts'
 import OrganismFormProduct from '@/organisms/form/product'
 
-const ProductPage = () => (
+const ProductPage = () => {
   // Handle Authentication
-  //   useAuthentication()
+  useAuthentication()
 
-  <>
-    <MoleculesMetaHeader
-      title="Product Menu - Admin Panel FnB"
-      description="Product Menu - Admin Panel FnB"
-    />
-    <GeneralLayout menu="-" subMenu="Product Menu">
-      <OrganismFormProduct />
-    </GeneralLayout>
-  </>
-)
+  return (
+    <>
+      <MoleculesMetaHeader
+        title="Product Menu - Admin Panel FnB"
+        description="Product Menu - Admin Panel FnB"
+      />
+      <GeneralLayout menu="-" subMenu="Product Menu">
+        <OrganismFormProduct />
+      </GeneralLayout>
+    </>
+  )
+}
 
 export default ProductPage
