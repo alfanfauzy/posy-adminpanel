@@ -8,7 +8,8 @@ import 'posy-fnb-core/dist/index.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
 import { Provider } from 'react-redux'
-import { storeRedux } from 'src/store'
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistor, store } from 'src/store'
 import { dummy } from 'src/data'
 import LoadingBar from '@/atoms/loadingBar'
 import { useLoading } from '@/hooks/useLoading'
@@ -39,26 +40,26 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     ((page) => <Suspense fallback={<p>Loading . . . .</p>}>{page}</Suspense>)
 
   return getLayout(
-    <Provider store={storeRedux}>
-      {/* <PersistGate persistor={persistor}> */}
-      <LoadingBar
-        isRouteChanging={loadingState.isRouteChanging}
-        key={loadingState.loadingKey}
-      />
-      <Component {...pageProps} />
-      <ToastContainer
-        position="top-center"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-      {/* </PersistGate> */}
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <LoadingBar
+          isRouteChanging={loadingState.isRouteChanging}
+          key={loadingState.loadingKey}
+        />
+        <Component {...pageProps} />
+        <ToastContainer
+          position="top-center"
+          autoClose={4000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </PersistGate>
     </Provider>,
   )
 }
