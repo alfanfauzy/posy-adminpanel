@@ -1,13 +1,8 @@
-import { AiFillHome } from 'react-icons/ai'
 import {
   MdOutlineGroup,
   MdGroups,
   MdAccountBalanceWallet,
 } from 'react-icons/md'
-
-export const TITLE = {
-  DEFAULT_TITLE: 'Admin Panel - Posy FNB',
-}
 
 export const MENU_LIST = [
   {
@@ -85,3 +80,7 @@ export const Subscription_Period = [
   { label: '24 Bulan', value: '24' },
   { label: '36 Bulan', value: '36' },
 ]
+
+export const SERVICE_DOMAIN = {
+  user: 'fnb-user-service',
+}

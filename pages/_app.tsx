@@ -1,5 +1,7 @@
 // eslint-disable-file no-use-before-define
 import { ReactElement, ReactNode, Suspense, useEffect } from 'react'
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import '../styles/globals.css'
@@ -25,6 +27,7 @@ type AppPropsWithLayout = AppProps & {
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const router = useRouter()
+  const queryClient = new QueryClient()
   const { asPath } = router
 
   const { loadingState } = useLoading()
@@ -41,27 +44,29 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     ((page) => <Suspense fallback={<Loading size={100} />}>{page}</Suspense>)
 
   return getLayout(
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <LoadingBar
-          isRouteChanging={loadingState.isRouteChanging}
-          key={loadingState.loadingKey}
-        />
-        <Component {...pageProps} />
-        <ToastContainer
-          position="top-center"
-          autoClose={4000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-      </PersistGate>
-    </Provider>,
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <LoadingBar
+            isRouteChanging={loadingState.isRouteChanging}
+            key={loadingState.loadingKey}
+          />
+          <Component {...pageProps} />
+          <ToastContainer
+            position="top-center"
+            autoClose={4000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        </PersistGate>
+      </Provider>
+    </QueryClientProvider>,
   )
 }
 

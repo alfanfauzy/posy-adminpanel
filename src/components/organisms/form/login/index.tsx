@@ -5,12 +5,14 @@ import { Button, Input } from 'posy-fnb-core'
 import { useRouter } from 'next/router'
 import { SubmitHandler } from 'react-hook-form'
 import { motion } from 'framer-motion'
+import { useMutation } from 'react-query'
 import Footer from '@/atoms/footer'
 import { loginSchema, ValidationLoginSchema } from '@/schemas/login'
 import { useForm } from '@/hooks/useForm'
 import IconEye from '@/atoms/icon/IconEye'
 import { useDispatchApp } from 'store/hooks'
 import { authSuccess } from 'store/slice/auth'
+import { Login } from 'services/login'
 
 const MoleculesLogin = () => {
   const router = useRouter()
@@ -31,24 +33,24 @@ const MoleculesLogin = () => {
     router.push('/dashboard')
   }
 
+  const { mutate: handleLogin, isLoading } = useMutation(Login, {
+    onSuccess(data) {
+      dispatch(authSuccess(data.data))
+      handleGoDashboard()
+    },
+    onError(error) {
+      console.log(error)
+    },
+  })
+
   const handleShowPassword = () => {
     setShowPassword(!showPassword)
   }
 
   const onLogin: SubmitHandler<ValidationLoginSchema> = () => {
-    const { email } = watch()
+    const payload = watch()
 
-    const payload = {
-      uuid: email,
-      token: '123123',
-      refresh_token: '123123',
-      expired_at: {
-        seconds: 0,
-        nanos: 0,
-      },
-    }
-    dispatch(authSuccess(payload))
-    handleGoDashboard()
+    handleLogin(payload)
   }
 
   return (
@@ -96,6 +98,7 @@ const MoleculesLogin = () => {
             size="l"
             fullWidth
             className="flex items-center justify-center gap-2"
+            isLoading={isLoading}
           >
             <AiOutlineCheckSquare />
             Button

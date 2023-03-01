@@ -1,17 +1,27 @@
-import Post from 'api/post'
+/* eslint-disable import/no-cycle */
+import { SERVICE_DOMAIN } from '../constants'
+import { AxiosError } from 'axios'
+import axios from 'api/index'
+import { Response } from 'shared/baseResponse'
+import { LoginDataResponse } from 'shared'
 
-export const Login = async () => {
+interface LoginPayload {
+  email: string
+  password: string
+}
+
+export const Login = async (
+  payload: LoginPayload,
+): Promise<Response<LoginDataResponse>> => {
   try {
-    const response = await Post({
-      endpoint: `${process.env.NEXT_PUBLIC_API}/user/v1/user/login`,
-      payload: {},
-    })
+    const response = await axios.post<Response<LoginDataResponse>>(
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/${SERVICE_DOMAIN.user}/internal/auth/login`,
+      payload,
+    )
 
-    return {
-      status: response.code,
-      endpoint: response.data,
-    }
+    return response.data
   } catch (error) {
-    throw new Error('Error')
+    const err = error as AxiosError
+    throw err
   }
 }

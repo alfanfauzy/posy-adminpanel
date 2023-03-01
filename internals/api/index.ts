@@ -10,7 +10,9 @@ const instance = axios.create({
 
 instance.interceptors.response.use(
   (response: AxiosResponse) => response,
-  (error: AxiosError) => error.response,
+  (error: AxiosError) => {
+    throw error
+  },
 )
 
 export default instance
