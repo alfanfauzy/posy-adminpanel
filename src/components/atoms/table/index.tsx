@@ -12,6 +12,7 @@ interface AtomTableProps {
   onChange?: any
   pagination?: any
   onChangePaginationItem: (e: { value: number }) => void
+  isLoading: boolean
   limitSize: number
 }
 
@@ -26,6 +27,7 @@ const AtomTable = ({
   pagination,
   onChangePaginationItem,
   limitSize,
+  isLoading,
   ...props
 }: AtomTableProps) => {
   const paginationProps = useMemo(
@@ -39,6 +41,7 @@ const AtomTable = ({
       columns={columns}
       dataSource={dataSource}
       onChange={onChange}
+      loading={isLoading}
       pagination={{
         showTotal: (total: number) => (
           <Pagination

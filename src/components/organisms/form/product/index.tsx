@@ -5,13 +5,14 @@ import OrganismAddOnForm from '../addon'
 import { Button, Input } from 'posy-fnb-core'
 import dynamic from 'next/dynamic'
 import React from 'react'
+import { AiOutlineCheckSquare } from 'react-icons/ai'
+import { FormProvider } from 'react-hook-form'
 import AtomTextArea from '@/atoms/textarea'
-import AtomSwitch from '@/atoms/switch'
 import useToggle from '@/hooks/useToggle'
 import HRLine from '@/atoms/horizontalLine'
 import AtomUploadFile from '@/atoms/uploadFile'
 import { useForm } from '@/hooks/useForm'
-import { RestaurantFormSchema } from '@/schemas/restaurant'
+import { ProductSchema } from '@/schemas/product'
 
 const Select = dynamic(
   () => import('posy-fnb-core').then((comp) => comp.Select),
@@ -35,17 +36,17 @@ const OrganismFormProduct = ({
   isEdit,
   isOpenModal,
   handleClose,
-  selectedData,
 }: MoleculesFormProductProps) => {
+  const methodForm = useForm({
+    schema: ProductSchema,
+  })
+
   const {
     handleSubmit,
     register,
-    reset,
-    setValue,
     formState: { errors },
   } = useForm({
-    schema: RestaurantFormSchema,
-    mode: 'onChange',
+    schema: ProductSchema,
   })
 
   const { value: isFavorit, toggle: handleiSFavorit } = useToggle(false)
@@ -54,6 +55,14 @@ const OrganismFormProduct = ({
   const handleCloseModal = () => {
     handleClose()
   }
+
+  const onSubmit = (data) => {
+    console.log('here')
+    console.log(methodForm.watch())
+  }
+  console.log(methodForm.watch())
+
+  console.log(methodForm.formState.errors)
 
   const titleText = isEdit ? 'Edit Product Menu' : 'Add New Product Menu'
 
@@ -64,9 +73,11 @@ const OrganismFormProduct = ({
       title={titleText}
     >
       <section className="w-big-500 p-4">
-        <form>
-          <div className="mb-6">
-            <Select
+        <FormProvider {...methodForm}>
+          <form onSubmit={methodForm.handleSubmit(onSubmit)}>
+            <div className="mb-6">
+              {/* <Select
+              {...register('category_uuids')}
               name="category_uuids"
               labelText="Choose Outlet:"
               options={[
@@ -76,11 +87,22 @@ const OrganismFormProduct = ({
               placeholder="Select Category"
               className="flex items-center justify-center"
               isMulti
-            />
-          </div>
+              error={!!errors.category_uuids}
+              helperText={errors.category_uuids?.message}
+            /> */}
+              <Input
+                {...methodForm.register('category_uuids')}
+                name="category_uuids"
+                labelText="Product Name:"
+                placeholder="ex: Product Name"
+                className="flex items-center justify-center"
+                error={!!methodForm.formState.errors.category_uuids}
+                helperText={methodForm.formState.errors.category_uuids?.message}
+              />
+            </div>
 
-          {/** Product Form Section */}
-          <HRLine text="Product" />
+            {/** Product Form Section */}
+            {/* <HRLine text="Product" />
 
           <div className="mb-6">
             <AtomUploadFile labelText="Product Image" name="product_image" />
@@ -121,10 +143,10 @@ const OrganismFormProduct = ({
               placeholder="ex: 10, 20"
               className="flex items-center justify-center"
             />
-          </div>
+          </div> */}
 
-          {/** Price Form Section */}
-          <HRLine text="Price" />
+            {/** Price Form Section */}
+            {/* <HRLine text="Price" />
 
           <div className="mb-6">
             <Input
@@ -152,13 +174,23 @@ const OrganismFormProduct = ({
           </div>
           <div className="mb-6">
             <p className="mb-1 block text-m-regular">Discount:</p>
-          </div>
+          </div> */}
 
-          {/** Addon Form Section */}
-          <HRLine text="Addon" />
-          <OrganismAddOnForm />
-          <Button>Submit</Button>
-        </form>
+            {/** Addon Form Section */}
+            {/* <HRLine text="Addon" />
+          <OrganismAddOnForm /> */}
+            <Button
+              type="submit"
+              variant="primary"
+              size="l"
+              fullWidth
+              className="flex items-center justify-center gap-2"
+            >
+              <AiOutlineCheckSquare />
+              Submit
+            </Button>
+          </form>
+        </FormProvider>
       </section>
     </ModalForm>
   )

@@ -1,27 +1,22 @@
 import { Input } from 'antd'
 import { Button } from 'posy-fnb-core'
 import React from 'react'
-import Highlighter from 'react-highlight-words'
 import type { ColumnType } from 'antd/es/table'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { DataType } from '@/pages/admin/list/entities'
 
-type DataIndex = keyof DataType
-
 const FilterTable = (
-  dataIndex: DataIndex,
-  ref: any,
-  handleSearch: any,
-  handleReset: any,
-  searchText: any,
-  searchedColumn: any,
+  field?: string,
+  handleSearchParam: (
+    fieldSearch: string,
+    value: string,
+    close: () => void,
+  ) => void,
+  valueSearch?: string,
+  setValueSearch?: any,
+  handleResetField: (value: string, close: () => void) => void,
 ): ColumnType<DataType> => ({
-  filterDropdown: ({
-    setSelectedKeys,
-    selectedKeys,
-    confirm,
-    clearFilters,
-  }) => (
+  filterDropdown: ({ close }) => (
     <section
       className="p-4"
       role="presentation"
@@ -29,14 +24,11 @@ const FilterTable = (
     >
       <p className="mb-2 text-m-medium">Search : </p>
       <Input
-        ref={ref}
-        placeholder={`Search ${dataIndex}`}
-        value={selectedKeys[0]}
-        onChange={(e) =>
-          setSelectedKeys(e.target.value ? [e.target.value] : [])
-        }
+        placeholder={`Search ${field}`}
+        value={valueSearch}
+        onChange={(e) => setValueSearch(e.target.value)}
         onPressEnter={() =>
-          handleSearch(selectedKeys as string[], confirm, dataIndex)
+          handleSearchParam(field as string, valueSearch as string, close)
         }
         style={{ marginBottom: 8, display: 'block' }}
       />
@@ -44,14 +36,14 @@ const FilterTable = (
         <Button
           variant="secondary"
           onClick={() =>
-            handleSearch(selectedKeys as string[], confirm, dataIndex)
+            handleSearchParam(field as string, valueSearch as string, close)
           }
           size="xs"
         >
           Search
         </Button>
         <Button
-          onClick={() => clearFilters && handleReset(clearFilters)}
+          onClick={() => handleResetField(field as string, close)}
           size="xs"
           variant="red-accent"
         >
@@ -63,27 +55,6 @@ const FilterTable = (
   filterIcon: (filtered: boolean) => (
     <AiOutlineSearch style={{ color: filtered ? '#1890ff' : undefined }} />
   ),
-  onFilter: (value, record: any) =>
-    record[dataIndex]
-      .toString()
-      .toLowerCase()
-      .includes((value as string).toLowerCase()),
-  onFilterDropdownOpenChange: (visible) => {
-    if (visible) {
-      setTimeout(() => ref.current?.select(), 100)
-    }
-  },
-  render: (text) =>
-    searchedColumn === dataIndex ? (
-      <Highlighter
-        highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-        searchWords={[searchText]}
-        autoEscape
-        textToHighlight={text ? text.toString() : ''}
-      />
-    ) : (
-      text
-    ),
 })
 
 export default FilterTable

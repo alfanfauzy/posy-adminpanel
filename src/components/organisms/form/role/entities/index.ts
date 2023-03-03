@@ -1,4 +1,5 @@
 export interface FormRoleEntities {
-  role: string
+  name: string
   description: string
+  is_admin: boolean
 }

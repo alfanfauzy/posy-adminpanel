@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { ParamsObject } from 'shared/baseResponse'
 
 export const generateUniqueId = (length: number) => {
   let result = ''
@@ -20,4 +21,13 @@ export const timeStampConverter = (
 ) => {
   const times = moment.unix(timestamp)
   return times.format(formatConvert)
+}
+
+export const findIndexArraySearch = (
+  dataArray: ParamsObject[],
+  field: string,
+) => {
+  const index = dataArray.findIndex((array) => array.field === field)
+
+  return index
 }

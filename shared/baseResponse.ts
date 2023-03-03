@@ -5,6 +5,33 @@ export interface Response<TData = unknown> {
   more_info: string
 }
 
-export interface DataList<T> {
+export interface BaseResponseDatList<T> {
+  curr_page: number
+  total_page: number
+  total_objs: number
+  per_page: number
   objs: Array<T>
+}
+
+export interface ParamsObject {
+  field: string
+  value: string
+}
+
+export interface Params {
+  search?: Array<ParamsObject>
+  sort?: ParamsObject
+  page?: number
+  limit?: number
+}
+
+export interface BaseMetadata {
+  seconds: number
+  nanos: number
+}
+
+export interface Metadata {
+  created_at: BaseMetadata
+  updated_at: BaseMetadata
+  deleted_at: BaseMetadata
 }

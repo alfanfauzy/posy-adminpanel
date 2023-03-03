@@ -4,10 +4,10 @@ import { useAppSelector } from 'store/hooks'
 
 const useAuthentication = () => {
   const router = useRouter()
-  const isLoggedIn = useAppSelector((state) => state.isLoggedIn)
+  const { isLoggedIn, authData } = useAppSelector((state) => state)
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn && authData.token === '') {
       router.push('/auth/login')
     }
   }, [isLoggedIn])
