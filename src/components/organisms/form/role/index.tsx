@@ -10,7 +10,7 @@ import { useMutation } from 'react-query'
 import { FormRoleEntities } from './entities'
 import { useForm } from '@/hooks/useForm'
 import { RoleFormSchema } from '@/schemas/role'
-import { DataType } from '@/organisms/layout/role/entities'
+import { RoleListData } from 'types/role'
 import AtomSwitch from '@/atoms/switch'
 import useToggle from '@/hooks/useToggle'
 import { AddRoleService } from 'services/role'
@@ -18,12 +18,11 @@ import { AddRoleService } from 'services/role'
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
 })
-
 interface MoleculesFormRoleProps {
   isEdit: boolean
   isOpenModal: boolean
   handleClose: () => void
-  selectedData: DataType
+  selectedData: RoleListData
   handleRefecth: () => void
 }
 
@@ -34,7 +33,11 @@ const MoleculesFormRole = ({
   selectedData,
   handleRefecth,
 }: MoleculesFormRoleProps) => {
-  const { value: isAdminValue, toggle: handleIsAdminValue } = useToggle(false)
+  const {
+    value: isAdminValue,
+    setValue: handleValueIsAdmin,
+    toggle: handleIsAdminValue,
+  } = useToggle(false)
 
   const {
     handleSubmit,
@@ -71,10 +74,6 @@ const MoleculesFormRole = ({
     /**
      * Todo : Send `data` to backend
      */
-    if (data) {
-      handleCloseModal()
-      toast.success('Sucessfully edit user Role')
-    }
   }
 
   const handleSubmitForm = (data: FormRoleEntities) => {
@@ -87,14 +86,17 @@ const MoleculesFormRole = ({
 
   useEffect(() => {
     if (isEdit) {
-      const { name, description } = selectedData
+      const { name, description, is_internal } = selectedData
       setValue('name', name || '')
       setValue('description', description || '')
+      setValue('is_internal', is_internal)
+
+      handleValueIsAdmin(is_internal)
     }
   }, [selectedData, isEdit, setValue])
 
   useEffect(() => {
-    setValue('is_admin', isAdminValue)
+    setValue('is_internal', isAdminValue)
   }, [isAdminValue])
 
   const titleText = isEdit ? 'Edit Role' : 'Create New Role'
@@ -130,7 +132,12 @@ const MoleculesFormRole = ({
             />
           </div>
           <div className="mb-6">
-            <AtomSwitch onChange={handleIsAdminValue} label="Is Admin" />
+            <AtomSwitch
+              onChange={handleIsAdminValue}
+              label="Is Internal"
+              name="is_internal"
+              value={isAdminValue}
+            />
           </div>
 
           <Button

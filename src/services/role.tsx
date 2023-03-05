@@ -4,13 +4,13 @@ import axios from 'api/index'
 import { BaseResponseDatList, Params, Response } from 'shared/baseResponse'
 import { FormRoleEntities } from '@/organisms/form/role/entities'
 import { CreateRoleResponse, RoleListData } from 'types/role'
-import Post from 'api/post'
 
 export const AddRoleService = async (
   payload: FormRoleEntities,
 ): Promise<Response<CreateRoleResponse>> => {
+  console.log(payload)
   try {
-    const response = await Post(
+    const response = await axios.post(
       `/api/fnb-user-service/internal/role/create`,
       payload,
     )

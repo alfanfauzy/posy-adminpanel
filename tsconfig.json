@@ -18,6 +18,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
+      "types/*": ["types/*"],
       "api/*": ["internals/api/*"],
       "pages/*": ["pages/*"],
       "services/*": ["src/services/*"],
