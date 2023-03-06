@@ -62,6 +62,7 @@ const Accordion = ({ index, expanded, setExpanded }: AccordionProps) => {
                 <div className="flex justify-around gap-3">
                   <div className="mb-6">
                     <AtomSwitch
+                      name="Is Required"
                       label="Required:"
                       onChange={handleIsRequired}
                       text={isRequired ? 'Yes' : 'No'}
@@ -69,6 +70,7 @@ const Accordion = ({ index, expanded, setExpanded }: AccordionProps) => {
                   </div>
                   <div className="mb-6">
                     <AtomSwitch
+                      name="Is Can Multiple"
                       label="Can Choose Multitple:"
                       onChange={handleIsCanMultiple}
                       text={isCanMultiple ? 'Yes' : 'No'}

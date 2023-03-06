@@ -1,6 +1,6 @@
 // eslint-disable-file no-use-before-define
 import { ReactElement, ReactNode, Suspense, useEffect } from 'react'
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'

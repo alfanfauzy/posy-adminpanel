@@ -39,7 +39,7 @@ const MoleculesLogin = () => {
       handleGoDashboard()
     },
     onError(error) {
-      console.log(error)
+      console.error(error)
     },
   })
 
