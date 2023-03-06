@@ -4,6 +4,7 @@ import type { ColumnsType } from 'antd/es/table'
 import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
+import { useMutation } from 'react-query'
 import { DataType } from './entities'
 import { findIndexArraySearch, timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
@@ -13,6 +14,7 @@ import { useQueryGetRoles } from '@/hooks/query/useRole'
 import { RoleListData } from 'types/role'
 import FilterTable from '@/atoms/table/filter/input'
 import { ParamsObject } from 'shared/baseResponse'
+import { DeleteRoleService } from 'services/role'
 
 const ModalFormRole = dynamic(() => import('@/organisms/form/role'))
 const ModalConfirmation = dynamic(
@@ -35,18 +37,18 @@ const RoleLayout: React.FC = () => {
     [page, limit, searchParams],
   )
 
+  const {
+    data: RoleList,
+    isLoading,
+    refetch: handleRefetchTable,
+  } = useQueryGetRoles({ queryKey: 'role/get', params: hooksParams })
+
   const [selectedData, setSelectedData] = useState<DataType>({})
   const [isEdit, setIsEdit] = useState(false)
 
   const { value: openModal, toggle: handleOpenModal } = useToggle(false)
   const { value: openModalConfirmation, toggle: handleOpenModalConfirmation } =
     useToggle(false)
-
-  const {
-    data: RoleList,
-    isLoading,
-    refetch: handleRefetchTable,
-  } = useQueryGetRoles({ queryKey: 'role/get', params: hooksParams })
 
   /** Modal Confirmation Action */
 
@@ -58,7 +60,21 @@ const RoleLayout: React.FC = () => {
   const handleCloseModalConfirmation = () => {
     handleOpenModalConfirmation()
     setSelectedData({})
+    handleRefetchTable()
   }
+
+  const { mutate: handleRemoveRole, isLoading: isLoadingRemove } = useMutation(
+    DeleteRoleService,
+    {
+      onSuccess() {
+        handleCloseModalConfirmation()
+        toast.success(`Sucessfully remove Role`)
+      },
+      onError(error) {
+        console.log(error)
+      },
+    },
+  )
 
   const handleSearchParam = (
     field: string,
@@ -114,12 +130,8 @@ const RoleLayout: React.FC = () => {
 
   const handleDeleteRole = () => {
     const { uuid } = selectedData
-    /**
-     * Todo Remove
-     */
 
-    handleCloseModalConfirmation()
-    toast.success(`Sucessfully remove data ${uuid}`)
+    handleRemoveRole(uuid)
   }
 
   const columns: ColumnsType<RoleListData> = [
@@ -203,6 +215,7 @@ const RoleLayout: React.FC = () => {
         text="Are you sure want to remove ?"
         onClose={handleCloseModalConfirmation}
         onOk={handleDeleteRole}
+        isLoadingRemove={isLoadingRemove}
       />
       <AtomTable
         isLoading={isLoading}

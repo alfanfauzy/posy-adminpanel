@@ -1,16 +1,5 @@
 import { BaseMetadata, Metadata } from 'shared/baseResponse'
 
-/** CREATE ROLE */
-
-export interface CreateRoleMetadataResponse {
-  created_at: BaseMetadata
-}
-
-export interface CreateRoleResponse {
-  uuid: string
-  metadata: CreateRoleMetadataResponse
-}
-
 /** GET ROLE */
 
 export interface AccessListData {
@@ -25,4 +14,15 @@ export interface RoleListData {
   description: string
   is_internal: boolean
   metadata: Metadata
+}
+
+/** CREATE ROLE */
+
+export interface RoleMetadataResponse {
+  created_at: BaseMetadata
+}
+
+export interface RoleResponse {
+  uuid: string
+  metadata: RoleMetadataResponse
 }

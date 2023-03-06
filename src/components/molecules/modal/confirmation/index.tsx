@@ -14,6 +14,7 @@ interface ModalConfirmationProps {
   textOk?: string | React.ReactElement
   onClose: () => void
   onOk: () => void
+  isLoadingRemove: boolean
 }
 
 const ModalConfirmation = ({
@@ -24,6 +25,7 @@ const ModalConfirmation = ({
   textOk = 'Submit',
   onClose,
   onOk,
+  isLoadingRemove,
 }: ModalConfirmationProps) => (
   <Modal open={isOpenModal}>
     <article className="h-44 p-3 text-center">
@@ -33,7 +35,7 @@ const ModalConfirmation = ({
         <Button size="m" variant="red-accent" onClick={onClose}>
           {textCancel}
         </Button>
-        <Button size="m" onClick={onOk}>
+        <Button size="m" onClick={onOk} isLoading={isLoadingRemove}>
           {textOk}
         </Button>
       </footer>

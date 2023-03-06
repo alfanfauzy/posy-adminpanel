@@ -13,7 +13,11 @@ import { RoleFormSchema } from '@/schemas/role'
 import { RoleListData } from 'types/role'
 import AtomSwitch from '@/atoms/switch'
 import useToggle from '@/hooks/useToggle'
-import { AddRoleService } from 'services/role'
+import {
+  AddRoleService,
+  DeleteRoleService,
+  UpdateRoleService,
+} from 'services/role'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -66,19 +70,31 @@ const MoleculesFormRole = ({
     },
   })
 
+  const { mutate: handleEditRole, isLoading: isLoadingEdit } = useMutation(
+    UpdateRoleService,
+    {
+      onSuccess() {
+        handleCloseModal()
+        toast.success('Sucessfully updated Role')
+      },
+      onError(error) {
+        console.log(error)
+      },
+    },
+  )
+
   const handleSubmitRole = (payload: FormRoleEntities) => {
     handleCreateRole(payload)
   }
 
-  const handleEditRole = (data: FormRoleEntities) => {
-    /**
-     * Todo : Send `data` to backend
-     */
+  const handleSubmitEditRole = (payload: FormRoleEntities) => {
+    const { uuid } = selectedData
+    handleEditRole({ uuid, payload })
   }
 
   const handleSubmitForm = (data: FormRoleEntities) => {
     if (isEdit) {
-      handleEditRole(data)
+      handleSubmitEditRole(data)
     } else {
       handleSubmitRole(data)
     }
@@ -141,7 +157,7 @@ const MoleculesFormRole = ({
           </div>
 
           <Button
-            isLoading={isLoading}
+            isLoading={isLoading || isLoadingEdit}
             type="submit"
             variant="primary"
             size="l"
