@@ -14,7 +14,7 @@ interface ModalConfirmationProps {
   textOk?: string | React.ReactElement
   onClose: () => void
   onOk: () => void
-  isLoadingRemove: boolean
+  isLoadingRemove?: boolean
 }
 
 const ModalConfirmation = ({
