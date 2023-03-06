@@ -13,11 +13,7 @@ import { RoleFormSchema } from '@/schemas/role'
 import { RoleListData } from 'types/role'
 import AtomSwitch from '@/atoms/switch'
 import useToggle from '@/hooks/useToggle'
-import {
-  AddRoleService,
-  DeleteRoleService,
-  UpdateRoleService,
-} from 'services/role'
+import { AddRoleService, UpdateRoleService } from 'services/role'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,

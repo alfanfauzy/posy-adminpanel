@@ -112,6 +112,7 @@ const MoleculesFormCategory = ({
           </div>
           <div className="mb-6">
             <AtomSwitch
+              name="isDisplay"
               label="Display on Menu"
               text={iSDisplayToggle ? 'Yes' : 'No'}
               onChange={handleDisplayToggle}

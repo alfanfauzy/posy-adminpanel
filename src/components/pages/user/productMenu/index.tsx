@@ -107,7 +107,9 @@ const ListProductMenuLayout: React.FC = () => {
       title: 'Active',
       key: 'is_active',
       dataIndex: 'is_active',
-      render: () => <AtomSwitch onChange={handleSwitchActiveMenu} />,
+      render: () => (
+        <AtomSwitch onChange={handleSwitchActiveMenu} name="is_active" />
+      ),
     },
     {
       title: 'Action',
@@ -155,6 +157,7 @@ const ListProductMenuLayout: React.FC = () => {
         onOk={handleDeleteAdmin}
       />
       <AtomTable
+        isLoading={false}
         columns={columns}
         dataSource={dummy}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}

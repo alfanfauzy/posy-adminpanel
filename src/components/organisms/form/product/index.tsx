@@ -56,13 +56,9 @@ const OrganismFormProduct = ({
     handleClose()
   }
 
-  const onSubmit = (data) => {
-    console.log('here')
-    console.log(methodForm.watch())
+  const onSubmit = (data: object) => {
+    console.log(data)
   }
-  console.log(methodForm.watch())
-
-  console.log(methodForm.formState.errors)
 
   const titleText = isEdit ? 'Edit Product Menu' : 'Add New Product Menu'
 

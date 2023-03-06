@@ -1,16 +1,16 @@
 /* eslint-disable import/no-cycle */
 import { AxiosError } from 'axios'
 import axios from 'api/index'
-import { BaseResponseDatList, Params, Response } from 'shared/baseResponse'
+import { BaseResponseDataList, Params, Response } from 'shared/baseResponse'
 import { FormRoleEntities } from '@/organisms/form/role/entities'
 import { RoleResponse, RoleListData } from 'types/role'
 
 export const GetRoleService = async (
   params: Params,
-): Promise<Response<BaseResponseDatList<RoleListData>>> => {
+): Promise<Response<BaseResponseDataList<RoleListData>>> => {
   try {
     const response = await axios.post<
-      Response<BaseResponseDatList<RoleListData>>
+      Response<BaseResponseDataList<RoleListData>>
     >(`/api/fnb-user-service/internal/role/get-list`, params)
 
     return response.data

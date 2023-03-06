@@ -5,7 +5,7 @@ export interface Response<TData = unknown> {
   more_info: string
 }
 
-export interface BaseResponseDatList<T> {
+export interface BaseResponseDataList<T> {
   curr_page: number
   total_page: number
   total_objs: number

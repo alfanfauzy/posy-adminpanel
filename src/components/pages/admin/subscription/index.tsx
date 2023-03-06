@@ -81,6 +81,7 @@ const SubscriptionLayout: React.FC = () => {
       />
 
       <AtomTable
+        isLoading={false}
         columns={columns}
         dataSource={dummy}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}

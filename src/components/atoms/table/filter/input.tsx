@@ -3,19 +3,19 @@ import { Button } from 'posy-fnb-core'
 import React from 'react'
 import type { ColumnType } from 'antd/es/table'
 import { AiOutlineSearch } from 'react-icons/ai'
-import { DataType } from '@/pages/admin/list/entities'
+import { RoleListData } from 'types/role'
 
 const FilterTable = (
-  field?: string,
+  field: string,
   handleSearchParam: (
     fieldSearch: string,
     value: string,
     close: () => void,
   ) => void,
-  valueSearch?: string,
-  setValueSearch?: any,
+  valueSearch: string,
+  setValueSearch: any,
   handleResetField: (value: string, close: () => void) => void,
-): ColumnType<DataType> => ({
+): ColumnType<RoleListData> => ({
   filterDropdown: ({ close }) => (
     <section
       className="p-4"

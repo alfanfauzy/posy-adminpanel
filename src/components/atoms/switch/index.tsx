@@ -2,7 +2,7 @@ import { Switch } from 'antd'
 import React from 'react'
 
 interface SwitchProps {
-  label: string
+  label?: string
   text?: string
   onChange: () => void
   name: string

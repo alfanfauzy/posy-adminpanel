@@ -18,7 +18,7 @@ const OrganismAddOnForm = () => {
       addon_priority: '',
     }
 
-    setAddOn([...addOn, newField])
+    // setAddOn([...addOn, newField])
   }
 
   const [expanded, setExpanded] = useState<false | number>(0)

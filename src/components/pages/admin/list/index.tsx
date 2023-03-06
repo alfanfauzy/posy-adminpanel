@@ -98,27 +98,13 @@ const AdminListLayout: React.FC = () => {
       title: 'Username',
       key: 'username',
       dataIndex: 'username',
-      ...FilterTable(
-        'username',
-        ref,
-        handleSearch,
-        handleReset,
-        searchText,
-        searchedColumn,
-      ),
+      // ...FilterTable('username', ref, handleSearch, handleReset, searchText),
     },
     {
       title: 'Full Name',
       key: 'fullname',
       dataIndex: 'fullname',
-      ...FilterTable(
-        'fullname',
-        ref,
-        handleSearch,
-        handleReset,
-        searchText,
-        searchedColumn,
-      ),
+      // ...FilterTable('fullname', ref, handleSearch, handleReset, searchText),
     },
     {
       title: 'Role',
@@ -182,6 +168,7 @@ const AdminListLayout: React.FC = () => {
         onOk={handleDeleteAdmin}
       />
       <AtomTable
+        isLoading={false}
         columns={columns}
         dataSource={dummy}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}

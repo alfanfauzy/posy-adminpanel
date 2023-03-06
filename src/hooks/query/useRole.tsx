@@ -10,7 +10,6 @@ interface QueryGetRolesProps {
 
 const useQueryGetRoles = ({ queryKey, params, config }: QueryGetRolesProps) =>
   useQuery([queryKey, { ...params }], async () => GetRoleService(params), {
-    select: (data) => data.data,
     ...config,
   })
 

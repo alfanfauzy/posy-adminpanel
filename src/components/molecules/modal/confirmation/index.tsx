@@ -27,7 +27,7 @@ const ModalConfirmation = ({
   onOk,
   isLoadingRemove,
 }: ModalConfirmationProps) => (
-  <Modal open={isOpenModal}>
+  <Modal handleClose={onClose} open={isOpenModal}>
     <article className="h-44 p-3 text-center">
       <p className="text-xl-semibold">{title}</p>
       <span className="flex h-20 items-center justify-center">{text}</span>

@@ -103,6 +103,7 @@ const HistoryTransactionLayout: React.FC = () => {
         flexEnd
       />
       <AtomTable
+        isLoading={false}
         columns={columns}
         dataSource={dummy}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}

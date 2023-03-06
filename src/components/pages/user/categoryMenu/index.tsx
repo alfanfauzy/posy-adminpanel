@@ -140,6 +140,7 @@ const CategoryLayout: React.FC = () => {
         onOk={handleDeleteAdmin}
       />
       <AtomTable
+        isLoading={false}
         columns={columns}
         dataSource={dummy}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}

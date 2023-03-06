@@ -142,6 +142,7 @@ const PermissionLayout: React.FC = () => {
         onOk={handleDeleteRole}
       />
       <AtomTable
+        isLoading={false}
         columns={columns}
         dataSource={dummyPermissionList}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}

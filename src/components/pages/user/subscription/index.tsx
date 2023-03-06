@@ -121,6 +121,7 @@ const UserSubscriptionLayout: React.FC = () => {
         dataSource={dummyRoleList}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}
         limitSize={limit}
+        isLoading={false}
         pagination={{
           current: page,
           pageSize: limit,

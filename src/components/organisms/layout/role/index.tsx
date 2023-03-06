@@ -5,7 +5,6 @@ import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
 import { useMutation } from 'react-query'
-import { DataType } from './entities'
 import { findIndexArraySearch, timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
@@ -24,7 +23,7 @@ const ModalConfirmation = dynamic(
 const RoleLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchParams, setSearchParams] = useState([])
+  const [searchParams, setSearchParams] = useState<ParamsObject[]>([])
   const [valueSearch, setValueSearch] = useState('')
 
   const hooksParams = useMemo(
@@ -43,7 +42,7 @@ const RoleLayout: React.FC = () => {
     refetch: handleRefetchTable,
   } = useQueryGetRoles({ queryKey: 'role/get', params: hooksParams })
 
-  const [selectedData, setSelectedData] = useState<DataType>({})
+  const [selectedData, setSelectedData] = useState<any>({})
   const [isEdit, setIsEdit] = useState(false)
 
   const { value: openModal, toggle: handleOpenModal } = useToggle(false)
@@ -52,7 +51,7 @@ const RoleLayout: React.FC = () => {
 
   /** Modal Confirmation Action */
 
-  const handleShowConfirmationModal = (data: DataType) => {
+  const handleShowConfirmationModal = (data: RoleListData) => {
     handleOpenModalConfirmation()
     setSelectedData(data)
   }
@@ -131,7 +130,7 @@ const RoleLayout: React.FC = () => {
   const handleDeleteRole = () => {
     const { uuid } = selectedData
 
-    handleRemoveRole(uuid)
+    handleRemoveRole(uuid!)
   }
 
   const columns: ColumnsType<RoleListData> = [
@@ -220,7 +219,7 @@ const RoleLayout: React.FC = () => {
       <AtomTable
         isLoading={isLoading}
         columns={columns}
-        dataSource={RoleList?.objs}
+        dataSource={RoleList?.data.objs}
         onChangePaginationItem={(e: { value: number }) => {
           setLimit(e.value)
           setPage(1)
@@ -229,7 +228,7 @@ const RoleLayout: React.FC = () => {
         pagination={{
           current: page,
           pageSize: limit,
-          total: RoleList?.total_objs,
+          total: RoleList?.data.total_objs,
           onChange: setPage,
         }}
       />
