@@ -143,14 +143,15 @@ const MoleculesFormRole = ({
               helperText={errors?.description?.message}
             />
           </div>
-          <div className="mb-6">
+          {/** Hide for some reason from product */}
+          {/* <div className="mb-6">
             <AtomSwitch
               onChange={handleIsAdminValue}
               label="Is Internal"
               name="is_internal"
               value={isAdminValue}
             />
-          </div>
+          </div> */}
 
           <Button
             isLoading={isLoading || isLoadingEdit}
