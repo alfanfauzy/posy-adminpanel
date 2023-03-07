@@ -9,11 +9,14 @@ import { findIndexArraySearch, timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
-import { useQueryGetRoles } from '@/hooks/query/useRole'
 import { RoleListData } from 'types/role'
 import FilterTable from '@/atoms/table/filter/input'
 import { ParamsObject } from 'shared/baseResponse'
 import { DeleteRoleService } from 'services/role'
+import { useGetRolesViewModal } from 'core/view/role/view-modals/GetRolesViewModel'
+import { Role } from 'core/domain/role/models'
+import { GetRolesInput } from 'core/domain/role/repositories/RoleRepository'
+import { Search } from 'core/domain/vo/BaseInput'
 
 const ModalFormRole = dynamic(() => import('@/organisms/form/role'))
 const ModalConfirmation = dynamic(
@@ -23,10 +26,10 @@ const ModalConfirmation = dynamic(
 const RoleLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchParams, setSearchParams] = useState<ParamsObject[]>([])
+  const [searchParams, setSearchParams] = useState<Search<any>[]>([])
   const [valueSearch, setValueSearch] = useState('')
 
-  const hooksParams = useMemo(
+  const hooksParams: GetRolesInput = useMemo(
     () => ({
       search: searchParams,
       sort: { field: 'created_at', value: 'desc' },
@@ -37,10 +40,11 @@ const RoleLayout: React.FC = () => {
   )
 
   const {
-    data: RoleList,
-    isLoading,
+    data: ListDataRole,
     refetch: handleRefetchTable,
-  } = useQueryGetRoles({ queryKey: 'role/get', params: hooksParams })
+    isLoading,
+    pagination,
+  } = useGetRolesViewModal(hooksParams)
 
   const [selectedData, setSelectedData] = useState<any>({})
   const [isEdit, setIsEdit] = useState(false)
@@ -80,7 +84,7 @@ const RoleLayout: React.FC = () => {
     value: string,
     close: () => void,
   ) => {
-    const filter: ParamsObject[] = [...searchParams]
+    const filter = [...searchParams]
 
     const newObject = {
       field,
@@ -133,7 +137,7 @@ const RoleLayout: React.FC = () => {
     handleRemoveRole(uuid!)
   }
 
-  const columns: ColumnsType<RoleListData> = [
+  const columns: ColumnsType<Role> = [
     {
       title: '#',
       dataIndex: '',
@@ -163,10 +167,7 @@ const RoleLayout: React.FC = () => {
       key: 'created_at',
       dataIndex: 'created_at',
       render: (dataValue, record) =>
-        timeStampConverter(
-          record.metadata.created_at.seconds,
-          'DD-MM-YYYY HH:mm',
-        ),
+        timeStampConverter(record.seconds, 'DD-MM-YYYY HH:mm'),
     },
 
     {
@@ -219,7 +220,7 @@ const RoleLayout: React.FC = () => {
       <AtomTable
         isLoading={isLoading}
         columns={columns}
-        dataSource={RoleList?.data.objs}
+        dataSource={ListDataRole}
         onChangePaginationItem={(e: { value: number }) => {
           setLimit(e.value)
           setPage(1)
@@ -228,7 +229,7 @@ const RoleLayout: React.FC = () => {
         pagination={{
           current: page,
           pageSize: limit,
-          total: RoleList?.data.total_objs,
+          total: pagination?.total_objs,
           onChange: setPage,
         }}
       />

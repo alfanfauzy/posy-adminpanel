@@ -1,7 +1,6 @@
-import { BaseMetadata, Metadata } from 'shared/baseResponse'
+import { BaseMetadata, Metadata } from 'core/data/types/BaseMetadata'
 
 /** GET ROLE */
-
 export interface AccessListData {
   uuid: string
   name: string

@@ -22,6 +22,7 @@ interface Post {
  * });
  */
 const Post = async ({ baseURL, endpoint, payload, headers = {} }: Post) => {
+  console.log(payload)
   const { status, ...response } =
     (await axios.post(endpoint, payload, {
       headers: headers || {},

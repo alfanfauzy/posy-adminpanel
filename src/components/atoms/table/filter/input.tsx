@@ -3,7 +3,7 @@ import { Button } from 'posy-fnb-core'
 import React from 'react'
 import type { ColumnType } from 'antd/es/table'
 import { AiOutlineSearch } from 'react-icons/ai'
-import { RoleListData } from 'types/role'
+import { Role } from 'core/domain/role/models'
 
 const FilterTable = (
   field: string,
@@ -15,7 +15,7 @@ const FilterTable = (
   valueSearch: string,
   setValueSearch: any,
   handleResetField: (value: string, close: () => void) => void,
-): ColumnType<RoleListData> => ({
+): ColumnType<Role> => ({
   filterDropdown: ({ close }) => (
     <section
       className="p-4"

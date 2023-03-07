@@ -4,6 +4,7 @@ import axios from 'api/index'
 import { BaseResponseDataList, Params, Response } from 'shared/baseResponse'
 import { FormRoleEntities } from '@/organisms/form/role/entities'
 import { RoleResponse, RoleListData } from 'types/role'
+import Post from 'api/post'
 
 export const GetRoleService = async (
   params: Params,
@@ -24,10 +25,10 @@ export const AddRoleService = async (
   payload: FormRoleEntities,
 ): Promise<Response<RoleResponse>> => {
   try {
-    const response = await axios.post(
-      `/api/fnb-user-service/internal/role/create`,
+    const response = await Post({
+      endpoint: `/api/fnb-user-service/internal/role/create`,
       payload,
-    )
+    })
 
     return response.data
   } catch (error) {
@@ -44,12 +45,12 @@ interface UpdateRoleServiceProps {
 export const UpdateRoleService = async ({
   uuid,
   payload,
-}: UpdateRoleServiceProps): Promise<Response<RoleListData>> => {
+}: UpdateRoleServiceProps) => {
   try {
-    const response = await axios.post(
-      `/api/fnb-user-service/internal/role/update/${uuid}`,
+    const response = await Post({
+      endpoint: `/api/fnb-user-service/internal/role/update/${uuid}`,
       payload,
-    )
+    })
 
     return response.data
   } catch (error) {
@@ -58,14 +59,12 @@ export const UpdateRoleService = async ({
   }
 }
 
-export const DeleteRoleService = async (
-  uuid: string,
-): Promise<Response<RoleListData>> => {
+export const DeleteRoleService = async (uuid: string) => {
   try {
-    const response = await axios.post(
-      `/api/fnb-user-service/internal/role/delete/${uuid}`,
-      {},
-    )
+    const response = await Post({
+      endpoint: `/api/fnb-user-service/internal/role/delete/${uuid}`,
+      payload: {},
+    })
 
     return response.data
   } catch (error) {

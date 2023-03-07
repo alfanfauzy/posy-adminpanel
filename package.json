@@ -10,7 +10,8 @@
     "format": "prettier --write \"./**/*.{js,jsx,ts,tsx}\" --config ./.prettierrc",
     "lint:fix": "next lint --fix",
     "prepare": "husky install",
-    "type:check": "tsc --noEmit --pretty --incremental false"
+    "type:check": "tsc --noEmit --pretty --incremental false",
+    "vercel": "npx vercel build --prod --token=HfnNQ4uepfvahOJoY0FX1cUf && npx vercel deploy --prebuilt --prod --token=HfnNQ4uepfvahOJoY0FX1cUf"
   },
   "dependencies": {
     "@commitlint/cli": "^17.4.2",

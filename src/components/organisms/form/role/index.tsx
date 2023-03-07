@@ -101,15 +101,10 @@ const MoleculesFormRole = ({
       const { name, description, is_internal } = selectedData
       setValue('name', name || '')
       setValue('description', description || '')
-      setValue('is_internal', is_internal)
 
       handleValueIsAdmin(is_internal)
     }
   }, [selectedData, isEdit, setValue])
-
-  useEffect(() => {
-    setValue('is_internal', isAdminValue)
-  }, [isAdminValue])
 
   const titleText = isEdit ? 'Edit Role' : 'Create New Role'
 
