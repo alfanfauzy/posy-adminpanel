@@ -1,7 +1,7 @@
 import { Pagination } from 'core/domain/vo/BasePagination'
 import { Role, Roles } from 'core/domain/role/models'
 import { FilterInputVariables } from 'core/domain/vo/BaseInput'
-import { Datalist, Result } from 'core/domain/vo/BaseResponse'
+import { Datalist, Result, ResultMutation } from 'core/domain/vo/BaseResponse'
 
 /**
  * GET
@@ -21,14 +21,10 @@ export type GetRoleResult = Result<Role>
  * CREATE
  */
 
-export type CreateRoleInput = {
-  id: string
-}
+export type CreateRoleResult = ResultMutation<Role | undefined>
 
-export type CreateRoleResult = Result<Role>
-
-export interface CreateRoleRepository {
-  AddRoleService(input: CreateRoleInput): Promise<CreateRoleResult>
+export interface CreateRoleRepository extends CreateRoleResult {
+  createRole(): void
 }
 
 /**
@@ -40,10 +36,10 @@ export type UpdateRoleInput = {
   payload: object
 }
 
-export type UpdateRoleResult = Result<Role>
+export type UpdateRoleResult = ResultMutation<undefined>
 
-export interface UpdateRoleRepository {
-  UpdateRoleService(input: UpdateRoleInput): Promise<UpdateRoleResult>
+export interface UpdateRoleRepository extends UpdateRoleResult {
+  updateRole(): void
 }
 
 /**

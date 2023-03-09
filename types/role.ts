@@ -1,4 +1,4 @@
-import { BaseMetadata, Metadata } from 'core/data/types/BaseMetadata'
+import { BaseMetadata, Metadata } from '@/data/common/types/BaseMetadata'
 
 /** GET ROLE */
 export interface AccessListData {

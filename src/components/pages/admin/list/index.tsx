@@ -1,35 +1,49 @@
-import React, { useRef, useState } from 'react'
-import type { InputRef } from 'antd'
+import React, { useMemo, useState } from 'react'
 import { Button } from 'posy-fnb-core'
 import type { ColumnsType } from 'antd/es/table'
-import type { FilterConfirmProps } from 'antd/es/table/interface'
 import { AiFillDelete, AiFillEdit, AiOutlineUserAdd } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
 import { DataType } from './entities'
-import { dummy } from 'src/data'
 import { timeStampConverter } from '@/constants/utils'
 import AtomTag from '@/atoms/tag'
 import AtomTable from '@/atoms/table'
-import FilterTable from '@/atoms/table/filter/input'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
+import { Search } from '@/domain/vo/BaseInput'
+import { GetFilterAdminInput } from '@/domain/admin/repositories/AdminRepository'
+import { useGetAdminViewModal } from '@/view/admin/view-models/GetAdminViewModel'
+import { Admin } from '@/domain/admin/models'
 
 const ModalFormAdmin = dynamic(() => import('@/organisms/form/admin'))
 const ModalConfirmation = dynamic(
   () => import('@/molecules/modal/confirmation'),
 )
 
-type DataIndex = keyof DataType
-
 const AdminListLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchText, setSearchText] = useState('')
-  const [searchedColumn, setSearchedColumn] = useState('')
-  const ref = useRef<InputRef>(null)
+  const [searchParams, setSearchParams] = useState<Search<any>[]>([])
+  const [valueSearch, setValueSearch] = useState('')
 
-  const [selectedData, setSelectedData] = useState<DataType>({})
+  const hooksParams: GetFilterAdminInput = useMemo(
+    () => ({
+      search: searchParams,
+      sort: { field: 'created_at', value: 'desc' },
+      page,
+      limit,
+    }),
+    [page, limit, searchParams],
+  )
+
+  const {
+    data: ListUser,
+    refetch: handleRefetchTable,
+    isLoading,
+    pagination,
+  } = useGetAdminViewModal(hooksParams)
+
+  const [selectedData, setSelectedData] = useState<any>({})
   const [isEdit, setIsEdit] = useState(false)
 
   const { value: openModal, toggle: handleOpenModal } = useToggle(false)
@@ -71,22 +85,7 @@ const AdminListLayout: React.FC = () => {
     toast.success(`Sucessfully remove data ${uuid}`)
   }
 
-  const handleSearch = (
-    selectedKeys: string[],
-    confirm: (param?: FilterConfirmProps) => void,
-    dataIndex: DataIndex,
-  ) => {
-    confirm()
-    setSearchText(selectedKeys[0])
-    setSearchedColumn(dataIndex)
-  }
-
-  const handleReset = (clearFilters: () => void) => {
-    clearFilters()
-    setSearchText('')
-  }
-
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<Admin> = [
     {
       title: '#',
       dataIndex: '',
@@ -96,30 +95,25 @@ const AdminListLayout: React.FC = () => {
     },
     {
       title: 'Username',
-      key: 'username',
-      dataIndex: 'username',
-      // ...FilterTable('username', ref, handleSearch, handleReset, searchText),
+      key: 'name',
+      dataIndex: 'name',
     },
     {
       title: 'Full Name',
       key: 'fullname',
       dataIndex: 'fullname',
-      // ...FilterTable('fullname', ref, handleSearch, handleReset, searchText),
     },
     {
       title: 'Role',
       key: 'role',
-      render: (dataValue, record: any) => (
-        <AtomTag status={record?.role[0]?.name} />
-      ),
+      render: (dataValue, record) => <AtomTag status={record.role} />,
     },
     {
       title: 'Created At',
       key: 'created_at',
       dataIndex: 'created_at',
-      sorter: (a: any, b: any) => a.created_at.seconds - b.created_at.seconds,
-      render: (dataValue, record: any) =>
-        timeStampConverter(record?.created_at?.seconds, 'DD-MM-YYYY HH:mm'),
+      render: (dataValue, record) =>
+        timeStampConverter(record.seconds, 'DD-MM-YYYY HH:mm'),
     },
 
     {
@@ -168,15 +162,15 @@ const AdminListLayout: React.FC = () => {
         onOk={handleDeleteAdmin}
       />
       <AtomTable
-        isLoading={false}
+        isLoading={isLoading}
         columns={columns}
-        dataSource={dummy}
+        dataSource={ListUser}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}
         limitSize={limit}
         pagination={{
           current: page,
           pageSize: limit,
-          total: dummy.length,
+          total: pagination?.total_objs,
           onChange: setPage,
         }}
       />

@@ -6,14 +6,11 @@ import { Button, Input } from 'posy-fnb-core'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
-import { useMutation } from 'react-query'
-import { FormRoleEntities } from './entities'
 import { useForm } from '@/hooks/useForm'
 import { RoleFormSchema } from '@/schemas/role'
 import { RoleListData } from 'types/role'
-import AtomSwitch from '@/atoms/switch'
-import useToggle from '@/hooks/useToggle'
-import { AddRoleService, UpdateRoleService } from 'services/role'
+import { useCreateRolesViewModal } from '@/view/role/view-modals/CreateRoleViewModel'
+import { useUpdateRolesViewModal } from '@/view/role/view-modals/UpdateRoleViewModel'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -34,17 +31,12 @@ const MoleculesFormRole = ({
   handleRefecth,
 }: MoleculesFormRoleProps) => {
   const {
-    value: isAdminValue,
-    setValue: handleValueIsAdmin,
-    toggle: handleIsAdminValue,
-  } = useToggle(false)
-
-  const {
     handleSubmit,
     register,
     reset,
     setValue,
     formState: { errors },
+    watch,
   } = useForm({
     schema: RoleFormSchema,
     mode: 'onChange',
@@ -56,18 +48,21 @@ const MoleculesFormRole = ({
     handleRefecth()
   }
 
-  const { mutate: handleCreateRole, isLoading } = useMutation(AddRoleService, {
+  const payload = watch()
+  const payloadUpdate = { payload, id: selectedData.uuid }
+
+  const { createRole, isLoading } = useCreateRolesViewModal(payload, {
     onSuccess() {
       handleCloseModal()
       toast.success('Sucessfully added new Role')
     },
     onError(error) {
-      console.log(error)
+      console.log('Error add role')
     },
   })
 
-  const { mutate: handleEditRole, isLoading: isLoadingEdit } = useMutation(
-    UpdateRoleService,
+  const { updateRole, isLoading: isLoadingUpdate } = useUpdateRolesViewModal(
+    payloadUpdate,
     {
       onSuccess() {
         handleCloseModal()
@@ -79,30 +74,19 @@ const MoleculesFormRole = ({
     },
   )
 
-  const handleSubmitRole = (payload: FormRoleEntities) => {
-    handleCreateRole(payload)
-  }
-
-  const handleSubmitEditRole = (payload: FormRoleEntities) => {
-    const { uuid } = selectedData
-    handleEditRole({ uuid, payload })
-  }
-
-  const handleSubmitForm = (data: FormRoleEntities) => {
+  const handleSubmitForm = () => {
     if (isEdit) {
-      handleSubmitEditRole(data)
+      updateRole()
     } else {
-      handleSubmitRole(data)
+      createRole()
     }
   }
 
   useEffect(() => {
     if (isEdit) {
-      const { name, description, is_internal } = selectedData
+      const { name, description } = selectedData
       setValue('name', name || '')
       setValue('description', description || '')
-
-      handleValueIsAdmin(is_internal)
     }
   }, [selectedData, isEdit, setValue])
 
@@ -115,7 +99,7 @@ const MoleculesFormRole = ({
       title={titleText}
     >
       <section className="w-big-500">
-        <form onSubmit={handleSubmit((data) => handleSubmitForm(data))}>
+        <form onSubmit={handleSubmit(handleSubmitForm)}>
           <div className="mb-6">
             <Input
               {...register('name')}
@@ -149,7 +133,7 @@ const MoleculesFormRole = ({
           </div> */}
 
           <Button
-            isLoading={isLoading || isLoadingEdit}
+            isLoading={isLoading || isLoadingUpdate}
             type="submit"
             variant="primary"
             size="l"

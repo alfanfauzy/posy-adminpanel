@@ -1,4 +1,4 @@
-import { UseQueryResult } from 'react-query'
+import { UseMutationResult, UseQueryResult } from 'react-query'
 
 export type Response<TData = unknown> = {
   code: number
@@ -13,6 +13,17 @@ export type Result<TData = unknown, TError = unknown> = Omit<
     data: TData
   }
 >
+
+export type ResultMutation<
+  TData = unknown,
+  TError = unknown,
+  TVariables = unknown,
+> = Omit<
+  UseMutationResult<unknown, TError, TVariables>,
+  'data' | 'mutate' | 'mutateAsync'
+> & {
+  data: TData
+}
 
 export type Datalist<TData> = {
   curr_page: number

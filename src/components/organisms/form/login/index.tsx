@@ -13,6 +13,7 @@ import IconEye from '@/atoms/icon/IconEye'
 import { useDispatchApp } from 'store/hooks'
 import { authSuccess } from 'store/slice/auth'
 import { Login } from 'services/login'
+import { LoginDataResponse } from 'shared'
 
 const MoleculesLogin = () => {
   const router = useRouter()

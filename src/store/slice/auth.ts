@@ -1,18 +1,10 @@
 // import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { LoginDataResponse } from 'shared'
 
-interface AuthData {
-  uuid: string
-  token: string
-  refresh_token: string
-  expired_at: {
-    seconds: number
-    nanos: number
-  }
-}
 export interface AuthState {
   isLoggedIn: boolean
-  authData: AuthData
+  authData: LoginDataResponse
 }
 
 const initialState: AuthState = {
@@ -25,6 +17,14 @@ const initialState: AuthState = {
       seconds: 0,
       nanos: 0,
     },
+    role_access: {
+      role: {
+        uuid: '',
+        name: '',
+        is_internal: false,
+      },
+      access: [],
+    },
   },
 }
 
@@ -32,7 +32,10 @@ export const AuthSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    authSuccess: (state: AuthState, action: PayloadAction<AuthData>) => {
+    authSuccess: (
+      state: AuthState,
+      action: PayloadAction<LoginDataResponse>,
+    ) => {
       state.isLoggedIn = true
       state.authData = action.payload
     },
@@ -45,6 +48,14 @@ export const AuthSlice = createSlice({
         expired_at: {
           seconds: 0,
           nanos: 0,
+        },
+        role_access: {
+          role: {
+            uuid: '',
+            name: '',
+            is_internal: false,
+          },
+          access: [],
         },
       }
     },

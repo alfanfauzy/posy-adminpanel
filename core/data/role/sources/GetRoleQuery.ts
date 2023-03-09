@@ -5,8 +5,6 @@ import { useQuery, UseQueryOptions } from 'react-query'
 import Post from 'api/post'
 import { GetRolesInput } from 'core/domain/role/repositories/RoleRepository'
 
-export const GetRolesQueryKey = ['role/list'] as const
-
 export const GetRole = async (
   input: GetRolesInput,
 ): Promise<Response<Datalist<GetRoleListDataResponse>>> => {
@@ -24,7 +22,7 @@ export const GetRole = async (
 }
 
 export const useGetRolesQuery = (
-  input?: any,
+  input: any,
   options?: UseQueryOptions<Response<Datalist<GetRoleListDataResponse>>>,
 ) =>
   useQuery<Response<Datalist<GetRoleListDataResponse>>>(

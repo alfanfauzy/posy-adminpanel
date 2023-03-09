@@ -1,8 +1,9 @@
+// eslint-disable-next-line import/no-cycle
 import axios from '.'
 
 interface Post {
   endpoint: string
-  payload: { [key: string]: any }
+  payload?: { [key: string]: any }
   baseURL?: string
   headers?: { [key: string]: string }
   isAuth?: boolean
@@ -22,21 +23,14 @@ interface Post {
  * });
  */
 const Post = async ({ baseURL, endpoint, payload, headers = {} }: Post) => {
-  console.log(payload)
   const { status, ...response } =
     (await axios.post(endpoint, payload, {
       headers: headers || {},
       baseURL,
     })) || {}
 
-  const isSuccess = status === 200 && response.data === 2200
-
-  if (isSuccess) {
-    return response.data
-  }
-
   return {
-    code: status || 2200,
+    code: status,
     message: response.data?.message || '',
     ...response.data,
   }

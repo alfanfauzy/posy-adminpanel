@@ -1,5 +1,5 @@
 /** GET ROLE */
-import { Metadata } from 'core/data/types/BaseMetadata'
+import { Metadata } from '@/data/common/types/BaseMetadata'
 
 export interface GetRoleListDataResponse {
   uuid: string
@@ -8,3 +8,13 @@ export interface GetRoleListDataResponse {
   is_internal: boolean
   metadata: Metadata
 }
+
+export interface CreateRoleResponse {
+  code: number
+  data: {
+    uuid: string
+    metadata: Metadata
+  }
+}
+
+export type UpdateRoleResponse = CreateRoleResponse

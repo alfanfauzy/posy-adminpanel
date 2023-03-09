@@ -6,21 +6,6 @@ import { FormRoleEntities } from '@/organisms/form/role/entities'
 import { RoleResponse, RoleListData } from 'types/role'
 import Post from 'api/post'
 
-export const GetRoleService = async (
-  params: Params,
-): Promise<Response<BaseResponseDataList<RoleListData>>> => {
-  try {
-    const response = await axios.post<
-      Response<BaseResponseDataList<RoleListData>>
-    >(`/api/fnb-user-service/internal/role/get-list`, params)
-
-    return response.data
-  } catch (error) {
-    const err = error as AxiosError
-    throw err
-  }
-}
-
 export const AddRoleService = async (
   payload: FormRoleEntities,
 ): Promise<Response<RoleResponse>> => {
@@ -30,7 +15,7 @@ export const AddRoleService = async (
       payload,
     })
 
-    return response.data
+    return response
   } catch (error) {
     const err = error as AxiosError
     throw err
@@ -52,7 +37,7 @@ export const UpdateRoleService = async ({
       payload,
     })
 
-    return response.data
+    return response
   } catch (error) {
     const err = error as AxiosError
     throw err
@@ -66,7 +51,7 @@ export const DeleteRoleService = async (uuid: string) => {
       payload: {},
     })
 
-    return response.data
+    return response
   } catch (error) {
     const err = error as AxiosError
     throw err

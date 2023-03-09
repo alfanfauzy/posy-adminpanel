@@ -7,4 +7,5 @@ export interface Metadata {
   created_at: BaseMetadata
   updated_at: BaseMetadata
   deleted_at: BaseMetadata
+  last_login: BaseMetadata
 }

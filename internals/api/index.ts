@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import axios, { AxiosRequestHeaders, InternalAxiosRequestConfig } from 'axios'
+import axios from 'axios'
 // eslint-disable-next-line import/no-cycle
 import { HandleRefreshTokenLogin } from 'services/login'
 import { store } from 'store/index'
@@ -21,7 +21,6 @@ const { token, refresh_token, uuid } = store.getState().authData
 const axiosApiInstance = axios.create()
 
 // Request interceptor for API calls
-
 axiosApiInstance.interceptors.request.use(
   async (config: any) => {
     if (token) {
