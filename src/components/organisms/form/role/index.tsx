@@ -8,9 +8,9 @@ import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
 import { useForm } from '@/hooks/useForm'
 import { RoleFormSchema } from '@/schemas/role'
-import { RoleListData } from 'types/role'
 import { useCreateRolesViewModal } from '@/view/role/view-modals/CreateRoleViewModel'
 import { useUpdateRolesViewModal } from '@/view/role/view-modals/UpdateRoleViewModel'
+import { Role } from '@/domain/role/models'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -19,7 +19,7 @@ interface MoleculesFormRoleProps {
   isEdit: boolean
   isOpenModal: boolean
   handleClose: () => void
-  selectedData: RoleListData
+  selectedData: Role
   handleRefecth: () => void
 }
 

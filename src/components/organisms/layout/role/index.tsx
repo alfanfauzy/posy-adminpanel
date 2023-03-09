@@ -137,14 +137,6 @@ const RoleLayout: React.FC = () => {
     }
   }
 
-  /** ------------------------- */
-
-  const handleDeleteRole = () => {
-    const { uuid } = selectedData
-
-    deleteRole(uuid!)
-  }
-
   const columns: ColumnsType<Role> = [
     {
       title: '#',
@@ -222,7 +214,7 @@ const RoleLayout: React.FC = () => {
         title="Modal Confirmation"
         text="Are you sure want to remove ?"
         onClose={handleCloseModalConfirmation}
-        onOk={handleDeleteRole}
+        onOk={deleteRole}
         isLoadingRemove={isLoadingRemove}
       />
       <AtomTable
