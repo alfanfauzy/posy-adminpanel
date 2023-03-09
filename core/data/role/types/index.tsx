@@ -18,3 +18,5 @@ export interface CreateRoleResponse {
 }
 
 export type UpdateRoleResponse = CreateRoleResponse
+
+export type DeleteRoleResponse = CreateRoleResponse

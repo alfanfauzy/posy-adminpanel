@@ -4,18 +4,17 @@ import type { ColumnsType } from 'antd/es/table'
 import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
-import { useMutation } from 'react-query'
 import { findIndexArraySearch, timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
 import { RoleListData } from 'types/role'
 import FilterTable from '@/atoms/table/filter/input'
-import { DeleteRoleService } from 'services/role'
 import { useGetRolesViewModal } from 'core/view/role/view-modals/GetRolesViewModel'
 import { Role } from 'core/domain/role/models'
 import { GetRolesInput } from 'core/domain/role/repositories/RoleRepository'
 import { Search } from 'core/domain/vo/BaseInput'
+import { useDeleteRolesViewModal } from '@/view/role/view-modals/DeleteRoleViewModel'
 
 const ModalFormRole = dynamic(() => import('@/organisms/form/role'))
 const ModalConfirmation = dynamic(
@@ -45,7 +44,12 @@ const RoleLayout: React.FC = () => {
     pagination,
   } = useGetRolesViewModal(hooksParams)
 
-  const [selectedData, setSelectedData] = useState<any>({})
+  const [selectedData, setSelectedData] = useState<Role>({
+    name: '',
+    description: '',
+    seconds: 0,
+    uuid: '',
+  })
   const [isEdit, setIsEdit] = useState(false)
 
   const { value: openModal, toggle: handleOpenModal } = useToggle(false)
@@ -54,23 +58,28 @@ const RoleLayout: React.FC = () => {
 
   /** Modal Confirmation Action */
 
-  const handleShowConfirmationModal = (data: RoleListData) => {
+  const handleShowConfirmationModal = (data: Role) => {
     handleOpenModalConfirmation()
     setSelectedData(data)
   }
 
   const handleCloseModalConfirmation = () => {
     handleOpenModalConfirmation()
-    setSelectedData({})
+    setSelectedData({
+      name: '',
+      description: '',
+      seconds: 0,
+      uuid: '',
+    })
     handleRefetchTable()
   }
 
-  const { mutate: handleRemoveRole, isLoading: isLoadingRemove } = useMutation(
-    DeleteRoleService,
+  const { deleteRole, isLoading: isLoadingRemove } = useDeleteRolesViewModal(
+    selectedData.uuid,
     {
       onSuccess() {
         handleCloseModalConfirmation()
-        toast.success(`Sucessfully remove Role`)
+        toast.success('Sucessfully delete Role')
       },
       onError(error) {
         console.log(error)
@@ -133,7 +142,7 @@ const RoleLayout: React.FC = () => {
   const handleDeleteRole = () => {
     const { uuid } = selectedData
 
-    handleRemoveRole(uuid!)
+    deleteRole(uuid!)
   }
 
   const columns: ColumnsType<Role> = [

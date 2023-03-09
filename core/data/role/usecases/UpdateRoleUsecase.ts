@@ -3,7 +3,7 @@ import { useUpdateRoleMutation } from '../sources/UpdateRoleQuery'
 import { MutationOptions } from '@/data/common/types/BaseMutation'
 import { UpdateRoleInput } from '@/domain/role/repositories/RoleRepository'
 
-export const useUpdateTransactionUsecase = (
+export const useUpdateRoleUsecase = (
   payload: UpdateRoleInput,
   options?: MutationOptions<UpdateRoleResponse>,
 ): any => {

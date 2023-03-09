@@ -36,7 +36,7 @@ export type UpdateRoleInput = {
   payload: object
 }
 
-export type UpdateRoleResult = ResultMutation<undefined>
+export type UpdateRoleResult = ResultMutation<Role>
 
 export interface UpdateRoleRepository extends UpdateRoleResult {
   updateRole(): void
@@ -52,6 +52,6 @@ export type DeleteRoleInput = {
 
 export type DeleteRoleResult = Result<Role>
 
-export interface DeleteRoleRepository {
-  DeleteRoleService(input: DeleteRoleInput): Promise<DeleteRoleResult>
+export interface DeleteRoleRepository extends DeleteRoleResult {
+  deleteRole(): void
 }
