@@ -1,6 +1,6 @@
 import { DeleteRoleResponse } from '../types'
 import { useDeleteRoleMutation } from '../sources/DeleteRoleQuery'
-import { MutationOptions } from '@/data/common/types/BaseMutation'
+import { MutationOptions } from 'core/domain/vo/BaseMutation'
 import { DeleteRoleParams } from '@/domain/role/repositories/RoleRepository'
 
 export const useDeleteRoleUsecase = (

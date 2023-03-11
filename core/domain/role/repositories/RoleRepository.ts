@@ -5,8 +5,12 @@ import {
   Datalist,
   ResultQuery,
   ResultMutation,
+  UpdateParams,
 } from 'core/domain/vo/BaseResponse'
-import { FormRoleEntities } from '@/organisms/form/role/entities'
+import {
+  FormRoleEntities,
+  FormtEditRoleEntities,
+} from '@/organisms/form/role/entities'
 
 /**
  * GET
@@ -36,13 +40,7 @@ export interface CreateRoleRepository extends CreateRoleResult {
  * UPDATE
  */
 
-export type UpdateRoleParams = {
-  id: string
-  payload: {
-    name: string
-    description: string
-  }
-}
+export type UpdateRoleParams = UpdateParams<FormtEditRoleEntities>
 
 export type UpdateRoleResult = ResultMutation<Role>
 

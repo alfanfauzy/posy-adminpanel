@@ -4,7 +4,7 @@ import { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
 import Post from 'api/post'
 import { UpdateRoleParams } from '@/domain/role/repositories/RoleRepository'
-import { MutationOptions } from '@/data/common/types/BaseMutation'
+import { MutationOptions } from 'core/domain/vo/BaseMutation'
 
 export const UpdateRoleService = async (
   params: UpdateRoleParams,

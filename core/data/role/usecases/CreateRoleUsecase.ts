@@ -1,6 +1,6 @@
 import { CreateRoleResponse } from '../types'
 import { useCreateRoleMutation } from '../sources/CreateRoleQuery'
-import { MutationOptions } from '@/data/common/types/BaseMutation'
+import { MutationOptions } from 'core/domain/vo/BaseMutation'
 import { FormRoleEntities } from '@/organisms/form/role/entities'
 
 export const useCreateRoleUsecase = (

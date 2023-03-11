@@ -2,10 +2,15 @@ import {
   Datalist,
   ResultMutation,
   ResultQuery,
+  UpdateParams,
 } from 'core/domain/vo/BaseResponse'
 import { Admin, FormAdmin } from 'core/domain/admin/models'
 import { Pagination } from 'core/domain/vo/BasePagination'
 import { FilterInputVariables, ParamsPayload } from '@/domain/vo/BaseInput'
+import {
+  FormAdminEntities,
+  FormEditAdminEntities,
+} from '@/organisms/form/admin/entities'
 
 /**
  * GET
@@ -38,18 +43,12 @@ export interface CreateAdminRepository extends CreateAdminResult {
  * UPDATE
  */
 
-export type UpdateParams = {
-  id: string
-  params: {
-    fullname: string
-    role_uuid: string
-  }
-}
+export type UpdateAdminParams = UpdateParams<FormEditAdminEntities>
 
 export type UpdateAdminResult = ResultMutation<Admin>
 
 export interface UpdateAdminRepository extends UpdateAdminResult {
-  updateAdmin(payload: UpdateParams): void
+  updateAdmin(payload: UpdateAdminParams): void
 }
 
 /**

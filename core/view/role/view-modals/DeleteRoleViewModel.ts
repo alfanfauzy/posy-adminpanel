@@ -1,4 +1,4 @@
-import { MutationOptions } from '@/data/common/types/BaseMutation'
+import { MutationOptions } from 'core/domain/vo/BaseMutation'
 import { DeleteRoleResponse } from '@/data/role/types'
 import { useDeleteRoleUsecase } from '@/data/role/usecases/DeleteRoleUsecase'
 import { DeleteRoleRepository } from 'core/domain/role/repositories/RoleRepository'

@@ -3,7 +3,7 @@ import { DeleteRoleResponse } from '../types'
 import { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
 import Post from 'api/post'
-import { MutationOptions } from '@/data/common/types/BaseMutation'
+import { MutationOptions } from 'core/domain/vo/BaseMutation'
 import { DeleteRoleParams } from '@/domain/role/repositories/RoleRepository'
 
 export const DeleteRoleService = async (

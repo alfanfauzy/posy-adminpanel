@@ -1,4 +1,4 @@
-import { Metadata } from '@/data/common/types/BaseMetadata'
+import { Metadata } from '@/domain/vo/BaseMetadata'
 
 export interface RoleDataResponse {
   uuid: string

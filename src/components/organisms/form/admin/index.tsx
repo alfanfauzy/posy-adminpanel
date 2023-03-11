@@ -119,7 +119,7 @@ const MoleculesFormAdmin = ({
 
     const newPayloadEdit = {
       id: uuid,
-      params: { fullname, role_uuid: value },
+      payload: { fullname, role_uuid: value },
     }
 
     if (isEdit) {

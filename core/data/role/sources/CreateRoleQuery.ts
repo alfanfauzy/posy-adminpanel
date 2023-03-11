@@ -3,7 +3,7 @@ import { Response } from '../../../domain/vo/BaseResponse'
 import { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
 import Post from 'api/post'
-import { MutationOptions } from '@/data/common/types/BaseMutation'
+import { MutationOptions } from 'core/domain/vo/BaseMutation'
 import { FormRoleEntities } from '@/organisms/form/role/entities'
 
 export const CreateRoleService = async (

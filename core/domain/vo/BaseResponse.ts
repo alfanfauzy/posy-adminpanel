@@ -32,3 +32,8 @@ export type Datalist<TData> = {
   per_page: number
   objs: TData[]
 }
+
+export type UpdateParams<TData> = {
+  id: string
+  payload: TData
+}

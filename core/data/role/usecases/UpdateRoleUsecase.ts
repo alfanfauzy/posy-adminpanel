@@ -1,6 +1,6 @@
 import { UpdateRoleResponse } from '../types'
 import { useUpdateRoleMutation } from '../sources/UpdateRoleQuery'
-import { MutationOptions } from '@/data/common/types/BaseMutation'
+import { MutationOptions } from 'core/domain/vo/BaseMutation'
 import { UpdateRoleParams } from '@/domain/role/repositories/RoleRepository'
 
 export const useUpdateRoleUsecase = (

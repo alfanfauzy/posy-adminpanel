@@ -1,6 +1,6 @@
 import { useCreateAdminMutation } from '../sources/CreateAdminQuery'
 import { CreateAdminResponse } from '../types'
-import { MutationOptions } from '@/data/common/types/BaseMutation'
+import { MutationOptions } from 'core/domain/vo/BaseMutation'
 import { FormAdmin } from '@/domain/admin/models'
 
 export const useCreateAdminUsecase = (

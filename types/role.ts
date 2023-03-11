@@ -1,4 +1,4 @@
-import { BaseMetadata, Metadata } from '@/data/common/types/BaseMetadata'
+import { BaseMetadata, Metadata } from '@/domain/vo/BaseMetadata'
 
 /** GET ROLE */
 export interface AccessListData {
