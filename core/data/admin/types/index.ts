@@ -14,3 +14,14 @@ export interface GetAdminListDataResponse {
   role: RoleDataResponse
   metadata: Metadata
 }
+
+export interface CreateAdminResponse {
+  code: number
+  data: {
+    uuid: string
+    metadata: Metadata
+  }
+}
+
+export type UpdateAdminResponse = CreateAdminResponse
+export type DeleteAdminResponse = CreateAdminResponse

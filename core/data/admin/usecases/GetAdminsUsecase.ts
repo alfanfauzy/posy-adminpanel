@@ -1,5 +1,5 @@
 import { mapToAdminModel } from '../mappers/AdminMapper'
-import { useGetAdminQuery } from '../sources/CreateAdminQuery'
+import { useGetAdminQuery } from '../sources/GetAdminQuery'
 import {
   GetAdminsResult,
   GetFilterAdminInput,

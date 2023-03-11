@@ -4,7 +4,6 @@ import type { ColumnsType } from 'antd/es/table'
 import { AiFillDelete, AiFillEdit, AiOutlineUserAdd } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
-import { DataType } from './entities'
 import { timeStampConverter } from '@/constants/utils'
 import AtomTag from '@/atoms/tag'
 import AtomTable from '@/atoms/table'
@@ -14,6 +13,7 @@ import { Search } from '@/domain/vo/BaseInput'
 import { GetFilterAdminInput } from '@/domain/admin/repositories/AdminRepository'
 import { useGetAdminViewModal } from '@/view/admin/view-models/GetAdminViewModel'
 import { Admin } from '@/domain/admin/models'
+import { useDeleteAdminViewModal } from '@/view/admin/view-models/DeleteAdminViewModel'
 
 const ModalFormAdmin = dynamic(() => import('@/organisms/form/admin'))
 const ModalConfirmation = dynamic(
@@ -24,7 +24,6 @@ const AdminListLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [searchParams, setSearchParams] = useState<Search<any>[]>([])
-  const [valueSearch, setValueSearch] = useState('')
 
   const hooksParams: GetFilterAdminInput = useMemo(
     () => ({
@@ -43,7 +42,9 @@ const AdminListLayout: React.FC = () => {
     pagination,
   } = useGetAdminViewModal(hooksParams)
 
-  const [selectedData, setSelectedData] = useState<any>({})
+  const [selectedData, setSelectedData] = useState<
+    Admin | Record<string, never>
+  >({})
   const [isEdit, setIsEdit] = useState(false)
 
   const { value: openModal, toggle: handleOpenModal } = useToggle(false)
@@ -52,7 +53,7 @@ const AdminListLayout: React.FC = () => {
 
   /** Modal Confirmation Action */
 
-  const handleShowConfirmationModal = (data: DataType) => {
+  const handleShowConfirmationModal = (data: Admin) => {
     handleOpenModalConfirmation()
     setSelectedData(data)
   }
@@ -60,6 +61,7 @@ const AdminListLayout: React.FC = () => {
   const handleCloseModalConfirmation = () => {
     handleOpenModalConfirmation()
     setSelectedData({})
+    // handleRefetchTable()
   }
 
   /** ------------------------- */
@@ -75,14 +77,20 @@ const AdminListLayout: React.FC = () => {
 
   /** ------------------------- */
 
+  const { deleteAdmin, isLoading: isLoadingRemove } = useDeleteAdminViewModal({
+    onSuccess() {
+      handleCloseModalConfirmation()
+      toast.success('Sucessfully delete Role')
+    },
+    onError(error) {
+      console.log(error)
+    },
+  })
+
   const handleDeleteAdmin = () => {
     const { uuid } = selectedData
-    /**
-     * Todo Remove
-     */
 
-    handleCloseModalConfirmation()
-    toast.success(`Sucessfully remove data ${uuid}`)
+    deleteAdmin(uuid)
   }
 
   const columns: ColumnsType<Admin> = [
@@ -94,19 +102,19 @@ const AdminListLayout: React.FC = () => {
       render: (value, item, index) => (page - 1) * 10 + index + 1,
     },
     {
-      title: 'Username',
-      key: 'name',
-      dataIndex: 'name',
-    },
-    {
-      title: 'Full Name',
+      title: 'Fullname',
       key: 'fullname',
       dataIndex: 'fullname',
     },
     {
+      title: 'Email',
+      key: 'name',
+      dataIndex: 'email',
+    },
+    {
       title: 'Role',
       key: 'role',
-      render: (dataValue, record) => <AtomTag status={record.role} />,
+      render: (dataValue, record) => <AtomTag status={record.rolename} />,
     },
     {
       title: 'Created At',
@@ -153,6 +161,7 @@ const AdminListLayout: React.FC = () => {
         handleClose={handleOpenFormModal}
         isEdit={isEdit}
         selectedData={selectedData}
+        handleRefecth={handleRefetchTable}
       />
       <ModalConfirmation
         isOpenModal={openModalConfirmation}
@@ -160,6 +169,7 @@ const AdminListLayout: React.FC = () => {
         text="Are you sure want to remove ?"
         onClose={handleCloseModalConfirmation}
         onOk={handleDeleteAdmin}
+        isLoadingRemove={isLoadingRemove}
       />
       <AtomTable
         isLoading={isLoading}

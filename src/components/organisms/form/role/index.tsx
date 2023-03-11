@@ -6,6 +6,7 @@ import { Button, Input } from 'posy-fnb-core'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
+import { FormRoleEntities } from './entities'
 import { useForm } from '@/hooks/useForm'
 import { RoleFormSchema } from '@/schemas/role'
 import { useCreateRolesViewModal } from '@/view/role/view-modals/CreateRoleViewModel'
@@ -48,10 +49,7 @@ const MoleculesFormRole = ({
     handleRefecth()
   }
 
-  const payload = watch()
-  const payloadUpdate = { payload, id: selectedData.uuid }
-
-  const { createRole, isLoading } = useCreateRolesViewModal(payload, {
+  const { createRole, isLoading } = useCreateRolesViewModal({
     onSuccess() {
       handleCloseModal()
       toast.success('Sucessfully added new Role')
@@ -61,24 +59,25 @@ const MoleculesFormRole = ({
     },
   })
 
-  const { updateRole, isLoading: isLoadingUpdate } = useUpdateRolesViewModal(
-    payloadUpdate,
-    {
-      onSuccess() {
-        handleCloseModal()
-        toast.success('Sucessfully updated Role')
-      },
-      onError(error) {
-        console.log(error)
-      },
+  const { updateRole, isLoading: isLoadingUpdate } = useUpdateRolesViewModal({
+    onSuccess() {
+      handleCloseModal()
+      toast.success('Sucessfully updated Role')
     },
-  )
+    onError(error) {
+      console.log(error)
+    },
+  })
 
-  const handleSubmitForm = () => {
+  const handleSubmitForm = (data: FormRoleEntities) => {
+    const { uuid } = selectedData
+
+    const paramsEdit = { id: uuid, payload: data }
+
     if (isEdit) {
-      updateRole()
+      updateRole(paramsEdit)
     } else {
-      createRole()
+      createRole(data)
     }
   }
 
@@ -99,7 +98,7 @@ const MoleculesFormRole = ({
       title={titleText}
     >
       <section className="w-big-500">
-        <form onSubmit={handleSubmit(handleSubmitForm)}>
+        <form onSubmit={handleSubmit((data) => handleSubmitForm(data))}>
           <div className="mb-6">
             <Input
               {...register('name')}

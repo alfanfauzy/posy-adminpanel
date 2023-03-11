@@ -1,17 +1,15 @@
 import { CreateRoleResponse } from '../types'
 import { useCreateRoleMutation } from '../sources/CreateRoleQuery'
 import { MutationOptions } from '@/data/common/types/BaseMutation'
-import { CreateRoleRepository } from '@/domain/role/repositories/RoleRepository'
 import { FormRoleEntities } from '@/organisms/form/role/entities'
 
-export const useCreateTransactionUsecase = (
-  payload: FormRoleEntities,
+export const useCreateRoleUsecase = (
   options?: MutationOptions<CreateRoleResponse>,
 ): any => {
-  const { mutate, data, ...rest } = useCreateRoleMutation(payload, options)
+  const { mutate, data, ...rest } = useCreateRoleMutation(options)
 
-  const createRole = () => {
-    mutate({})
+  const createRole = (payload: FormRoleEntities) => {
+    mutate(payload)
   }
 
   return {

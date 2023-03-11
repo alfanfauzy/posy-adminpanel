@@ -23,10 +23,9 @@ export const CreateRoleService = async (
 }
 
 export const useCreateRoleMutation = (
-  payload: FormRoleEntities,
   options?: MutationOptions<CreateRoleResponse>,
 ) =>
   useMutation({
-    mutationFn: () => CreateRoleService(payload),
+    mutationFn: (payload: FormRoleEntities) => CreateRoleService(payload),
     ...options,
   })

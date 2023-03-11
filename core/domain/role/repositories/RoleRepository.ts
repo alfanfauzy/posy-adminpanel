@@ -1,7 +1,12 @@
 import { Pagination } from 'core/domain/vo/BasePagination'
 import { Role, Roles } from 'core/domain/role/models'
 import { FilterInputVariables } from 'core/domain/vo/BaseInput'
-import { Datalist, Result, ResultMutation } from 'core/domain/vo/BaseResponse'
+import {
+  Datalist,
+  ResultQuery,
+  ResultMutation,
+} from 'core/domain/vo/BaseResponse'
+import { FormRoleEntities } from '@/organisms/form/role/entities'
 
 /**
  * GET
@@ -11,11 +16,11 @@ export type GetRolesInput = FilterInputVariables<
   keyof Pick<Role, 'name'>
 >
 
-export type GetRolesResult = Result<Datalist<Roles> | undefined> & {
+export type GetRolesResult = ResultQuery<Datalist<Roles> | undefined> & {
   pagination: Pagination | undefined
 }
 
-export type GetRoleResult = Result<Role>
+export type GetRoleResult = ResultQuery<Role>
 
 /**
  * CREATE
@@ -24,34 +29,35 @@ export type GetRoleResult = Result<Role>
 export type CreateRoleResult = ResultMutation<Role | undefined>
 
 export interface CreateRoleRepository extends CreateRoleResult {
-  createRole(): void
+  createRole(params: FormRoleEntities): void
 }
 
 /**
  * UPDATE
  */
 
-export type UpdateRoleInput = {
+export type UpdateRoleParams = {
   id: string
-  payload: object
+  payload: {
+    name: string
+    description: string
+  }
 }
 
 export type UpdateRoleResult = ResultMutation<Role>
 
 export interface UpdateRoleRepository extends UpdateRoleResult {
-  updateRole(): void
+  updateRole(params: UpdateRoleParams): void
 }
 
 /**
  * DELETE
  */
 
-export type DeleteRoleInput = {
-  id: string
-}
+export type DeleteRoleParams = string
 
-export type DeleteRoleResult = Result<Role>
+export type DeleteRoleResult = ResultMutation<Role>
 
 export interface DeleteRoleRepository extends DeleteRoleResult {
-  deleteRole(): void
+  deleteRole(params: DeleteRoleParams): void
 }

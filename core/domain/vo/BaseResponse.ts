@@ -7,7 +7,7 @@ export type Response<TData = unknown> = {
   more_info: string
 }
 
-export type Result<TData = unknown, TError = unknown> = Omit<
+export type ResultQuery<TData = unknown, TError = unknown> = Omit<
   UseQueryResult<unknown, TError>,
   'data' & {
     data: TData

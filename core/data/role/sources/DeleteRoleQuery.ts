@@ -4,6 +4,7 @@ import { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
 import Post from 'api/post'
 import { MutationOptions } from '@/data/common/types/BaseMutation'
+import { DeleteRoleParams } from '@/domain/role/repositories/RoleRepository'
 
 export const DeleteRoleService = async (
   uuid: string,
@@ -22,10 +23,9 @@ export const DeleteRoleService = async (
 }
 
 export const useDeleteRoleMutation = (
-  uuid: string,
   options?: MutationOptions<DeleteRoleResponse>,
 ) =>
   useMutation({
-    mutationFn: () => DeleteRoleService(uuid),
+    mutationFn: (uuid: DeleteRoleParams) => DeleteRoleService(uuid),
     ...options,
   })

@@ -4,10 +4,9 @@ import { useDeleteRoleUsecase } from '@/data/role/usecases/DeleteRoleUsecase'
 import { DeleteRoleRepository } from 'core/domain/role/repositories/RoleRepository'
 
 export const useDeleteRolesViewModal = (
-  uuid: string,
   options?: MutationOptions<DeleteRoleResponse>,
 ): DeleteRoleRepository => {
-  const result = useDeleteRoleUsecase(uuid, options)
+  const result = useDeleteRoleUsecase(options)
 
   return result
 }

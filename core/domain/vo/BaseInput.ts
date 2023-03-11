@@ -16,3 +16,8 @@ export interface FilterInputVariables<TSort = unknown, TSearch = unknown> {
   limit?: number
   page?: number
 }
+
+export interface ParamsPayload {
+  id?: string
+  params: object
+}

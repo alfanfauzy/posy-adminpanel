@@ -1,16 +1,15 @@
 import { UpdateRoleResponse } from '../types'
 import { useUpdateRoleMutation } from '../sources/UpdateRoleQuery'
 import { MutationOptions } from '@/data/common/types/BaseMutation'
-import { UpdateRoleInput } from '@/domain/role/repositories/RoleRepository'
+import { UpdateRoleParams } from '@/domain/role/repositories/RoleRepository'
 
 export const useUpdateRoleUsecase = (
-  payload: UpdateRoleInput,
   options?: MutationOptions<UpdateRoleResponse>,
 ): any => {
-  const { mutate, data, ...rest } = useUpdateRoleMutation(payload, options)
+  const { mutate, data, ...rest } = useUpdateRoleMutation(options)
 
-  const updateRole = () => {
-    mutate({})
+  const updateRole = (params: UpdateRoleParams) => {
+    mutate(params)
   }
 
   return {

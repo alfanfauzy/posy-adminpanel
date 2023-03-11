@@ -3,17 +3,17 @@ import { UpdateRoleResponse } from '../types'
 import { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
 import Post from 'api/post'
-import { UpdateRoleInput } from '@/domain/role/repositories/RoleRepository'
+import { UpdateRoleParams } from '@/domain/role/repositories/RoleRepository'
 import { MutationOptions } from '@/data/common/types/BaseMutation'
 
 export const UpdateRoleService = async (
-  payload: UpdateRoleInput,
+  params: UpdateRoleParams,
 ): Promise<Response<UpdateRoleResponse>> => {
-  const payloadBody = payload?.payload
+  const { id, payload } = params
   try {
     const response = await Post({
-      endpoint: `/api/fnb-user-service/internal/role/update/${payload?.id}`,
-      payload: payloadBody,
+      endpoint: `/api/fnb-user-service/internal/role/update/${id}`,
+      payload,
     })
 
     return response
@@ -24,10 +24,9 @@ export const UpdateRoleService = async (
 }
 
 export const useUpdateRoleMutation = (
-  payload: UpdateRoleInput,
   options?: MutationOptions<UpdateRoleResponse>,
 ) =>
   useMutation({
-    mutationFn: () => UpdateRoleService(payload),
+    mutationFn: (params: UpdateRoleParams) => UpdateRoleService(params),
     ...options,
   })

@@ -1,7 +1,8 @@
 /**
  * Admin Form Modal
  */
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
+import { useQueryClient } from 'react-query'
 import { Button, Input, Select } from 'posy-fnb-core'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
@@ -10,8 +11,13 @@ import { FormAdminEntities } from './entities'
 import { useForm } from '@/hooks/useForm'
 import { AdminFormSchema, EditAdminFormSchema } from '@/schemas/admin'
 import useToggle from '@/hooks/useToggle'
-import { DataType } from '@/pages/admin/list/entities'
 import IconEye from '@/atoms/icon/IconEye'
+import { useGetRolesViewModal } from '@/view/role/view-modals/GetRolesViewModel'
+import { GetRoleListDataResponse } from 'core/data/role/types/index'
+import { GetRolesInput } from '@/domain/role/repositories/RoleRepository'
+import { useCreateAdminViewModal } from '@/view/admin/view-models/CreateAdminViewModel'
+import { Admin } from '@/domain/admin/models'
+import { useUpdateAdminViewModal } from '@/view/admin/view-models/UpdateAdminViewModel'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -21,7 +27,8 @@ interface MoleculesFormAdminProps {
   isEdit: boolean
   isOpenModal: boolean
   handleClose: () => void
-  selectedData: DataType
+  selectedData: Admin | Record<string, never>
+  handleRefecth: () => void
 }
 
 const MoleculesFormAdmin = ({
@@ -29,6 +36,7 @@ const MoleculesFormAdmin = ({
   isOpenModal,
   handleClose,
   selectedData,
+  handleRefecth,
 }: MoleculesFormAdminProps) => {
   const { value: showPassword, toggle: handleShowPassword } = useToggle(true)
   const { value: showConfirmPassword, toggle: handleShowConfirmPassword } =
@@ -48,73 +56,109 @@ const MoleculesFormAdmin = ({
     mode: 'onChange',
   })
 
+  const paramsGetRole: GetRolesInput = {
+    search: [],
+    sort: { field: 'created_at', value: 'desc' },
+    page: 1,
+    limit: 0,
+  }
+
+  const { data: RolesList, isLoading: isLoadingGetRole } =
+    useGetRolesViewModal(paramsGetRole)
+
+  const RoleSelect = useMemo(() => {
+    if (!RolesList) return []
+
+    return Object.values(RolesList).map((role: GetRoleListDataResponse) => ({
+      label: role.name,
+      value: role.uuid,
+    }))
+  }, [RolesList])
+
   const handleCloseModal = () => {
     reset()
     handleClose()
+    handleRefecth()
+    // consoleient.invalidateQueries(['admin/list'])
   }
 
-  const handleCreateAdmin = (data: FormAdminEntities) => {
-    /**
-     * Todo : Send `data` to backend
-     */
-
-    /**
-     * Will be remove soon
-     */
-
-    const getData = JSON.parse(localStorage.getItem('items') || '')
-
-    getData.push(data)
-
-    localStorage.setItem('items', JSON.stringify(getData))
-
-    /** ---------------------------------------------------- */
-
-    if (getData) {
+  const { createAdmin, isLoading: isLoadingCreate } = useCreateAdminViewModal({
+    onSuccess() {
       handleCloseModal()
-      toast.success('Sucessfully added new admin')
-    }
-  }
+      toast.success('Sucessfully added new user')
+    },
+    onError(error) {
+      console.log(error)
+    },
+  })
 
-  const handleEditAdmin = (data: FormAdminEntities) => {
-    /**
-     * Todo : Send `data` to backend
-     */
-    if (data) {
+  const { updateAdmin, isLoading: isLoadingUpdate } = useUpdateAdminViewModal({
+    onSuccess() {
       handleCloseModal()
-      toast.success('Sucessfully edit user admin')
-    }
-  }
+      toast.success('Sucessfully update user')
+    },
+    onError(error) {
+      console.log(error)
+    },
+  })
 
   const handleSubmitForm = (data: FormAdminEntities) => {
+    const { uuid } = selectedData
+
+    const {
+      email,
+      fullname,
+      password,
+      role_uuid: { value },
+    } = data
+
+    const newPayload = {
+      id: '0',
+      params: { email, fullname, password, role_uuid: value },
+    }
+
+    const newPayloadEdit = {
+      id: uuid,
+      params: { fullname, role_uuid: value },
+    }
+
     if (isEdit) {
-      handleEditAdmin(data)
+      updateAdmin(newPayloadEdit)
     } else {
-      handleCreateAdmin(data)
+      createAdmin(newPayload)
     }
   }
 
   useEffect(() => {
     if (isEdit) {
-      const { username, fullname, role } = selectedData
-      setValue('email', username || '')
-      setValue('fullname', fullname || '')
-      setValue('role_uuid', {
-        label: role?.[0].name || '',
-        value: role?.[0].name || '',
-      })
-      setValue('password', '')
-      setValue('confirmPassword', '')
+      if (RolesList) {
+        const { email, fullname, roleid } = selectedData
+        setValue('email', email || '')
+        setValue('fullname', fullname || '')
+
+        const getRole: GetRoleListDataResponse[] = Object.values(RolesList)
+          .map((datafilter) => datafilter)
+          .filter((data: GetRoleListDataResponse) => data.uuid === roleid)
+
+        setValue('role_uuid', {
+          label: getRole?.[0].name,
+          value: getRole?.[0].uuid,
+        })
+        setValue('password', '')
+        setValue('confirmPassword', '')
+      }
     }
   }, [selectedData, isEdit, setValue])
 
-  const titleText = isEdit ? 'Edit User' : 'Create New User'
+  const wordingText = isEdit
+    ? { title: 'Edit User', button: 'Save' }
+    : { title: 'Create New User', button: 'Submit' }
 
   return (
     <ModalForm
       handleCloseModal={handleCloseModal}
       isOpenModal={isOpenModal}
-      title={titleText}
+      title={wordingText.title}
     >
       <section className="w-big-500 p-4">
         <form onSubmit={handleSubmit((data) => handleSubmitForm(data))}>
@@ -183,15 +227,14 @@ const MoleculesFormAdmin = ({
               name="role_uuid"
               onChange={(e) => setValue('role_uuid', e)}
               value={watch('role_uuid')}
-              options={[
-                { label: 'Role 1', value: 'Role 1' },
-                { label: 'Role 2', value: 'Role 2' },
-              ]}
+              options={RoleSelect}
               labelText="Role"
-              placeholder="ex: John Doe"
+              placeholder="ex: Select role"
               className="flex items-center justify-center"
               error={!!errors.role_uuid}
               helperText={errors?.role_uuid?.message}
+              isClearable
+              isLoading={isLoadingGetRole}
             />
           </div>
 
@@ -201,9 +244,10 @@ const MoleculesFormAdmin = ({
             size="l"
             fullWidth
             className="flex items-center justify-center gap-2"
+            isLoading={isLoadingCreate || isLoadingUpdate}
           >
             <AiOutlineCheckSquare />
-            Submit
+            {wordingText.button}
           </Button>
         </form>
       </section>

@@ -1,17 +1,18 @@
-import { GetAdminListDataResponse } from '../types'
-import { Datalist, Response } from '../../../domain/vo/BaseResponse'
+import { CreateAdminResponse } from '../types'
+import { Response } from '../../../domain/vo/BaseResponse'
 import { AxiosError } from 'axios'
-import { useQuery, UseQueryOptions } from 'react-query'
+import { useMutation } from 'react-query'
 import Post from 'api/post'
-import { GetFilterAdminInput } from 'core/domain/admin/repositories/AdminRepository'
+import { MutationOptions } from '@/data/common/types/BaseMutation'
+import { CreateAdminInput } from '@/domain/admin/repositories/AdminRepository'
 
-export const GetAdmin = async (
-  input?: GetFilterAdminInput,
-): Promise<Response<Datalist<GetAdminListDataResponse>>> => {
+export const CreateAdminService = async (
+  payload: CreateAdminInput,
+): Promise<Response<CreateAdminResponse>> => {
   try {
     const response = await Post({
-      endpoint: `/api/fnb-user-service/internal/user/get-list`,
-      payload: input,
+      endpoint: `/api/fnb-user-service/internal/user/create`,
+      payload: payload.params,
     })
 
     return response
@@ -21,15 +22,10 @@ export const GetAdmin = async (
   }
 }
 
-export const useGetAdminQuery = (
-  input?: GetFilterAdminInput,
-  options?: UseQueryOptions<Response<Datalist<GetAdminListDataResponse>>>,
+export const useCreateAdminMutation = (
+  options?: MutationOptions<CreateAdminResponse>,
 ) =>
-  useQuery<Response<Datalist<GetAdminListDataResponse>>>(
-    ['admin/list', input],
-    () => GetAdmin(input),
-    {
-      enabled: !!JSON.stringify(input),
-      ...options,
-    },
-  )
+  useMutation({
+    mutationFn: (payload: CreateAdminInput) => CreateAdminService(payload),
+    ...options,
+  })

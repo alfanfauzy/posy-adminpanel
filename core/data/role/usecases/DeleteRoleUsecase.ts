@@ -1,15 +1,15 @@
 import { DeleteRoleResponse } from '../types'
 import { useDeleteRoleMutation } from '../sources/DeleteRoleQuery'
 import { MutationOptions } from '@/data/common/types/BaseMutation'
+import { DeleteRoleParams } from '@/domain/role/repositories/RoleRepository'
 
 export const useDeleteRoleUsecase = (
-  uuid: string,
   options?: MutationOptions<DeleteRoleResponse>,
 ): any => {
-  const { mutate, data, ...rest } = useDeleteRoleMutation(uuid, options)
+  const { mutate, data, ...rest } = useDeleteRoleMutation(options)
 
-  const deleteRole = () => {
-    mutate({})
+  const deleteRole = (uuid: DeleteRoleParams) => {
+    mutate(uuid)
   }
 
   return {

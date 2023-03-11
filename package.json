@@ -37,7 +37,7 @@
     "moment": "^2.29.4",
     "next": "13.1.5",
     "notistack": "^2.0.8",
-    "posy-fnb-core": "^1.0.48",
+    "posy-fnb-core": "^1.0.53",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-highlight-words": "^0.20.0",

@@ -8,7 +8,6 @@ import { findIndexArraySearch, timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
-import { RoleListData } from 'types/role'
 import FilterTable from '@/atoms/table/filter/input'
 import { useGetRolesViewModal } from 'core/view/role/view-modals/GetRolesViewModel'
 import { Role } from 'core/domain/role/models'
@@ -74,18 +73,21 @@ const RoleLayout: React.FC = () => {
     handleRefetchTable()
   }
 
-  const { deleteRole, isLoading: isLoadingRemove } = useDeleteRolesViewModal(
-    selectedData.uuid,
-    {
-      onSuccess() {
-        handleCloseModalConfirmation()
-        toast.success('Sucessfully delete Role')
-      },
-      onError(error) {
-        console.log(error)
-      },
+  const { deleteRole, isLoading: isLoadingRemove } = useDeleteRolesViewModal({
+    onSuccess() {
+      handleCloseModalConfirmation()
+      toast.success('Sucessfully delete Role')
     },
-  )
+    onError(error) {
+      console.log(error)
+    },
+  })
+
+  const handleDeleteRole = () => {
+    const { uuid } = selectedData
+
+    deleteRole(uuid)
+  }
 
   const handleSearchParam = (
     field: string,
@@ -214,7 +216,7 @@ const RoleLayout: React.FC = () => {
         title="Modal Confirmation"
         text="Are you sure want to remove ?"
         onClose={handleCloseModalConfirmation}
-        onOk={deleteRole}
+        onOk={handleDeleteRole}
         isLoadingRemove={isLoadingRemove}
       />
       <AtomTable
