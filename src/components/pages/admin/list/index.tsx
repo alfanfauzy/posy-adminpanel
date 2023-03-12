@@ -14,6 +14,7 @@ import { GetFilterAdminInput } from '@/domain/admin/repositories/AdminRepository
 import { useGetAdminViewModal } from '@/view/admin/view-models/GetAdminViewModel'
 import { Admin } from '@/domain/admin/models'
 import { useDeleteAdminViewModal } from '@/view/admin/view-models/DeleteAdminViewModel'
+import { ErrorType } from 'types/index'
 
 const ModalFormAdmin = dynamic(() => import('@/organisms/form/admin'))
 const ModalConfirmation = dynamic(
@@ -81,9 +82,6 @@ const AdminListLayout: React.FC = () => {
     onSuccess() {
       handleCloseModalConfirmation()
       toast.success('Sucessfully delete Role')
-    },
-    onError(error) {
-      console.log(error)
     },
   })
 

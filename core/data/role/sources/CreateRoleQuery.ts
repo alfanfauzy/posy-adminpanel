@@ -2,9 +2,11 @@ import { CreateRoleResponse } from '../types'
 import { Response } from '../../../domain/vo/BaseResponse'
 import { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
+import { toast } from 'react-toastify'
 import Post from 'api/post'
 import { MutationOptions } from 'core/domain/vo/BaseMutation'
 import { FormRoleEntities } from '@/organisms/form/role/entities'
+import { ErrorType } from 'types/index'
 
 export const CreateRoleService = async (
   payload: FormRoleEntities,
@@ -18,14 +20,17 @@ export const CreateRoleService = async (
     return response
   } catch (error) {
     const err = error as AxiosError
-    throw err
+    throw err.response?.data
   }
 }
 
 export const useCreateRoleMutation = (
-  options?: MutationOptions<CreateRoleResponse>,
+  options: MutationOptions<CreateRoleResponse>,
 ) =>
   useMutation({
     mutationFn: (payload: FormRoleEntities) => CreateRoleService(payload),
+    onError(error: ErrorType) {
+      toast.error(error.message)
+    },
     ...options,
   })

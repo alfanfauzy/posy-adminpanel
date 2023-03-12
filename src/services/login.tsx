@@ -27,7 +27,7 @@ export const Login = async (
     return response
   } catch (error) {
     const err = error as AxiosError
-    throw err
+    throw err.response?.data
   }
 }
 
@@ -43,6 +43,6 @@ export const HandleRefreshTokenLogin = async (
     return response
   } catch (error) {
     const err = error as AxiosError
-    throw err
+    throw err.response?.data
   }
 }

@@ -4,7 +4,7 @@ import { useCreateRoleUsecase } from '@/data/role/usecases/CreateRoleUsecase'
 import { CreateRoleRepository } from 'core/domain/role/repositories/RoleRepository'
 
 export const useCreateRolesViewModal = (
-  options?: MutationOptions<CreateRoleResponse>,
+  options: MutationOptions<CreateRoleResponse>,
 ): CreateRoleRepository => {
   const result = useCreateRoleUsecase(options)
 

@@ -5,6 +5,7 @@ import { Button, Input } from 'posy-fnb-core'
 import { useRouter } from 'next/router'
 import { SubmitHandler } from 'react-hook-form'
 import { motion } from 'framer-motion'
+import { toast } from 'react-toastify'
 import { useMutation } from 'react-query'
 import Footer from '@/atoms/footer'
 import { loginSchema, ValidationLoginSchema } from '@/schemas/login'
@@ -13,7 +14,7 @@ import IconEye from '@/atoms/icon/IconEye'
 import { useDispatchApp } from 'store/hooks'
 import { authSuccess } from 'store/slice/auth'
 import { Login } from 'services/login'
-import { LoginDataResponse } from 'shared'
+import { ErrorType } from 'types/index'
 
 const MoleculesLogin = () => {
   const router = useRouter()
@@ -39,8 +40,8 @@ const MoleculesLogin = () => {
       dispatch(authSuccess(data.data))
       handleGoDashboard()
     },
-    onError(error) {
-      console.error(error)
+    onError(error: ErrorType) {
+      toast.error(error.message)
     },
   })
 

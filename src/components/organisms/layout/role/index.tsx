@@ -14,6 +14,7 @@ import { Role } from 'core/domain/role/models'
 import { GetRolesInput } from 'core/domain/role/repositories/RoleRepository'
 import { Search } from 'core/domain/vo/BaseInput'
 import { useDeleteRolesViewModal } from '@/view/role/view-modals/DeleteRoleViewModel'
+import { ErrorType } from 'types/index'
 
 const ModalFormRole = dynamic(() => import('@/organisms/form/role'))
 const ModalConfirmation = dynamic(
@@ -77,9 +78,6 @@ const RoleLayout: React.FC = () => {
     onSuccess() {
       handleCloseModalConfirmation()
       toast.success('Sucessfully delete Role')
-    },
-    onError(error) {
-      console.log(error)
     },
   })
 

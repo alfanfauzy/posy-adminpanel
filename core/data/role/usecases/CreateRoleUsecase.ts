@@ -4,7 +4,7 @@ import { MutationOptions } from 'core/domain/vo/BaseMutation'
 import { FormRoleEntities } from '@/organisms/form/role/entities'
 
 export const useCreateRoleUsecase = (
-  options?: MutationOptions<CreateRoleResponse>,
+  options: MutationOptions<CreateRoleResponse>,
 ): any => {
   const { mutate, data, ...rest } = useCreateRoleMutation(options)
 

@@ -2,7 +2,6 @@
  * Admin Form Modal
  */
 import React, { useEffect, useMemo } from 'react'
-import { useQueryClient } from 'react-query'
 import { Button, Input, Select } from 'posy-fnb-core'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
@@ -79,7 +78,6 @@ const MoleculesFormAdmin = ({
     reset()
     handleClose()
     handleRefecth()
-    // consoleient.invalidateQueries(['admin/list'])
   }
 
   const { createAdmin, isLoading: isLoadingCreate } = useCreateAdminViewModal({
@@ -87,18 +85,12 @@ const MoleculesFormAdmin = ({
       handleCloseModal()
       toast.success('Sucessfully added new user')
     },
-    onError(error) {
-      console.log(error)
-    },
   })
 
   const { updateAdmin, isLoading: isLoadingUpdate } = useUpdateAdminViewModal({
     onSuccess() {
       handleCloseModal()
       toast.success('Sucessfully update user')
-    },
-    onError(error) {
-      console.log(error)
     },
   })
 

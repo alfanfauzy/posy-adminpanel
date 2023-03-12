@@ -17,7 +17,7 @@ export const GetAdmin = async (
     return response
   } catch (error) {
     const err = error as AxiosError
-    throw err
+    throw err.response?.data
   }
 }
 

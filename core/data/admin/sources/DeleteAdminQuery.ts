@@ -2,9 +2,11 @@ import { Response } from '../../../domain/vo/BaseResponse'
 import { DeleteAdminResponse } from '../types'
 import { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
+import { toast } from 'react-toastify'
 import Post from 'api/post'
 import { MutationOptions } from 'core/domain/vo/BaseMutation'
 import { DeleteAdminInput } from '@/domain/admin/repositories/AdminRepository'
+import { ErrorType } from 'types/index'
 
 export const DeleteAdminService = async (
   uuid: DeleteAdminInput,
@@ -18,7 +20,7 @@ export const DeleteAdminService = async (
     return response
   } catch (error) {
     const err = error as AxiosError
-    throw err
+    throw err.response?.data
   }
 }
 
@@ -27,5 +29,8 @@ export const useDeleteAdminMutation = (
 ) =>
   useMutation({
     mutationFn: (payload: DeleteAdminInput) => DeleteAdminService(payload),
+    onError(error: ErrorType) {
+      toast.error(error.message)
+    },
     ...options,
   })

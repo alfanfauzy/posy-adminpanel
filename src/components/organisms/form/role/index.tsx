@@ -12,6 +12,7 @@ import { RoleFormSchema } from '@/schemas/role'
 import { useCreateRolesViewModal } from '@/view/role/view-modals/CreateRoleViewModel'
 import { useUpdateRolesViewModal } from '@/view/role/view-modals/UpdateRoleViewModel'
 import { Role } from '@/domain/role/models'
+import { ErrorType } from 'types/index'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -54,18 +55,12 @@ const MoleculesFormRole = ({
       handleCloseModal()
       toast.success('Sucessfully added new Role')
     },
-    onError(error) {
-      console.log('Error add role')
-    },
   })
 
   const { updateRole, isLoading: isLoadingUpdate } = useUpdateRolesViewModal({
     onSuccess() {
       handleCloseModal()
       toast.success('Sucessfully updated Role')
-    },
-    onError(error) {
-      console.log(error)
     },
   })
 
