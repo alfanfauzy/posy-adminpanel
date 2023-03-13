@@ -7,10 +7,7 @@ import {
 import { Admin, FormAdmin } from 'core/domain/admin/models'
 import { Pagination } from 'core/domain/vo/BasePagination'
 import { FilterInputVariables, ParamsPayload } from '@/domain/vo/BaseInput'
-import {
-  FormAdminEntities,
-  FormEditAdminEntities,
-} from '@/organisms/form/admin/entities'
+import { FormEditAdminEntities } from '@/organisms/form/admin/entities'
 
 /**
  * GET

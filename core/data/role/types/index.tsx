@@ -1,4 +1,3 @@
-/** GET ROLE */
 import { Metadata } from '@/domain/vo/BaseMetadata'
 
 export interface GetRoleListDataResponse {

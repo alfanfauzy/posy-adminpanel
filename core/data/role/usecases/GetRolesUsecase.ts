@@ -1,5 +1,5 @@
 import { useGetRolesQuery } from '../sources/GetRoleQuery'
-import { mapToRoleModel } from '../mappers/RoleMapper'
+import { mapToRoleModel } from '../../subscription/mappers/mappers/RoleMapper'
 import {
   GetRolesInput,
   GetRolesResult,

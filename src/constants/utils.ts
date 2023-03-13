@@ -31,3 +31,10 @@ export const findIndexArraySearch = (
 
   return index
 }
+
+export const FormatToRupiah = (ammount: number) =>
+  new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+  }).format(ammount)

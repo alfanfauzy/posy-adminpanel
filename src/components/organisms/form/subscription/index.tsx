@@ -1,7 +1,7 @@
 /**
  * Subscription Form Modal
  */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Input, Select } from 'posy-fnb-core'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
@@ -9,8 +9,10 @@ import { toast } from 'react-toastify'
 import { FormSubscriptionEntities } from './entities'
 import { useForm } from '@/hooks/useForm'
 import { SubscriptionFormSchema } from '@/schemas/subscription'
-import { DataType } from '@/pages/admin/list/entities'
 import { Subscription_Period } from '@/constants/index'
+import { useCreateSubscriptionViewModal } from '@/view/subscription/view-modals/CreateSubscriptionViewModel'
+import { Subscription } from '@/domain/subscription/models'
+import { useUpdateSubscriptionViewModal } from '@/view/subscription/view-modals/UpdateSubscriptionViewModel'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -20,7 +22,8 @@ interface MoleculesFormSubscriptionProps {
   isEdit: boolean
   isOpenModal: boolean
   handleClose: () => void
-  selectedData: DataType
+  selectedData: Subscription
+  handleRefetch: () => void
 }
 
 const MoleculesFormSubscription = ({
@@ -28,6 +31,7 @@ const MoleculesFormSubscription = ({
   isOpenModal,
   handleClose,
   selectedData,
+  handleRefetch,
 }: MoleculesFormSubscriptionProps) => {
   const {
     handleSubmit,
@@ -44,104 +48,139 @@ const MoleculesFormSubscription = ({
   const handleCloseModal = () => {
     reset()
     handleClose()
+    handleRefetch()
   }
 
-  const handleCreateAdmin = (data: FormSubscriptionEntities) => {
-    /**
-     * Todo : Send `data` to backend
-     */
+  const { createSubscription, isLoading: isLoadingCreate } =
+    useCreateSubscriptionViewModal({
+      onSuccess() {
+        handleCloseModal()
+        toast.success('Sucessfully added new Subscription Plan')
+      },
+    })
 
-    /**
-     * Will be remove soon
-     */
-
-    const getData = JSON.parse(localStorage.getItem('items') || '')
-
-    getData.push(data)
-
-    localStorage.setItem('items', JSON.stringify(getData))
-
-    /** ---------------------------------------------------- */
-
-    if (getData) {
-      handleCloseModal()
-      toast.success('Sucessfully added new admin')
-    }
-  }
-
-  const handleEditAdmin = (data: FormSubscriptionEntities) => {
-    /**
-     * Todo : Send `data` to backend
-     */
-    if (data) {
-      handleCloseModal()
-      toast.success('Sucessfully edit user admin')
-    }
-  }
+  const { updateSubscription, isLoading: isLoadingUpdate } =
+    useUpdateSubscriptionViewModal({
+      onSuccess() {
+        handleCloseModal()
+        toast.success('Sucessfully added new Subscription Plan')
+      },
+    })
 
   const handleSubmitForm = (data: FormSubscriptionEntities) => {
+    const { uuid } = selectedData
+    const { subscription_name, description, period, price } = data
+
+    const newPayload = {
+      subscription_name,
+      description,
+      price: Number(price),
+      period: period.value,
+    }
+
+    const newUpdatePayload = {
+      id: uuid,
+      payload: {
+        subscription_name,
+        description,
+        price: Number(price),
+        period: period.value,
+      },
+    }
+
     if (isEdit) {
-      handleEditAdmin(data)
+      updateSubscription(newUpdatePayload)
     } else {
-      handleCreateAdmin(data)
+      createSubscription(newPayload)
     }
   }
 
-  const titleText = isEdit ? 'Edit User' : 'Register Subscription Plan'
+  useEffect(() => {
+    if (isEdit) {
+      const { name, price, period, description } = selectedData
+
+      setValue('subscription_name', name)
+      setValue('price', price.toString())
+      setValue('description', description)
+
+      const getPeriod = Object.values(Subscription_Period).filter(
+        (data) => data.value === period,
+      )
+
+      setValue('period', getPeriod[0])
+    }
+  }, [selectedData, isEdit, setValue])
+
+  const wordingText = isEdit
+    ? { title: 'Edit Subscription Plan', button: 'Save' }
+    : { title: 'Create New Subscription Plan', button: 'Submit' }
 
   return (
     <ModalForm
       handleCloseModal={handleCloseModal}
       isOpenModal={isOpenModal}
-      title={titleText}
+      title={wordingText.title}
     >
       <section className="w-big-500 p-4">
         <form onSubmit={handleSubmit((data) => handleSubmitForm(data))}>
           <div className="mb-6">
             <Input
-              {...register('subscriptionName')}
+              {...register('subscription_name')}
               className="w-52"
               labelText="Subscription Name"
               type="text"
-              placeholder="ex: Package"
-              disabled={isEdit}
-              error={!!errors?.subscriptionName}
-              helperText={errors?.subscriptionName?.message}
+              placeholder="ex: Subscription Package Name"
+              error={!!errors?.subscription_name}
+              helperText={errors?.subscription_name?.message}
             />
           </div>
           <div className="mb-6">
             <Select
-              name="subscriptionPeriod"
-              onChange={(e) => setValue('subscriptionPeriod', e)}
+              name="period"
+              onChange={(e) => setValue('period', e)}
+              value={watch('period')}
               options={Subscription_Period}
-              labelText="Role"
+              labelText="Subscription Period"
               placeholder="ex: 1 Month, etc"
               className="flex items-center justify-center"
-              error={!!errors.subscriptionPeriod}
-              helperText={errors?.subscriptionPeriod?.message}
+              error={!!errors.period}
+              helperText={errors?.period?.message}
             />
           </div>
           <div className="mb-6">
             <Input
-              {...register('subscriptionPrice')}
+              {...register('price')}
               prefix="Rp"
+              type="number"
+              onChange={(e) => Number(e.target.value)}
               labelText="Subscription Price"
-              placeholder="ex: 1 Month"
+              placeholder="ex: 1000, input number only"
               className="flex items-center justify-center"
-              error={!!errors.subscriptionPrice}
-              helperText={errors?.subscriptionPrice?.message}
+              error={!!errors.price}
+              helperText={errors?.price?.message}
             />
           </div>
-
+          <div className="mb-6">
+            <Input
+              {...register('description')}
+              prefix="Rp"
+              labelText="Subscription Description"
+              placeholder="ex: Description . . ."
+              className="flex items-center justify-center"
+              error={!!errors.description}
+              helperText={errors?.description?.message}
+            />
+          </div>
           <Button
             type="submit"
             variant="primary"
             size="l"
             fullWidth
             className="flex items-center justify-center gap-2"
+            isLoading={isLoadingCreate || isLoadingUpdate}
           >
             <AiOutlineCheckSquare />
-            Submit
+            {wordingText.button}
           </Button>
         </form>
       </section>

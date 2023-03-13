@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
 export const SubscriptionFormSchema = z.object({
-  subscriptionName: z.string().min(3),
-  subscriptionPeriod: z.object({ label: z.string(), value: z.string() }),
-  subscriptionPrice: z.number(),
+  subscription_name: z.string().min(3),
+  period: z.object({ label: z.string(), value: z.number() }),
+  price: z.string(),
+  description: z.string(),
 })

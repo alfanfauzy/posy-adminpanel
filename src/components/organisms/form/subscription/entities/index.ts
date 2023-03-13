@@ -1,8 +1,9 @@
 export interface FormSubscriptionEntities {
-  subscriptionName: string
-  subscriptionPeriod: {
+  subscription_name: string
+  period: {
     label: string
-    value: string
+    value: number
   }
-  subscriptionPrice: number
+  price: string
+  description: string
 }
