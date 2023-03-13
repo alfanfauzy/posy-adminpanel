@@ -9,7 +9,9 @@ import dynamic from 'next/dynamic'
 import { FormPermissionEntities } from './entities'
 import { useForm } from '@/hooks/useForm'
 import { PermissionFormSchema } from '@/schemas/permission'
-import { DataType } from '@/organisms/layout/permission/entities'
+import { useCreateAccessViewModal } from '@/view/access/view-modals/CreateAccessViewModel'
+import { Access } from '@/domain/access/models'
+import { useUpdateAccessViewModal } from '@/view/access/view-modals/UpdateAccessViewModel'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -19,7 +21,8 @@ interface MoleculesFormPermissionProps {
   isEdit: boolean
   isOpenModal: boolean
   handleClose: () => void
-  selectedData: DataType
+  selectedData: Access
+  handleRefetch: () => void
 }
 
 const MoleculesFormPermission = ({
@@ -27,6 +30,7 @@ const MoleculesFormPermission = ({
   isOpenModal,
   handleClose,
   selectedData,
+  handleRefetch,
 }: MoleculesFormPermissionProps) => {
   const {
     handleSubmit,
@@ -42,65 +46,60 @@ const MoleculesFormPermission = ({
   const handleCloseModal = () => {
     reset()
     handleClose()
+    handleRefetch()
   }
 
-  const handleCreatePermission = (data: FormPermissionEntities) => {
-    /**
-     * Todo : Send `data` to backend
-     */
+  const { createAccess, isLoading: isLoadingCreate } = useCreateAccessViewModal(
+    {
+      onSuccess() {
+        handleCloseModal()
+        toast.success('Sucessfully added new Permission')
+      },
+    },
+  )
 
-    /**
-     * Will be remove soon
-     */
-
-    const getData = JSON.parse(localStorage.getItem('items') || '')
-
-    getData.push(data)
-
-    localStorage.setItem('items', JSON.stringify(getData))
-
-    /** ---------------------------------------------------- */
-
-    if (getData) {
-      handleCloseModal()
-      toast.success('Sucessfully added new Permission')
-    }
-  }
-
-  const handleEditPermission = (data: FormPermissionEntities) => {
-    /**
-     * Todo : Send `data` to backend
-     */
-    if (data) {
-      handleCloseModal()
-      toast.success('Sucessfully edit Permission')
-    }
-  }
+  const { updateAccess, isLoading: isLoadingUpdate } = useUpdateAccessViewModal(
+    {
+      onSuccess() {
+        handleCloseModal()
+        toast.success('Sucessfully update Permission')
+      },
+    },
+  )
 
   const handleSubmitForm = (data: FormPermissionEntities) => {
+    const { uuid } = selectedData
+
+    const newPayload = {
+      id: uuid,
+      payload: data,
+    }
+
     if (isEdit) {
-      handleEditPermission(data)
+      updateAccess(newPayload)
     } else {
-      handleCreatePermission(data)
+      createAccess(data)
     }
   }
 
   useEffect(() => {
     if (isEdit) {
       const { name, description, key } = selectedData
-      setValue('name', name || '')
-      setValue('description', description || '')
-      setValue('key', key || '')
+      setValue('name', name)
+      setValue('description', description)
+      setValue('key', key)
     }
   }, [selectedData, isEdit, setValue])
 
-  const titleText = isEdit ? 'Edit Permission' : 'Create New Permission'
+  const wordingText = isEdit
+    ? { title: 'Edit Permission', button: 'Save' }
+    : { title: 'Create New Permission', button: 'Submit' }
 
   return (
     <ModalForm
       isOpenModal={isOpenModal}
       handleCloseModal={handleCloseModal}
-      title={titleText}
+      title={wordingText.title}
     >
       <section className="w-big-500 p-4">
         <form onSubmit={handleSubmit((data) => handleSubmitForm(data))}>
@@ -138,24 +137,16 @@ const MoleculesFormPermission = ({
             />
           </div>
 
-          <div className="mb-6">
-            <Input
-              {...register('url')}
-              labelText="URL: "
-              placeholder="url(option)"
-              className="flex items-center justify-center"
-            />
-          </div>
-
           <Button
             type="submit"
             variant="primary"
             size="l"
             fullWidth
             className="flex items-center justify-center gap-2"
+            isLoading={isLoadingCreate || isLoadingUpdate}
           >
             <AiOutlineCheckSquare />
-            Submit
+            {wordingText.button}
           </Button>
         </form>
       </section>

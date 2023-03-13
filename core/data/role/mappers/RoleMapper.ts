@@ -1,4 +1,4 @@
-import { GetRoleListDataResponse } from '../../../role/types'
+import { GetRoleListDataResponse } from '../types'
 import { Roles } from 'core/domain/role/models'
 
 export const mapToRoleModel = (datas: GetRoleListDataResponse[]): Roles =>

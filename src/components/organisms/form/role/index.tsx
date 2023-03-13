@@ -12,7 +12,6 @@ import { RoleFormSchema } from '@/schemas/role'
 import { useCreateRolesViewModal } from '@/view/role/view-modals/CreateRoleViewModel'
 import { useUpdateRolesViewModal } from '@/view/role/view-modals/UpdateRoleViewModel'
 import { Role } from '@/domain/role/models'
-import { ErrorType } from 'types/index'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -38,7 +37,6 @@ const MoleculesFormRole = ({
     reset,
     setValue,
     formState: { errors },
-    watch,
   } = useForm({
     schema: RoleFormSchema,
     mode: 'onChange',

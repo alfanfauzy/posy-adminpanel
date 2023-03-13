@@ -11,7 +11,6 @@ import {
   ResultMutation,
   UpdateParams,
 } from 'core/domain/vo/BaseResponse'
-import { FormtEditRoleEntities } from '@/organisms/form/role/entities'
 
 /**
  * GET
