@@ -84,3 +84,6 @@ export const Subscription_Period = [
 export const SERVICE_DOMAIN = {
   user: 'fnb-user-service',
 }
+
+export const PASSWORD_REGEX =
+  /^(?=.?[A-Z])(?=.?[a-z])(?=.?[0-9])(?=.?[#?!@$%^&*-.]).{8,50}$/
