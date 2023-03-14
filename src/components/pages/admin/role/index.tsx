@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
+import AccessSettingLayout from '@/organisms/layout/access'
 
 const TabsComponent = dynamic(
   () => import('posy-fnb-core').then((el) => el.Tabs),
@@ -12,7 +13,11 @@ const RoleListLayout = dynamic(() => import('@/organisms/layout/role'))
 const PermissionLayout = dynamic(() => import('@/organisms/layout/permission'))
 
 const RolePermissionLayout = () => {
-  const Item = [{ label: 'Role' }, { label: 'Permission' }]
+  const Item = [
+    { label: 'Access Setting' },
+    { label: 'Role' },
+    { label: 'Permission' },
+  ]
 
   const [tabsVal, setTabsVal] = useState(0)
 
@@ -26,8 +31,9 @@ const RolePermissionLayout = () => {
         />
       </div>
 
-      {tabsVal === 0 && <RoleListLayout />}
-      {tabsVal === 1 && <PermissionLayout />}
+      {tabsVal === 0 && <AccessSettingLayout />}
+      {tabsVal === 1 && <RoleListLayout />}
+      {tabsVal === 2 && <PermissionLayout />}
     </section>
   )
 }
