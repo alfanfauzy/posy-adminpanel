@@ -23,7 +23,9 @@ const ModalConfirmation = dynamic(
 const RoleLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchParams, setSearchParams] = useState<Search<any>[]>([])
+  const [searchParams, setSearchParams] = useState<Search<any>[]>([
+    { field: 'is_internal', value: 'true' },
+  ])
   const [valueSearch, setValueSearch] = useState('')
 
   const hooksParams: GetRolesInput = useMemo(
