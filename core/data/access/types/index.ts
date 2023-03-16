@@ -5,6 +5,7 @@ export interface GetAccessListDataResponse {
   name: string
   description: string
   key: string
+  is_internal: boolean
   metadata: Metadata
 }
 

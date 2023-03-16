@@ -6,5 +6,7 @@ export const mapToRoleModel = (datas: GetRoleListDataResponse[]): Roles =>
     uuid: data.uuid,
     name: data.name,
     description: data.description,
+    is_internal: data.is_internal,
     seconds: data.metadata.created_at.seconds,
+    accesses: data.accesses,
   }))

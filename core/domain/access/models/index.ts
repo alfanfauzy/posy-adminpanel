@@ -4,6 +4,7 @@ export interface AccessBased {
   key: string
   description: string
   seconds: number
+  is_internal: boolean
 }
 
 export type Access = AccessBased
@@ -15,3 +16,5 @@ export type FormAccess = {
   key: string
   description: string
 }
+
+export type TempAccess = Omit<AccessBased, 'seconds'>

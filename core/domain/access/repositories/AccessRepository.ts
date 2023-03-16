@@ -13,7 +13,7 @@ import {
  */
 export type GetAccessFilterInput = FilterInputVariables<
   'created_at',
-  keyof Pick<Access, 'name'>
+  keyof Pick<Access, 'name' | 'is_internal'>
 >
 
 export type GetAccesssResult = ResultQuery<Datalist<Accesss> | undefined> & {

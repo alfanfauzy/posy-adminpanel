@@ -17,7 +17,7 @@ import {
  */
 export type GetRolesInput = FilterInputVariables<
   'created_at',
-  keyof Pick<Role, 'name'>
+  keyof Pick<Role, 'name' | 'is_internal'>
 >
 
 export type GetRolesResult = ResultQuery<Datalist<Roles> | undefined> & {

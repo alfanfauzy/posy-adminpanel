@@ -31,6 +31,7 @@ const PermissionLayout: React.FC = () => {
     name: '',
     key: '',
     description: '',
+    is_internal: false,
     seconds: 0,
   })
 
@@ -70,6 +71,7 @@ const PermissionLayout: React.FC = () => {
       name: '',
       key: '',
       description: '',
+      is_internal: false,
       seconds: 0,
     })
     handleRefetchTable()

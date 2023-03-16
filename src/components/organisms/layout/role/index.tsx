@@ -49,6 +49,8 @@ const RoleLayout: React.FC = () => {
     name: '',
     description: '',
     seconds: 0,
+    accesses: [],
+    is_internal: false,
     uuid: '',
   })
   const [isEdit, setIsEdit] = useState(false)
@@ -70,6 +72,8 @@ const RoleLayout: React.FC = () => {
       name: '',
       description: '',
       seconds: 0,
+      is_internal: false,
+      accesses: [],
       uuid: '',
     })
     handleRefetchTable()

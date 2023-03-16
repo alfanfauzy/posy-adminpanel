@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwindcss /forms
 
 * {
   box-sizing: border-box;
@@ -96,7 +97,6 @@ body {
   padding: 10px;
   display: none;
   width: 100%;
-  border: 1px solid #3c3e43;
 }
 
 .react-tabs__tab-panel--selected {

@@ -26,7 +26,7 @@ export const useGetAccessUsecase = (
   }
 
   return {
-    data: undefined,
+    data: [],
     pagination: undefined,
     ...rest,
   }
