@@ -70,15 +70,17 @@ const MoleculesFormPermission = ({
   const handleSubmitForm = (data: FormPermissionEntities) => {
     const { uuid } = selectedData
 
-    const newPayload = {
+    const newPayload = { ...data, is_internal: true }
+
+    const editPayload = {
       id: uuid,
-      payload: data,
+      payload: newPayload,
     }
 
     if (isEdit) {
-      updateAccess(newPayload)
+      updateAccess(editPayload)
     } else {
-      createAccess(data)
+      createAccess(newPayload)
     }
   }
 
@@ -119,7 +121,7 @@ const MoleculesFormPermission = ({
             <Input
               {...register('key')}
               labelText="Permission Key:"
-              placeholder="permission key, ex: get_user_list"
+              placeholder="Permission key, ex: report:transaction"
               className="flex items-center justify-center"
               error={!isEdit && !!errors.key}
               helperText={errors?.key?.message}

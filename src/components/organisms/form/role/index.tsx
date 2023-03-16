@@ -65,12 +65,14 @@ const MoleculesFormRole = ({
   const handleSubmitForm = (data: FormRoleEntities) => {
     const { uuid } = selectedData
 
-    const paramsEdit = { id: uuid, payload: data }
+    const newPayload = { ...data, is_internal: true }
+
+    const paramsEdit = { id: uuid, payload: newPayload }
 
     if (isEdit) {
       updateRole(paramsEdit)
     } else {
-      createRole(data)
+      createRole(newPayload)
     }
   }
 
