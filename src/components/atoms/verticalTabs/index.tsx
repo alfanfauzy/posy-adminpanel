@@ -1,33 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { AccessByGroup } from '@/organisms/layout/access/entities'
-import { AccessBased, TempAccess } from '@/domain/access/models'
+import { AccessFormProps, RoleType, VerticalTabsProps } from './entities'
 import { GetAccessListDataResponse } from '@/data/access/types'
-
-interface RoleType {
-  id: string
-  name: string
-  accesses: AccessBased[]
-}
-
-interface VerticalTabsProps {
-  dataRoles: RoleType[]
-  dataAccesses: AccessByGroup[]
-  setSelectedRole: React.Dispatch<
-    React.SetStateAction<{
-      id: string
-      name: string
-    }>
-  >
-  tempAccess: TempAccess[]
-  setTempAccess: React.Dispatch<React.SetStateAction<TempAccess[]>>
-}
-
-interface AccessFormProps {
-  permissionList: AccessByGroup
-  tempAccess: TempAccess[]
-  setTempAccess: React.Dispatch<React.SetStateAction<TempAccess[]>>
-}
 
 const AccessForm = ({
   permissionList,
@@ -35,7 +9,6 @@ const AccessForm = ({
   setTempAccess,
 }: AccessFormProps) => {
   const { group, access } = permissionList
-  const itemComponent: JSX.Element[] = []
 
   const handleChecked = (
     item: GetAccessListDataResponse,
@@ -50,12 +23,11 @@ const AccessForm = ({
     }
   }
 
-  // eslint-disable-next-line array-callback-return
-  access.map((item) => {
+  const RenderItemAccessComponent = access.map((item) => {
     const isChecked =
       tempAccess.findIndex((dataAcc) => dataAcc.uuid === item.uuid) !== -1
 
-    itemComponent.push(
+    return (
       <span className="flex gap-2 align-top" key={item.name}>
         <input
           className="bg-grey-700 mb-2 h-4 w-4 cursor-pointer rounded shadow checked:accent-[#00ba9b]"
@@ -65,7 +37,7 @@ const AccessForm = ({
           checked={isChecked}
         />
         {item.name}
-      </span>,
+      </span>
     )
   })
 
@@ -74,7 +46,9 @@ const AccessForm = ({
       <h1 className="mb-2 text-xl-bold capitalize">
         {group.split('_').join(' ')}
       </h1>
-      <div className="ml-4 flex flex-col text-l-medium">{itemComponent}</div>
+      <div className="ml-4 flex flex-col text-l-medium">
+        {RenderItemAccessComponent}
+      </div>
     </section>
   )
 }
