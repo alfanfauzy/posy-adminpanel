@@ -40,10 +40,10 @@ const SingleMenuContent = ({ itemMenu, goToPage }: SingleMenuEntities) => {
     <MenuItem
       icon={icon}
       onClick={() => goToPage(path)}
-      className={`py-1.5 transition-all duration-300 ease-in-out ${
+      className={`py-1 transition-all duration-300 ease-in-out ${
         asPath.indexOf(path) !== -1
-          ? 'rounded-lg bg-neutral-20'
-          : 'hover:rounded-lg hover:bg-neutral-20'
+          ? 'rounded-lg bg-[#00ba9b] text-white'
+          : 'hover:rounded-lg hover:bg-slate-100'
       }`}
       active={asPath.indexOf(path) !== -1}
     >
@@ -68,11 +68,11 @@ const SubMenuMenuContent = ({ itemMenu, goToPage }: SubMenuEntities) => {
         <MenuItem
           key={generateUniqueId(5)}
           onClick={() => goToPage(item.path ?? '')}
-          className={`py-1.5 transition-all duration-300 ease-in-out ${
+          className={`transition-all duration-300 ease-in-out ${
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             asPath.indexOf(item.path!) !== -1
-              ? 'rounded-lg bg-neutral-20 font-semibold'
-              : 'hover:rounded-lg hover:bg-neutral-20'
+              ? 'bg-[#00ba9b] text-white'
+              : 'hover:bg-slate-100'
           }`}
         >
           {' '}
