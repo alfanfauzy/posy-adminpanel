@@ -4,7 +4,7 @@ import type { ColumnsType } from 'antd/es/table'
 import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
-import { DataType } from './entities'
+import { PermissionLayoutProps } from './entities'
 import { timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
@@ -22,10 +22,12 @@ const ModalConfirmation = dynamic(
   () => import('@/molecules/modal/confirmation'),
 )
 
-const PermissionLayout: React.FC = () => {
+const PermissionLayout = ({ type }: PermissionLayoutProps) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchParams, setSearchParams] = useState<Search<any>[]>([])
+  const [searchParams, setSearchParams] = useState<Search<any>[]>([
+    { field: 'is_internal', value: type === 'admin' ? 'true' : 'false' },
+  ])
   const [selectedData, setSelectedData] = useState<Access>({
     uuid: '',
     name: '',
@@ -174,6 +176,7 @@ const PermissionLayout: React.FC = () => {
         isEdit={isEdit}
         selectedData={selectedData}
         handleRefetch={handleRefetchTable}
+        type={type}
       />
       <ModalConfirmation
         isOpenModal={openModalConfirmation}

@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react'
 import { Button } from 'posy-fnb-core'
 import { toast } from 'react-toastify'
-import { AccessByGroup } from './entities'
+import { Empty } from 'antd'
+import { AccessByGroup, AccessSettingLayoutProps } from './entities'
 import { useGetRolesViewModal } from '@/view/role/view-modals/GetRolesViewModel'
 import { GetRolesInput } from '@/domain/role/repositories/RoleRepository'
 import { useGetAccessViewModal } from '@/view/access/view-modals/GetAccessViewModel'
@@ -45,12 +46,14 @@ const GroupingAccess = (DataAccesses: object): AccessByGroup[] => {
   return mapAccessPermission
 }
 
-const AccessSettingLayout = () => {
+const AccessSettingLayout = ({ type }: AccessSettingLayoutProps) => {
   const [selectedRole, setSelectedRole] = useState({ id: '0', name: '' })
   const [tempAccess, setTempAccess] = useState<TempAccess[]>([])
 
   const hooksParams: GetRolesInput = {
-    search: [{ field: 'is_internal', value: 'true' }],
+    search: [
+      { field: 'is_internal', value: type === 'admin' ? 'true' : 'false' },
+    ],
     sort: { field: 'created_at', value: 'desc' },
     page: 1,
     limit: 0,
@@ -122,6 +125,14 @@ const AccessSettingLayout = () => {
     }
 
     createRoleAccess(payload)
+  }
+
+  if (newDataAccess.length === 0 && newDataRole.length === 0) {
+    return (
+      <div className="m-auto mt-3 flex justify-center rounded-lg border-2 border-gray-200 p-5">
+        <Empty />
+      </div>
+    )
   }
 
   return (

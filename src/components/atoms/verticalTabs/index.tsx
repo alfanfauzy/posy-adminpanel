@@ -69,7 +69,7 @@ const VerticalTabs = ({
 
   useEffect(() => {
     setSelectedRole(getSelectedTab[0])
-    setTempAccess(getSelectedTab[0].accesses)
+    setTempAccess(getSelectedTab[0]?.accesses)
   }, [indexTabs])
 
   return (

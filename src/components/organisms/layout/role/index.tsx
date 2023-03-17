@@ -4,6 +4,7 @@ import type { ColumnsType } from 'antd/es/table'
 import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
+import { RoleLayoutProps } from './entities'
 import { findIndexArraySearch, timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
@@ -20,11 +21,11 @@ const ModalConfirmation = dynamic(
   () => import('@/molecules/modal/confirmation'),
 )
 
-const RoleLayout: React.FC = () => {
+const RoleLayout = ({ type }: RoleLayoutProps) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [searchParams, setSearchParams] = useState<Search<any>[]>([
-    { field: 'is_internal', value: 'true' },
+    { field: 'is_internal', value: type === 'admin' ? 'true' : 'false' },
   ])
   const [valueSearch, setValueSearch] = useState('')
 
@@ -213,6 +214,7 @@ const RoleLayout: React.FC = () => {
         isEdit={isEdit}
         selectedData={selectedData}
         handleRefecth={handleRefetchTable}
+        type={type}
       />
       <ModalConfirmation
         isOpenModal={openModalConfirmation}

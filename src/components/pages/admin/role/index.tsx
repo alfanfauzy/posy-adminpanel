@@ -31,9 +31,9 @@ const RolePermissionLayout = () => {
         />
       </div>
 
-      {tabsVal === 0 && <AccessSettingLayout />}
-      {tabsVal === 1 && <RoleListLayout />}
-      {tabsVal === 2 && <PermissionLayout />}
+      {tabsVal === 0 && <AccessSettingLayout type="admin" />}
+      {tabsVal === 1 && <RoleListLayout type="admin" />}
+      {tabsVal === 2 && <PermissionLayout type="admin" />}
     </section>
   )
 }

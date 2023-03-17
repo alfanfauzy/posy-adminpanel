@@ -23,6 +23,7 @@ interface MoleculesFormPermissionProps {
   handleClose: () => void
   selectedData: Access
   handleRefetch: () => void
+  type: 'admin' | 'client'
 }
 
 const MoleculesFormPermission = ({
@@ -31,6 +32,7 @@ const MoleculesFormPermission = ({
   handleClose,
   selectedData,
   handleRefetch,
+  type,
 }: MoleculesFormPermissionProps) => {
   const {
     handleSubmit,
@@ -70,7 +72,9 @@ const MoleculesFormPermission = ({
   const handleSubmitForm = (data: FormPermissionEntities) => {
     const { uuid } = selectedData
 
-    const newPayload = { ...data, is_internal: true }
+    const is_internal = type === 'admin'
+
+    const newPayload = { ...data, is_internal }
 
     const editPayload = {
       id: uuid,

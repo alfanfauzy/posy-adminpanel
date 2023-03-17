@@ -1,154 +1,41 @@
 import React, { useState } from 'react'
-import { Button } from 'posy-fnb-core'
-import type { ColumnsType } from 'antd/es/table'
-import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
-import { toast } from 'react-toastify'
-import { DataType } from './entities'
-import { dummyRoleList } from 'src/data/role'
-import { timeStampConverter } from '@/constants/utils'
-import AtomTable from '@/atoms/table'
-import useToggle from '@/hooks/useToggle'
-import HeaderContent from '@/templates/header/header-content'
+import AccessSettingLayout from '@/organisms/layout/access'
 
-const MoleculesFormRoleUser = dynamic(() => import('@/organisms/form/roleUser'))
-const ModalConfirmation = dynamic(
-  () => import('@/molecules/modal/confirmation'),
+const TabsComponent = dynamic(
+  () => import('posy-fnb-core').then((el) => el.Tabs),
+  {
+    ssr: false,
+  },
 )
 
-const RoleUserLayout: React.FC = () => {
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(10)
+const RoleListLayout = dynamic(() => import('@/organisms/layout/role'))
+const PermissionLayout = dynamic(() => import('@/organisms/layout/permission'))
 
-  const [selectedData, setSelectedData] = useState<DataType>({})
-  const [isEdit, setIsEdit] = useState(false)
-
-  const { value: openModal, toggle: handleOpenModal } = useToggle(false)
-  const { value: openModalConfirmation, toggle: handleOpenModalConfirmation } =
-    useToggle(false)
-
-  /** Modal Confirmation Action */
-
-  const handleShowConfirmationModal = (data: DataType) => {
-    handleOpenModalConfirmation()
-    setSelectedData(data)
-  }
-
-  const handleCloseModalConfirmation = () => {
-    handleOpenModalConfirmation()
-    setSelectedData({})
-  }
-
-  /** ------------------------- */
-
-  /** Modal Add/Edit Action */
-
-  const handleOpenFormModal = () => {
-    handleOpenModal()
-    if (isEdit) {
-      setIsEdit(!isEdit)
-    }
-  }
-
-  /** ------------------------- */
-
-  const handleDeleteAdmin = () => {
-    const { uuid } = selectedData
-    /**
-     * Todo Remove
-     */
-
-    handleCloseModalConfirmation()
-    toast.success(`Sucessfully remove data ${uuid}`)
-  }
-
-  const columns: ColumnsType<DataType> = [
-    {
-      title: '#',
-      dataIndex: '',
-      filterMode: 'tree',
-      filterSearch: true,
-      render: (value, item, index) => (page - 1) * 10 + index + 1,
-    },
-    {
-      title: 'Role Name',
-      key: 'name',
-      dataIndex: 'name',
-    },
-    {
-      title: 'Description',
-      key: 'description',
-      dataIndex: 'description',
-    },
-    {
-      title: 'Created At',
-      key: 'created_at',
-      dataIndex: 'created_at',
-      sorter: (a: any, b: any) => a.created_at.seconds - b.created_at.seconds,
-      render: (dataValue, record: any) =>
-        timeStampConverter(record?.created_at?.seconds, 'DD-MM-YYYY HH:mm'),
-    },
-
-    {
-      title: 'Action',
-      render: (dataValue, record, index) => (
-        <span className="flex gap-1">
-          <Button
-            variant="secondary"
-            onClick={() => {
-              handleOpenFormModal()
-              setIsEdit(true)
-              setSelectedData(dataValue)
-            }}
-          >
-            <AiFillEdit />
-          </Button>
-          <Button
-            variant="red-accent"
-            onClick={() => handleShowConfirmationModal(dataValue)}
-          >
-            <AiFillDelete />
-          </Button>
-        </span>
-      ),
-    },
+const RolePermissionLayout = () => {
+  const Item = [
+    { label: 'Access Setting' },
+    { label: 'Role' },
+    { label: 'Permission' },
   ]
 
+  const [tabsVal, setTabsVal] = useState(0)
+
   return (
-    <div>
-      <HeaderContent
-        onClick={handleOpenFormModal}
-        textButton="Create New Role"
-        iconElement={<AiOutlinePlus />}
-      />
-      <MoleculesFormRoleUser
-        isOpenModal={openModal}
-        handleClose={handleOpenFormModal}
-        isEdit={isEdit}
-        selectedData={selectedData}
-      />
-      <ModalConfirmation
-        isOpenModal={openModalConfirmation}
-        title="Modal Confirmation"
-        text="Are you sure want to remove ?"
-        onClose={handleCloseModalConfirmation}
-        onOk={handleDeleteAdmin}
-      />
-      <AtomTable
-        columns={columns}
-        dataSource={dummyRoleList}
-        onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}
-        limitSize={limit}
-        isLoading={false}
-        pagination={{
-          current: page,
-          pageSize: limit,
-          total: dummyRoleList.length,
-          onChange: setPage,
-        }}
-      />
-    </div>
+    <section>
+      <div>
+        <TabsComponent
+          items={Item}
+          value={tabsVal}
+          onChange={(e) => setTabsVal(e)}
+        />
+      </div>
+
+      {tabsVal === 0 && <AccessSettingLayout type="client" />}
+      {tabsVal === 1 && <RoleListLayout type="client" />}
+      {tabsVal === 2 && <PermissionLayout type="client" />}
+    </section>
   )
 }
 
-export default RoleUserLayout
+export default RolePermissionLayout

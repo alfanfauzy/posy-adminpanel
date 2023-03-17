@@ -22,6 +22,7 @@ interface MoleculesFormRoleProps {
   handleClose: () => void
   selectedData: Role
   handleRefecth: () => void
+  type: 'admin' | 'client'
 }
 
 const MoleculesFormRole = ({
@@ -30,6 +31,7 @@ const MoleculesFormRole = ({
   handleClose,
   selectedData,
   handleRefecth,
+  type,
 }: MoleculesFormRoleProps) => {
   const {
     handleSubmit,
@@ -65,7 +67,9 @@ const MoleculesFormRole = ({
   const handleSubmitForm = (data: FormRoleEntities) => {
     const { uuid } = selectedData
 
-    const newPayload = { ...data, is_internal: true }
+    const is_internal = type === 'admin'
+
+    const newPayload = { ...data, is_internal }
 
     const paramsEdit = { id: uuid, payload: newPayload }
 
