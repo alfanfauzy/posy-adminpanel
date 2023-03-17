@@ -14,6 +14,7 @@ import {
   SingleMenuEntities,
   SubMenuEntities,
 } from './entities'
+import PVGLogo from 'public/pvg-logo.png'
 import { MENU_LIST } from '@/constants/index'
 import Footer from '@/atoms/footer'
 import { generateUniqueId } from '@/constants/utils'
@@ -22,11 +23,11 @@ const SidebarTop = ({ onClick }: SideBarTopEntities) => (
   <span
     tabIndex={0}
     role="button"
-    className="mb-3 flex cursor-pointer items-center justify-center p-5"
+    className="mt-3 flex cursor-pointer items-center justify-center p-3"
     onClick={() => onClick()}
     onKeyDown={() => onClick()}
   >
-    <Image src="/pvg-logo.png" alt="Image Logo" width={150} height={100} />
+    <Image src={PVGLogo} alt="PVG Image Logo" className="w-[200px]" />
   </span>
 )
 
