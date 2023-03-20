@@ -21,7 +21,7 @@ interface MoleculesFormRoleProps {
   isOpenModal: boolean
   handleClose: () => void
   selectedData: Role
-  handleRefecth: () => void
+  handleRefetch: () => void
   type: 'admin' | 'client'
 }
 
@@ -30,7 +30,7 @@ const MoleculesFormRole = ({
   isOpenModal,
   handleClose,
   selectedData,
-  handleRefecth,
+  handleRefetch,
   type,
 }: MoleculesFormRoleProps) => {
   const {
@@ -47,7 +47,7 @@ const MoleculesFormRole = ({
   const handleCloseModal = () => {
     reset()
     handleClose()
-    handleRefecth()
+    handleRefetch()
   }
 
   const { createRole, isLoading } = useCreateRolesViewModal({

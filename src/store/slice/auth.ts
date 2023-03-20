@@ -1,10 +1,10 @@
 // import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { LoginDataResponse } from 'shared'
+import { DataLogin } from '@/domain/auth/models'
 
 export interface AuthState {
   isLoggedIn: boolean
-  authData: LoginDataResponse
+  authData: DataLogin
 }
 
 const initialState: AuthState = {
@@ -22,8 +22,9 @@ const initialState: AuthState = {
         uuid: '',
         name: '',
         is_internal: false,
+        accesses: null,
       },
-      access: [],
+      accesses: [],
     },
   },
 }
@@ -32,10 +33,7 @@ export const AuthSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    authSuccess: (
-      state: AuthState,
-      action: PayloadAction<LoginDataResponse>,
-    ) => {
+    authSuccess: (state: AuthState, action: PayloadAction<DataLogin>) => {
       state.isLoggedIn = true
       state.authData = action.payload
     },
@@ -54,8 +52,9 @@ export const AuthSlice = createSlice({
             uuid: '',
             name: '',
             is_internal: false,
+            accesses: null,
           },
-          access: [],
+          accesses: [],
         },
       }
     },

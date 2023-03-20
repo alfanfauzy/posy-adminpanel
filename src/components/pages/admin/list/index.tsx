@@ -61,7 +61,7 @@ const AdminListLayout: React.FC = () => {
   const handleCloseModalConfirmation = () => {
     handleOpenModalConfirmation()
     setSelectedData({})
-    // handleRefetchTable()
+    handleRefetchTable()
   }
 
   /** ------------------------- */

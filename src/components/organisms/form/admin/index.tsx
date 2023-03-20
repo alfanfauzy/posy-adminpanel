@@ -56,7 +56,7 @@ const MoleculesFormAdmin = ({
   })
 
   const paramsGetRole: GetRolesInput = {
-    search: [],
+    search: [{ field: 'is_internal', value: 'true' }],
     sort: { field: 'created_at', value: 'desc' },
     page: 1,
     limit: 0,
@@ -132,10 +132,10 @@ const MoleculesFormAdmin = ({
           .map((datafilter) => datafilter)
           .filter((data: GetRoleListDataResponse) => data.uuid === roleid)
 
-        setValue('role_uuid', {
-          label: getRole?.[0].name,
-          value: getRole?.[0].uuid,
-        })
+        // setValue('role_uuid', {
+        //   label: getRole?.[0].name,
+        //   value: getRole?.[0].uuid,
+        // })
         setValue('password', '')
         setValue('confirmPassword', '')
       }
