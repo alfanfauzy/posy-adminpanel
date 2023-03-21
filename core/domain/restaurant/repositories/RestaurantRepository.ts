@@ -29,8 +29,6 @@ export type GetRestaurantResult = ResultQuery<Restaurant>
  * CREATE
  */
 
-export type CreateRestaurantInput = ParamsPayload
-
 export type CreateRestaurantResult = ResultMutation<Restaurant | undefined>
 
 export interface CreateRestaurantRepository extends CreateRestaurantResult {
@@ -58,5 +56,5 @@ export type DeleteRestaurantInput = string
 export type DeleteRestaurantResult = ResultMutation<Restaurant>
 
 export interface DeleteRestaurantRepository extends DeleteRestaurantResult {
-  deleteAdmin(payload: DeleteRestaurantInput): void
+  deleteRestaurant(payload: DeleteRestaurantInput): void
 }

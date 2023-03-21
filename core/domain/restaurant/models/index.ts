@@ -1,14 +1,15 @@
-import { FormRestaurantEntities } from '@/organisms/form/restaurant/entities'
-
 export interface RestaurantBased {
   uuid: string
   name: string
   email: string
   phone: string
+  code: string
+  address: string
+  description: string
+  logo: string
   npwp: string
   nib: string
   pic_name: string
-  pic_email: string
   pic_phone: string
   seconds: number
 }
@@ -32,7 +33,4 @@ export type FormBodyPayload = {
   start_date: string
 }
 
-export interface FormRestaurant {
-  id: string
-  params: FormRestaurantEntities
-}
+export type FormRestaurant = FormData

@@ -6,10 +6,10 @@ import { toast } from 'react-toastify'
 import Post from 'api/post'
 import { MutationOptions } from 'core/domain/vo/BaseMutation'
 import { ErrorType } from 'types/index'
-import { CreateRestaurantInput } from '@/domain/restaurant/repositories/RestaurantRepository'
+import { FormRestaurant } from '@/domain/restaurant/models'
 
 export const CreateRestaurantService = async (
-  payload: CreateRestaurantInput,
+  payload: FormRestaurant,
 ): Promise<Response<CreateRestaurantResponse>> => {
   try {
     const response = await Post({
@@ -28,8 +28,7 @@ export const useCreateRestaurantMutation = (
   options?: MutationOptions<CreateRestaurantResponse>,
 ) =>
   useMutation({
-    mutationFn: (payload: CreateRestaurantInput) =>
-      CreateRestaurantService(payload),
+    mutationFn: (payload: FormRestaurant) => CreateRestaurantService(payload),
     onError(error: ErrorType) {
       toast.error(error.message)
     },

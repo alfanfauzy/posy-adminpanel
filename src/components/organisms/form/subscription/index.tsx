@@ -13,6 +13,7 @@ import { Subscription_Period } from '@/constants/index'
 import { useCreateSubscriptionViewModal } from '@/view/subscription/view-modals/CreateSubscriptionViewModel'
 import { Subscription } from '@/domain/subscription/models'
 import { useUpdateSubscriptionViewModal } from '@/view/subscription/view-modals/UpdateSubscriptionViewModel'
+import { formatCurrencyTextInput } from '@/constants/utils'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -149,10 +150,10 @@ const MoleculesFormSubscription = ({
           </div>
           <div className="mb-6">
             <Input
-              {...register('price')}
-              prefix="Rp"
-              type="number"
-              onChange={(e) => Number(e.target.value)}
+              {...register('price', {
+                setValueAs: (v) => formatCurrencyTextInput(v.replace(/\D/, '')),
+              })}
+              value={watch('price')}
               labelText="Subscription Price"
               placeholder="ex: 1000, input number only"
               className="flex items-center justify-center"

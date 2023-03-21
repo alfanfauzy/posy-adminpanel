@@ -1,10 +1,10 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/display-name */
-import React, { ChangeEvent, forwardRef, useState } from 'react'
+import React, { ChangeEvent, forwardRef, useEffect, useState } from 'react'
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
 import { toast } from 'react-toastify'
-// import { MAX_FILE_SIZE, VALID_IMAGES_TYPES } from '@/constants/index'
+import { MAX_FILE_SIZE, VALID_IMAGES_TYPES } from '@/constants/index'
 
 interface MoleculesFileUploaderProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -14,6 +14,7 @@ interface MoleculesFileUploaderProps
   handleSetValue: (field: string, file: File) => void
   handleClearFile: (field: any) => void
   name: string
+  fileUrl: string
 }
 const MoleculesFileUploader = forwardRef(
   (
@@ -25,6 +26,7 @@ const MoleculesFileUploader = forwardRef(
       handleSetValue,
       handleClearFile,
       error,
+      fileUrl = '',
     }: MoleculesFileUploaderProps,
     ref: any,
   ) => {
@@ -37,15 +39,15 @@ const MoleculesFileUploader = forwardRef(
 
       const fileType = selectedFile.type
 
-      // if (selectedFile.size > MAX_FILE_SIZE) {
-      //   toast.error('File size exceeds maximum file size')
-      //   return
-      // }
+      if (selectedFile.size > MAX_FILE_SIZE) {
+        toast.error('File size exceeds maximum file size')
+        return
+      }
 
-      // if (!VALID_IMAGES_TYPES.includes(fileType)) {
-      //   toast.error('Invalid file type')
-      //   return
-      // }
+      if (!VALID_IMAGES_TYPES.includes(fileType)) {
+        toast.error('Invalid file type')
+        return
+      }
 
       setFile(event.target.files[0])
       handleSetValue(name, selectedFile)
@@ -60,6 +62,12 @@ const MoleculesFileUploader = forwardRef(
       resetFile()
       handleClearFile(name)
     }
+
+    // useEffect(() => {
+    //   setFile(fileUrl)
+    // }, [fileUrl])
+
+    // console.log(fileUrl)
 
     return (
       <div>

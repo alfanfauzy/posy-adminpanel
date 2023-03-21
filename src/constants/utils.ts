@@ -71,3 +71,25 @@ export const FormatToRupiah = (ammount: number) =>
     currency: 'IDR',
     minimumFractionDigits: 0,
   }).format(ammount)
+
+/**
+ * Function to convert value date to unix timestamp
+ *
+ * @param valueDate
+ * @returns
+ *
+ * @example
+ * TimeToUnix(21-03-2023) //1679356800
+ * TimeToUnix(30-03-2023) //1680220800
+ */
+export const TimetoUnix = (valueDate: string | number | Date) => {
+  const date = new Date(valueDate)
+
+  return Math.floor(date.getTime() / 1000)
+}
+
+export const formatCurrencyTextInput = (value: string) =>
+  value
+    .replace(/^[0]/, '')
+    .replace(/\D/g, '')
+    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')

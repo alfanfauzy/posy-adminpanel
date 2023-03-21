@@ -12,7 +12,10 @@ export const mapToRestaurantModel = (
     nib: data.nib_image_url,
     npwp: data.npwp_image_url,
     pic_name: data.owner_name,
-    pic_email: data.owner_email,
     pic_phone: data.owner_phone,
     seconds: data.metadata.created_at.seconds,
+    address: data.restaurant_address,
+    code: data.restaurant_code,
+    description: data.restaurant_description,
+    logo: data.logo_image_url,
   }))

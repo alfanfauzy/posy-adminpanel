@@ -87,3 +87,12 @@ export const SERVICE_DOMAIN = {
 
 export const PASSWORD_REGEX =
   /^(?=.?[A-Z])(?=.?[a-z])(?=.?[0-9])(?=.?[#?!@$%^&*-.]).{8,50}$/
+
+export const VALID_IMAGES_TYPES = [
+  'image/gif',
+  'image/jpeg',
+  'image/png',
+  'image/png',
+]
+
+export const MAX_FILE_SIZE = 500000

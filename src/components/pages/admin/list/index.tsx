@@ -23,7 +23,9 @@ const ModalConfirmation = dynamic(
 const AdminListLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchParams, setSearchParams] = useState<Search<any>[]>([])
+  const [searchParams, setSearchParams] = useState<Search<any>[]>([
+    { field: 'is_internal', value: 'true' },
+  ])
 
   const hooksParams: GetFilterAdminInput = useMemo(
     () => ({
@@ -111,7 +113,12 @@ const AdminListLayout: React.FC = () => {
     {
       title: 'Role',
       key: 'role',
-      render: (dataValue, record) => <AtomTag status={record.rolename} />,
+      render: (dataValue, record) =>
+        record.roleid !== undefined ? (
+          <AtomTag status={record.rolename} />
+        ) : (
+          <p>-</p>
+        ),
     },
     {
       title: 'Created At',
