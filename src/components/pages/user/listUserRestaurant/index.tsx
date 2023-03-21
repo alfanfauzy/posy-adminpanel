@@ -1,15 +1,20 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Button } from 'posy-fnb-core'
 import type { ColumnsType } from 'antd/es/table'
 import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
 import { DataType } from './entities'
-import { dummy } from 'src/data/userRestaurants'
 import { timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
+import { useGetUserRestaurantViewModal } from '@/view/user-restaurant/view-modals/GetUserRestaurantViewModel'
+import { GetUserRestaurantFilterInput } from '@/domain/user-restaurant/repositories/UserRestaurantRepository'
+import { Search } from '@/domain/vo/BaseInput'
+import { UserRestaurant } from '@/domain/user-restaurant/models'
+import { RestaurantObject } from '@/data/user-restaurant/types'
+import { useDeleteUserRestaurantViewModal } from '@/view/user-restaurant/view-modals/DeleteUserRestaurantViewModel'
 
 const MoleculesFormUserRestaurant = dynamic(
   () => import('@/organisms/form/userRestaurant'),
@@ -21,8 +26,28 @@ const ModalConfirmation = dynamic(
 const ListUserRestaurantLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
+  const [searchParams, setSearchParams] = useState<Search<any>[]>([])
 
-  const [selectedData, setSelectedData] = useState<DataType>({})
+  const hooksParams: GetUserRestaurantFilterInput = useMemo(
+    () => ({
+      search: searchParams,
+      sort: { field: 'created_at', value: 'desc' },
+      page,
+      limit,
+    }),
+    [page, limit, searchParams],
+  )
+
+  const {
+    data: ListUserRestaurant,
+    refetch: handleRefetchTable,
+    isLoading,
+    pagination,
+  } = useGetUserRestaurantViewModal(hooksParams)
+
+  const [selectedData, setSelectedData] = useState<
+    UserRestaurant | Record<string, never>
+  >({})
   const [isEdit, setIsEdit] = useState(false)
 
   const { value: openModal, toggle: handleOpenModal } = useToggle(false)
@@ -31,7 +56,7 @@ const ListUserRestaurantLayout: React.FC = () => {
 
   /** Modal Confirmation Action */
 
-  const handleShowConfirmationModal = (data: DataType) => {
+  const handleShowConfirmationModal = (data: UserRestaurant) => {
     handleOpenModalConfirmation()
     setSelectedData(data)
   }
@@ -39,6 +64,7 @@ const ListUserRestaurantLayout: React.FC = () => {
   const handleCloseModalConfirmation = () => {
     handleOpenModalConfirmation()
     setSelectedData({})
+    handleRefetchTable()
   }
 
   /** ------------------------- */
@@ -54,17 +80,20 @@ const ListUserRestaurantLayout: React.FC = () => {
 
   /** ------------------------- */
 
+  const { deleteUserRestaurant, isLoading: isLoadingRemove } =
+    useDeleteUserRestaurantViewModal({
+      onSuccess() {
+        handleCloseModalConfirmation()
+        toast.success('Sucessfully delete USer Restaurant')
+      },
+    })
+
   const handleDeleteAdmin = () => {
     const { uuid } = selectedData
-    /**
-     * Todo Remove
-     */
-
-    handleCloseModalConfirmation()
-    toast.success(`Sucessfully remove data ${uuid}`)
+    deleteUserRestaurant(uuid)
   }
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<UserRestaurant> = [
     {
       title: '#',
       dataIndex: '',
@@ -74,8 +103,8 @@ const ListUserRestaurantLayout: React.FC = () => {
     },
     {
       title: 'Full Name',
-      key: 'fullname',
-      dataIndex: 'fullname',
+      key: 'name',
+      dataIndex: 'name',
     },
     {
       title: 'Email',
@@ -96,19 +125,25 @@ const ListUserRestaurantLayout: React.FC = () => {
       title: 'Outlet',
       key: 'outlet',
       dataIndex: 'outlet',
+      render: (value) => {
+        if (!value) return <p>-</p>
+        return (
+          <p className="truncate">
+            {value?.map((role: RestaurantObject) => role.outlet_name)}
+          </p>
+        )
+      },
     },
     {
       title: 'Created At',
-      key: 'created_at',
-      dataIndex: 'created_at',
-      sorter: (a: any, b: any) => a.created_at.seconds - b.created_at.seconds,
-      render: (dataValue, record: any) =>
-        timeStampConverter(record?.created_at?.seconds, 'DD-MM-YYYY HH:mm'),
+      key: 'seconds',
+      dataIndex: 'seconds',
+      render: (value) => timeStampConverter(value, 'DD-MM-YYYY HH:mm'),
     },
 
     {
       title: 'Action',
-      render: (dataValue, record, index) => (
+      render: (dataValue) => (
         <span className="flex gap-1">
           <Button
             variant="secondary"
@@ -150,17 +185,18 @@ const ListUserRestaurantLayout: React.FC = () => {
         text="Are you sure want to remove ?"
         onClose={handleCloseModalConfirmation}
         onOk={handleDeleteAdmin}
+        isLoadingRemove={isLoadingRemove}
       />
       <AtomTable
-        isLoading={false}
+        isLoading={isLoading}
         columns={columns}
-        dataSource={dummy}
+        dataSource={ListUserRestaurant}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}
         limitSize={limit}
         pagination={{
           current: page,
           pageSize: limit,
-          total: dummy.length,
+          total: pagination?.total_objs,
           onChange: setPage,
         }}
       />

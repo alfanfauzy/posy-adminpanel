@@ -173,7 +173,10 @@ const MoleculesFormRestaurant = ({
       title={titleText}
     >
       <section className="w-[800px] p-4">
-        <form onSubmit={handleSubmit((data) => handleSubmitForm(data))}>
+        <form
+          onSubmit={handleSubmit((data) => handleSubmitForm(data))}
+          encType="multipart/form-data"
+        >
           <div className="flex gap-2">
             <div className="w-1/3 border-r-2 pr-2">
               <MoleculesFileUploader

@@ -2,13 +2,15 @@
  * This File is docomentation type which can be used to describe to the variables in view
  */
 
+import { RestaurantObject } from '@/data/user-restaurant/types'
+
 export interface UserRestaurantBased {
   uuid: string
   name: string
   email: string
   phone: string
   role: string
-  outlet: string
+  outlet: RestaurantObject[]
   seconds: number
 }
 
