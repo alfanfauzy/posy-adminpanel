@@ -13,6 +13,7 @@ import IconEye from '@/atoms/icon/IconEye'
 import { useDispatchApp } from 'store/hooks'
 import { authSuccess } from 'store/slice/auth'
 import { useLoginViewModal } from '@/view/auth/view-models/LoginViewModel'
+import { GetAccessListDataResponse } from '@/data/access/types'
 
 const MoleculesLogin = () => {
   const router = useRouter()
@@ -33,9 +34,22 @@ const MoleculesLogin = () => {
     router.push('/dashboard')
   }
 
+  const GroupingAccess = (DataAccesses: object): Array<string> => {
+    const getKey = Object.assign(DataAccesses).map(
+      (data: GetAccessListDataResponse) => data.key.split(':')[0],
+    )
+    return Array.from(new Set(getKey))
+  }
+
   const { loginPost, isLoading } = useLoginViewModal({
     onSuccess(data) {
-      dispatch(authSuccess(data.data))
+      const permission = GroupingAccess(data.data.role_access.accesses)
+
+      const newPayload = { ...data.data, permission }
+
+      console.log(newPayload)
+
+      dispatch(authSuccess(newPayload))
       toast.success('Login Success')
       handleGoDashboard()
     },

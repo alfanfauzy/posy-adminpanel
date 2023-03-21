@@ -26,6 +26,7 @@ export interface DataLogin {
   refresh_token: string
   expired_at: BaseMetadata
   role_access: RoleAccess
+  permission: Array<string>
 }
 
 export interface PostLoginPayload {

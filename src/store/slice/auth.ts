@@ -1,10 +1,10 @@
-// import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { DataLogin } from '@/domain/auth/models'
 
 export interface AuthState {
   isLoggedIn: boolean
   authData: DataLogin
+  permission: Array<string>
 }
 
 const initialState: AuthState = {
@@ -26,7 +26,9 @@ const initialState: AuthState = {
       },
       accesses: [],
     },
+    permission: [],
   },
+  permission: [],
 }
 
 export const AuthSlice = createSlice({
@@ -36,6 +38,7 @@ export const AuthSlice = createSlice({
     authSuccess: (state: AuthState, action: PayloadAction<DataLogin>) => {
       state.isLoggedIn = true
       state.authData = action.payload
+      state.permission = action.payload.permission
     },
     onLogout: (state: AuthState) => {
       state.isLoggedIn = false
@@ -56,6 +59,7 @@ export const AuthSlice = createSlice({
           },
           accesses: [],
         },
+        permission: [],
       }
     },
   },
