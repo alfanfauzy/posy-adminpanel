@@ -26,10 +26,10 @@ export const useGetRestaurantQuery = (
   options?: UseQueryOptions<Response<Datalist<GetRestaurantListDataResponse>>>,
 ) =>
   useQuery<Response<Datalist<GetRestaurantListDataResponse>>>(
-    ['restaurant/list'],
+    ['restaurant/list', JSON.stringify(input)],
     () => GetRestaurant(input),
     {
-      // enabled: !!JSON.stringify(input),
+      enabled: !!JSON.stringify(input),
       ...options,
     },
   )

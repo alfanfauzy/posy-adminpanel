@@ -44,7 +44,7 @@ export type UpdateRestaurantParams = UpdateParams<FormRestaurant>
 export type UpdateRestaurantResult = ResultMutation<Restaurant>
 
 export interface UpdateRestaurantRepository extends UpdateRestaurantResult {
-  updateAdmin(payload: FormRestaurant): void
+  updateRestaurant(payload: UpdateRestaurantParams): void
 }
 
 /**

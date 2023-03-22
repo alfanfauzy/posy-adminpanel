@@ -18,4 +18,5 @@ export const mapToRestaurantModel = (
     code: data.restaurant_code,
     description: data.restaurant_description,
     logo: data.logo_image_url,
+    subscription_uuid: data.subscription_uuid,
   }))

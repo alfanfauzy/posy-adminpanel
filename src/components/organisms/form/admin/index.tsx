@@ -132,10 +132,10 @@ const MoleculesFormAdmin = ({
           .map((datafilter) => datafilter)
           .filter((data: GetRoleListDataResponse) => data.uuid === roleid)
 
-        // setValue('role_uuid', {
-        //   label: getRole?.[0].name,
-        //   value: getRole?.[0].uuid,
-        // })
+        setValue('role_uuid', {
+          label: getRole?.[0].name,
+          value: getRole?.[0].uuid,
+        })
         setValue('password', '')
         setValue('confirmPassword', '')
       }

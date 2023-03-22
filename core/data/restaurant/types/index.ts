@@ -13,6 +13,7 @@ export interface GetRestaurantListDataResponse {
   npwp_image_url: string
   owner_name: string
   owner_phone: string
+  subscription_uuid: string
   metadata: Metadata
 }
 

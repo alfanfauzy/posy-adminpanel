@@ -11,6 +11,7 @@ export interface RestaurantBased {
   nib: string
   pic_name: string
   pic_phone: string
+  subscription_uuid: string
   seconds: number
 }
 

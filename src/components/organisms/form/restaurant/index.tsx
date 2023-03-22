@@ -1,22 +1,26 @@
 /**
  * Restaurant Form Modal
  */
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Button, Input, Select } from 'posy-fnb-core'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
 import { FormRestaurantEntities } from './entities'
 import { useForm } from '@/hooks/useForm'
-import { RestaurantFormSchema } from '@/schemas/restaurant'
+import {
+  EditRestaurantFormSchema,
+  RestaurantFormSchema,
+} from '@/schemas/restaurant'
 import HRLine from '@/atoms/horizontalLine'
 import { useGetSubscriptionViewModal } from '@/view/subscription/view-modals/GetSubscriptionViewModel'
 import { GetAccessListDataResponse } from '@/data/access/types'
 import { GetSubscriptionFilterInput } from '@/domain/subscription/repositories/SubscriptionRepository'
-import MoleculesFileUploader from '@/molecules/fileUpload'
 import { useCreateRestaurantViewModal } from '@/view/restaurant/view-models/CreateRestaurantViewModel'
 import { TimetoUnix } from '@/constants/utils'
 import { Restaurant } from '@/domain/restaurant/models'
+import { useUpdateRestaurantViewModal } from '@/view/restaurant/view-models/UpdateRestaurantViewModel'
+import { GetSubscriptionListDataResponse } from '@/data/subscription/types'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -37,6 +41,8 @@ const MoleculesFormRestaurant = ({
   selectedData,
   handleRefetch,
 }: MoleculesFormRestaurantProps) => {
+  const FormSchema = isEdit ? EditRestaurantFormSchema : RestaurantFormSchema
+
   const {
     handleSubmit,
     register,
@@ -45,7 +51,7 @@ const MoleculesFormRestaurant = ({
     formState: { errors },
     watch,
   } = useForm({
-    schema: RestaurantFormSchema,
+    schema: FormSchema,
     mode: 'onChange',
   })
 
@@ -84,40 +90,48 @@ const MoleculesFormRestaurant = ({
       },
     })
 
-  const handleEditRestaurant = (data: FormRestaurantEntities) => {
-    /**
-     * Todo : Send `data` to backend
-     */
-    if (data) {
-      handleCloseModal()
-      toast.success('Sucessfully edit Restaurant')
-    }
-  }
+  const { updateRestaurant, isLoading: isLoadingUpdate } =
+    useUpdateRestaurantViewModal({
+      onSuccess() {
+        handleCloseModal()
+        toast.success('Sucessfully edit Restaurant')
+      },
+    })
 
   const handleSubmitForm = (data: FormRestaurantEntities) => {
     const formData = new FormData()
 
-    Object.entries(data).forEach(([key, value]) => {
-      if (key === 'subscription_uuid') {
-        formData.append('subscription_uuid', data.subscription_uuid.value)
-      } else if (key === 'restaurant_logo') {
-        formData.append(
-          'restaurant_logo',
-          new Blob([data.restaurant_logo as any]),
-        )
-      } else if (key === 'nib') {
-        formData.append('nib', new Blob([data.nib as any]))
-      } else if (key === 'npwp') {
-        formData.append('npwp', new Blob([data.npwp as any]))
-      } else if (key === 'start_date') {
-        formData.append('start_date', TimetoUnix(data.start_date).toString())
-      } else {
-        formData.append(key, value)
-      }
-    })
+    const isEmptyFile =
+      data.restaurant_logo?.length === 0 ||
+      data.nib?.length === 0 ||
+      data.npwp?.length === 0
+
+    if (isEmptyFile) {
+      toast.error('Please select a valid file')
+      return
+    }
+
+    formData.append('restaurant_name', data.restaurant_name)
+    formData.append('restaurant_code', data.restaurant_code)
+    formData.append('restaurant_address', data.restaurant_address)
+    formData.append('restaurant_email', data.restaurant_email)
+    formData.append('restaurant_description', data.restaurant_description)
+    formData.append('restaurant_phone', data.restaurant_phone)
+    formData.append('start_date', TimetoUnix(data.start_date).toString())
+
+    formData.append('owner_name', data.owner_name)
+    formData.append('owner_phone', data.owner_phone)
+    formData.append('subscription_uuid', data.subscription_uuid.value)
+    formData.append('restaurant_logo', data?.restaurant_logo[0])
+    formData.append('nib', data?.nib[0])
+    formData.append('npwp', data?.npwp[0])
 
     if (isEdit) {
-      handleEditRestaurant(data)
+      const newPayload = {
+        id: selectedData.uuid,
+        payload: formData,
+      }
+      updateRestaurant(newPayload)
     } else {
       createRestaurant(formData)
     }
@@ -135,36 +149,40 @@ const MoleculesFormRestaurant = ({
         pic_name,
         pic_phone,
         logo,
+        seconds,
+        subscription_uuid,
       } = selectedData
 
-      setValue('restaurant_name', name)
-      setValue('restaurant_code', code)
-      setValue('restaurant_email', email)
-      setValue('restaurant_phone', phone)
-      setValue('restaurant_address', address)
-      setValue('restaurant_description', description)
+      if (ListSubscription) {
+        const getSubscription: GetSubscriptionListDataResponse[] =
+          Object.values(ListSubscription)
+            .map((datafilter) => datafilter)
+            .filter(
+              (data: GetSubscriptionListDataResponse) =>
+                data.uuid === subscription_uuid,
+            )
 
-      // setValue('restaurant_logo', logo)
-      // setValue('nib', nib_image_url)
-      // setValue('npwp', npwp_image_url)
-      setValue('owner_name', pic_name)
-      setValue('owner_phone', pic_phone)
+        setValue('subscription_uuid', {
+          label: 'Subscription 1 Bulan',
+          value: '40d4bfd5-5039-49ef-816f-c9b03ff81c35',
+          // label: getSubscription?.[0].subscription_name,
+          // value: getSubscription?.[0].uuid,
+        })
+
+        setValue('restaurant_name', name)
+        setValue('restaurant_code', code)
+        setValue('restaurant_email', email)
+        setValue('restaurant_phone', phone)
+        setValue('restaurant_address', address)
+        setValue('restaurant_description', description)
+        setValue('owner_name', pic_name)
+        setValue('owner_phone', pic_phone)
+        setValue('start_date', seconds)
+      }
     }
   }, [selectedData, isEdit, setValue])
 
   const titleText = isEdit ? 'Edit Restaurant' : 'Create New Restaurant'
-
-  const handleChangeFile = (name: any, file: File) => {
-    setValue(name, file)
-  }
-
-  const handleRemoveFile = (name: any) => {
-    setValue(name, '')
-  }
-
-  const ref_restaurant_logo = useRef('')
-  const ref_npwp = useRef('')
-  const ref_nib = useRef('')
 
   return (
     <ModalForm
@@ -179,16 +197,11 @@ const MoleculesFormRestaurant = ({
         >
           <div className="flex gap-2">
             <div className="w-1/3 border-r-2 pr-2">
-              <MoleculesFileUploader
+              <Input
                 {...register('restaurant_logo')}
-                fileUrl={selectedData.logo}
-                ref={ref_restaurant_logo}
-                label="Restaurant Logo:"
-                name="restaurant_logo"
-                handleSetValue={handleChangeFile}
-                handleClearFile={handleRemoveFile}
-                error={!!errors.restaurant_logo}
-                helperText={errors?.restaurant_logo?.message}
+                className="w-full"
+                labelText="Restaurant Logo:"
+                type="file"
               />
             </div>
             <div className="w-2/3">
@@ -269,30 +282,21 @@ const MoleculesFormRestaurant = ({
             <div className="flex gap-2">
               <div className="h-full w-1/2">
                 <div className="flex flex-col justify-center gap-2">
-                  <MoleculesFileUploader
-                    ref={ref_npwp}
-                    fileUrl={selectedData.npwp}
-                    label="NPWP:"
-                    name="npwp"
-                    handleSetValue={handleChangeFile}
-                    handleClearFile={handleRemoveFile}
-                    error={!!errors.npwp}
-                    helperText={errors?.npwp?.message}
+                  <Input
+                    {...register('npwp')}
+                    className="w-full"
+                    labelText="NPWP: "
+                    type="file"
                   />
                 </div>
               </div>
               <div className="h-full w-1/2">
                 <div className="flex flex-col justify-center gap-2">
-                  <MoleculesFileUploader
+                  <Input
                     {...register('nib')}
-                    ref={ref_nib}
-                    fileUrl={selectedData.nib}
-                    label="NIB:"
-                    name="nib"
-                    handleSetValue={handleChangeFile}
-                    handleClearFile={handleRemoveFile}
-                    error={!!errors.nib}
-                    helperText={errors?.nib?.message}
+                    className="w-full"
+                    labelText="NIB: "
+                    type="file"
                   />
                 </div>
               </div>
@@ -361,7 +365,7 @@ const MoleculesFormRestaurant = ({
           )}
 
           <Button
-            isLoading={isLoadingCreate}
+            isLoading={isLoadingCreate || isLoadingUpdate}
             type="submit"
             variant="primary"
             size="l"

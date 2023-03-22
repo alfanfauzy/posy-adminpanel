@@ -49,7 +49,7 @@ const MoleculesFileUploader = forwardRef(
         return
       }
 
-      setFile(event.target.files[0])
+      setFile(selectedFile)
       handleSetValue(name, selectedFile)
     }
 
