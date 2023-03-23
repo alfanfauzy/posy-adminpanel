@@ -1,7 +1,7 @@
 /**
  * Restaurant Form Modal
  */
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Button, Input, Select } from 'posy-fnb-core'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
@@ -148,7 +148,6 @@ const MoleculesFormRestaurant = ({
         description,
         pic_name,
         pic_phone,
-        logo,
         seconds,
         subscription_uuid,
       } = selectedData
