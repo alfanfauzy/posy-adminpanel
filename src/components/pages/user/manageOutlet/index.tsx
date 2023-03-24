@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Button } from 'posy-fnb-core'
 import type { ColumnsType } from 'antd/es/table'
 import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
-import { DataType } from './entities'
-import { dummy } from 'src/data/outlet'
 import { timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
+import { GetFilterOutletInput } from '@/domain/outlet/repositories/OutletRepositories'
+import { Search } from '@/domain/vo/BaseInput'
+import { useGetOutletViewModal } from '@/view/outlet/view-models/GetOutletViewModel'
+import { Outlet } from '@/domain/outlet/models'
+import { useDeleteOutletViewModal } from '@/view/outlet/view-models/DeleteOutletViewModel'
 
 const MoleculesFormManageOutlet = dynamic(
   () => import('@/organisms/form/outlet'),
@@ -21,8 +24,28 @@ const ModalConfirmation = dynamic(
 const ManageOutletLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
+  const [searchParams, setSearchParams] = useState<Search<any>[]>([])
 
-  const [selectedData, setSelectedData] = useState<DataType>({})
+  const hooksParams: GetFilterOutletInput = useMemo(
+    () => ({
+      search: searchParams,
+      sort: { field: 'created_at', value: 'desc' },
+      page,
+      limit,
+    }),
+    [page, limit, searchParams],
+  )
+
+  const {
+    data: ListOutlet,
+    refetch: handleRefetchTable,
+    isLoading,
+    pagination,
+  } = useGetOutletViewModal(hooksParams)
+
+  const [selectedData, setSelectedData] = useState<
+    Outlet | Record<string, never>
+  >({})
   const [isEdit, setIsEdit] = useState(false)
 
   const { value: openModal, toggle: handleOpenModal } = useToggle(false)
@@ -31,7 +54,7 @@ const ManageOutletLayout: React.FC = () => {
 
   /** Modal Confirmation Action */
 
-  const handleShowConfirmationModal = (data: DataType) => {
+  const handleShowConfirmationModal = (data: Outlet) => {
     handleOpenModalConfirmation()
     setSelectedData(data)
   }
@@ -39,6 +62,7 @@ const ManageOutletLayout: React.FC = () => {
   const handleCloseModalConfirmation = () => {
     handleOpenModalConfirmation()
     setSelectedData({})
+    handleRefetchTable()
   }
 
   /** ------------------------- */
@@ -54,17 +78,22 @@ const ManageOutletLayout: React.FC = () => {
 
   /** ------------------------- */
 
-  const handleDeleteAdmin = () => {
-    const { uuid } = selectedData
-    /**
-     * Todo Remove
-     */
+  const { deleteOutlet, isLoading: isLoadingRemove } = useDeleteOutletViewModal(
+    {
+      onSuccess() {
+        handleCloseModalConfirmation()
+        toast.success('Sucessfully delete Outlet')
+      },
+    },
+  )
 
-    handleCloseModalConfirmation()
-    toast.success(`Sucessfully remove data ${uuid}`)
+  const handleDeleteOutlet = () => {
+    const { uuid } = selectedData
+
+    deleteOutlet(uuid)
   }
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<Outlet> = [
     {
       title: '#',
       dataIndex: '',
@@ -74,13 +103,13 @@ const ManageOutletLayout: React.FC = () => {
     },
     {
       title: 'Restaurant',
-      key: 'restaurant',
-      dataIndex: 'restaurant',
+      key: 'restaurant_name',
+      dataIndex: 'restaurant_name',
     },
     {
       title: 'Outlet',
-      key: 'outlet',
-      dataIndex: 'outlet',
+      key: 'outlet_name',
+      dataIndex: 'outlet_name',
     },
     {
       title: 'City',
@@ -99,11 +128,9 @@ const ManageOutletLayout: React.FC = () => {
     },
     {
       title: 'Created At',
-      key: 'created_at',
-      dataIndex: 'created_at',
-      sorter: (a: any, b: any) => a.created_at.seconds - b.created_at.seconds,
-      render: (dataValue, record: any) =>
-        timeStampConverter(record?.created_at?.seconds, 'DD-MM-YYYY HH:mm'),
+      key: 'seconds',
+      dataIndex: 'seconds',
+      render: (value) => timeStampConverter(value, 'DD-MM-YYYY HH:mm'),
     },
 
     {
@@ -145,22 +172,23 @@ const ManageOutletLayout: React.FC = () => {
         selectedData={selectedData}
       />
       <ModalConfirmation
+        isLoadingRemove={isLoadingRemove}
         isOpenModal={openModalConfirmation}
         title="Modal Confirmation"
         text="Are you sure want to remove ?"
         onClose={handleCloseModalConfirmation}
-        onOk={handleDeleteAdmin}
+        onOk={handleDeleteOutlet}
       />
       <AtomTable
-        isLoading={false}
+        isLoading={isLoading}
         columns={columns}
-        dataSource={dummy}
+        dataSource={ListOutlet}
         onChangePaginationItem={(e: { value: number }) => setLimit(e.value)}
         limitSize={limit}
         pagination={{
           current: page,
           pageSize: limit,
-          total: dummy.length,
+          total: pagination?.total_objs,
           onChange: setPage,
         }}
       />

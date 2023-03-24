@@ -26,7 +26,9 @@ const ModalConfirmation = dynamic(
 const ListUserRestaurantLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchParams, setSearchParams] = useState<Search<any>[]>([])
+  const [searchParams, setSearchParams] = useState<Search<any>[]>([
+    { field: 'is_internal', value: 'false' },
+  ])
 
   const hooksParams: GetUserRestaurantFilterInput = useMemo(
     () => ({
@@ -178,6 +180,7 @@ const ListUserRestaurantLayout: React.FC = () => {
         handleClose={handleOpenFormModal}
         isEdit={isEdit}
         selectedData={selectedData}
+        handleRefetch={handleRefetchTable}
       />
       <ModalConfirmation
         isOpenModal={openModalConfirmation}

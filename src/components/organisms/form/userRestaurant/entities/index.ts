@@ -1,9 +1,10 @@
 export interface FormUserRestaurantEntities {
-  name?: string
-  email?: string
-  phone?: string
-  role?: { label: string; value: string }
-  outlet?: { label: string; value: string }
-  password?: string
-  confirm_password?: string
+  fullname: string
+  email: string
+  phone: string
+  role_uuid: { label: string; value: string }
+  restaurant_uuid: { label: string; value: string }
+  outlet_uuid: { label: string; value: string }
+  password: string
+  confirmPassword: string
 }

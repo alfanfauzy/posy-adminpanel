@@ -41,7 +41,12 @@ export interface CreateUserRestaurantRepository
  * UPDATE
  */
 
-export type UpdateUserRestaurantParams = UpdateParams<FormUserRestaurant>
+export type FormUpdateUserRestaurant = Omit<
+  FormUserRestaurant,
+  'role_uuid' | 'outlet_uuid'
+>
+
+export type UpdateUserRestaurantParams = UpdateParams<FormUpdateUserRestaurant>
 
 export type UpdateUserRestaurantResult = ResultMutation<UserRestaurant>
 

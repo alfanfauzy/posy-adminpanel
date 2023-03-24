@@ -4,7 +4,7 @@ import React from 'react'
 interface SwitchProps {
   label?: string
   text?: string
-  onChange: () => void
+  onChange: (e: any) => void
   name: string
   value?: boolean
 }

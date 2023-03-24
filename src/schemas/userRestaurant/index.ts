@@ -2,11 +2,12 @@ import { z } from 'zod'
 
 export const UserRestauranFormSchema = z
   .object({
-    name: z.string().min(3),
+    fullname: z.string().min(3),
     email: z.string().email('Please Input valid email'),
-    phonenumber: z.number().min(10),
-    role: z.object({ value: z.string(), label: z.string() }),
-    outlet: z.object({ value: z.string(), label: z.string() }),
+    phone: z.string().min(10),
+    role_uuid: z.object({ value: z.string(), label: z.string() }),
+    restaurant_uuid: z.object({ value: z.string(), label: z.string() }),
+    outlet_uuid: z.object({ value: z.string(), label: z.string() }),
     password: z
       .string()
       .max(20)
