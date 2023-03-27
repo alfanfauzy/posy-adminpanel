@@ -13,8 +13,6 @@ import { Search } from '@/domain/vo/BaseInput'
 import { useGetRestaurantViewModal } from '@/view/restaurant/view-models/GetRestaurantViewModel'
 import { GetFilterRestaurantInput } from '@/domain/restaurant/repositories/RestaurantRepository'
 import { Restaurant } from '@/domain/restaurant/models'
-import AtomSwitch from '@/atoms/switch'
-import useToggle from '@/hooks/useToggle'
 import HRLine from '@/atoms/horizontalLine'
 import { useGetProvinceViewModal } from '@/view/region/view-models/GetProvinceViewModel'
 import {
@@ -29,6 +27,7 @@ import { useGetDistrictViewModal } from '@/view/region/view-models/GetDistrictVi
 import { useGetSubDistrictViewModal } from '@/view/region/view-models/GetSubDistrictViewModel'
 import { useCreateOutletViewModal } from '@/view/outlet/view-models/CreateOutletViewModel'
 import { FormOutlet, Outlet } from '@/domain/outlet/models'
+import { useUpdateOutletViewModal } from '@/view/outlet/view-models/UpdateOutletViewModel'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -39,6 +38,7 @@ interface MoleculesFormManageOutletProps {
   isOpenModal: boolean
   handleClose: () => void
   selectedData: Outlet | Record<string, never>
+  handleRefetch: () => void
 }
 
 const MoleculesFormManageOutlet = ({
@@ -46,11 +46,11 @@ const MoleculesFormManageOutlet = ({
   isOpenModal,
   handleClose,
   selectedData,
+  handleRefetch,
 }: MoleculesFormManageOutletProps) => {
   const refSelectCity: React.MutableRefObject<any> = useRef()
   const refSelectDistrict: React.MutableRefObject<any> = useRef()
   const refSelectSubDistrict: React.MutableRefObject<any> = useRef()
-  const { value: isStatusValue, toggle: handleStatusToggle } = useToggle(false)
 
   const {
     handleSubmit,
@@ -69,8 +69,10 @@ const MoleculesFormManageOutlet = ({
   const [province_id, setProvince_id] = useState<
     ObjectSelect | Record<string, never>
   >({})
-  const [city_id, setCity_id] = useState<ObjectSelect | undefined | null>(null)
-  const [district_id, setDistrict_id] = useState<
+  const [stateCity_id, setCity_id] = useState<ObjectSelect | undefined | null>(
+    null,
+  )
+  const [stateDistrict_id, setDistrict_id] = useState<
     ObjectSelect | undefined | null
   >(null)
   const [_, setSubDistrict] = useState<ObjectSelect | undefined | null>(null)
@@ -103,24 +105,24 @@ const MoleculesFormManageOutlet = ({
   }, [province_id])
 
   const hooksParamsDistrict: GetFilterDistrictInput = useMemo(() => {
-    const getId = city_id?.value?.toString() || '0'
+    const getId = stateCity_id?.value?.toString() || '0'
     return {
       search: [{ field: 'city_id', value: getId }],
       sort: { field: 'created_at', value: 'desc' },
       page: 1,
       limit: 0,
     }
-  }, [city_id])
+  }, [stateCity_id])
 
   const hooksParamsSubDistrict: GetFilterSubDistrictInput = useMemo(() => {
-    const getId = district_id?.value?.toString() || '0'
+    const getId = stateDistrict_id?.value?.toString() || '0'
     return {
       search: [{ field: 'district_id', value: getId }],
       sort: { field: 'created_at', value: 'desc' },
       page: 1,
       limit: 0,
     }
-  }, [district_id])
+  }, [stateDistrict_id])
 
   const { data: ListRestaurant, isLoading: isLoadingRestaurant } =
     useGetRestaurantViewModal(hooksParamsRestaurant)
@@ -185,6 +187,7 @@ const MoleculesFormManageOutlet = ({
   const handleCloseModal = () => {
     reset()
     handleClose()
+    handleRefetch()
   }
 
   const { createOutlet, isLoading: isLoadingCreate } = useCreateOutletViewModal(
@@ -196,38 +199,103 @@ const MoleculesFormManageOutlet = ({
     },
   )
 
+  const { updateOutlet, isLoading: isLoadingUpload } = useUpdateOutletViewModal(
+    {
+      onSuccess() {
+        handleCloseModal()
+        toast.success('Sucessfully update outlet')
+      },
+    },
+  )
+
   const handleSubmitForm = (data: FormManageOutletEntities) => {
-    const newpayload: FormOutlet = {
-      postal_code_id: Number(data?.postal_code_id),
+    const newPayload: FormOutlet = {
       restaurant_uuid: data.restaurant_uuid.value,
       outlet_name: data.outlet_name,
       outlet_code: data.outlet_code,
-      subdistrict_id: Number(data?.subdistrict_id?.value),
+      subdistrict_id: data?.subdistrict_id?.value,
       address: data?.address,
       latitude: data?.latitude,
       longitude: data?.longitude,
       phone: data?.phone,
       email: data?.email,
-      status: data.status,
     }
 
     if (isEdit) {
-      // handleEditOutlet(data)
+      const newUpdatePayload = {
+        id: selectedData.uuid,
+        payload: newPayload,
+      }
+      updateOutlet(newUpdatePayload)
     } else {
-      createOutlet(newpayload)
+      createOutlet(newPayload)
     }
   }
 
-  // useEffect(() => {
-  //   if (isEdit) {
-  //     const { restaurant, outlet, city, address, phone } = selectedData
-  //     setValue('restaurant', restaurant)
-  //     setValue('outlet', outlet)
-  //     setValue('city', city)
-  //     setValue('address', address)
-  //     setValue('phone', phone)
-  //   }
-  // }, [selectedData, isEdit, setValue])
+  useEffect(() => {
+    if (isEdit) {
+      const {
+        restaurant_name,
+        restaurant_uuid,
+        outlet_name,
+        outlet_code,
+        address,
+        phone,
+        latitude,
+        longitude,
+        email,
+        provincy_id,
+        provincy_name,
+        city_id,
+        city_name,
+        district_id,
+        district_name,
+        subdistrict_id,
+        subdistrict_name,
+      } = selectedData
+
+      setValue('restaurant_uuid', {
+        label: restaurant_name,
+        value: restaurant_uuid,
+      })
+
+      if (province_id && provincy_name) {
+        setValue('province_id', {
+          label: provincy_name,
+          value: provincy_id,
+        })
+      }
+
+      if (city_id && city_name) {
+        setValue('city_id', {
+          label: city_name,
+          value: city_id,
+        })
+      }
+
+      if (district_id && district_name) {
+        setValue('district_id', {
+          label: district_name,
+          value: district_id,
+        })
+      }
+
+      if (subdistrict_id && subdistrict_name) {
+        setValue('subdistrict_id', {
+          label: subdistrict_name,
+          value: subdistrict_id,
+        })
+      }
+
+      setValue('outlet_name', outlet_name)
+      setValue('outlet_code', outlet_code)
+      setValue('address', address)
+      setValue('phone', phone)
+      setValue('latitude', latitude)
+      setValue('longitude', longitude)
+      setValue('email', email)
+    }
+  }, [selectedData, isEdit, setValue])
 
   const titleText = isEdit ? 'Edit Outlet' : 'Create New Outlet'
 
@@ -240,17 +308,19 @@ const MoleculesFormManageOutlet = ({
       <section className="w-[750px] p-4">
         <form onSubmit={handleSubmit((data) => handleSubmitForm(data))}>
           <div className="mb-6">
-            <Select
-              name="restaurant_uuid"
-              onChange={(e) => setValue('restaurant_uuid', e)}
-              options={RestaurantSelect}
-              labelText="Restaurant"
-              placeholder="ex: Select Restaurant"
-              className="flex items-center justify-center"
-              error={!!errors.restaurant_uuid}
-              helperText={errors?.restaurant_uuid?.message}
-              isLoading={isLoadingRestaurant}
-            />
+            {!isEdit && (
+              <Select
+                name="restaurant_uuid"
+                onChange={(e) => setValue('restaurant_uuid', e)}
+                options={RestaurantSelect}
+                labelText="Restaurant"
+                placeholder="ex: Select Restaurant"
+                className="flex items-center justify-center"
+                error={!!errors.restaurant_uuid}
+                helperText={errors?.restaurant_uuid?.message}
+                isLoading={isLoadingRestaurant}
+              />
+            )}
           </div>
 
           <div className="flex w-full gap-2">
@@ -317,19 +387,6 @@ const MoleculesFormManageOutlet = ({
                 helperText={errors?.email?.message}
               />
             </div>
-
-            <div className="mb-6 w-1/3">
-              <AtomSwitch
-                {...register('status')}
-                name="status"
-                label="Status Outlet"
-                text={!isStatusValue ? 'OPEN' : 'CLOSED'}
-                onChange={(e: boolean) => {
-                  handleStatusToggle()
-                  setValue('status', e ? 'OPEN' : 'CLOSED')
-                }}
-              />
-            </div>
           </div>
 
           <HRLine text="Outlet Address" />
@@ -341,6 +398,7 @@ const MoleculesFormManageOutlet = ({
               setProvince_id(e)
               refSelectCity.current.clearValue()
             }}
+            value={watch('province_id')}
             options={ProvinceSelect}
             labelText="Province:"
             placeholder="ex: Select Province"
@@ -359,6 +417,7 @@ const MoleculesFormManageOutlet = ({
               setCity_id(e)
               refSelectDistrict.current.clearValue()
             }}
+            value={watch('city_id')}
             options={CitySelect}
             labelText="City:"
             placeholder="ex: Select City"
@@ -380,6 +439,7 @@ const MoleculesFormManageOutlet = ({
               setDistrict_id(e)
               refSelectSubDistrict.current.clearValue()
             }}
+            value={watch('district_id')}
             options={DistrictSelect}
             labelText="District:"
             placeholder="ex: Select District"
@@ -400,6 +460,7 @@ const MoleculesFormManageOutlet = ({
               setValue('subdistrict_id', e)
               setSubDistrict(e)
             }}
+            value={watch('subdistrict_id')}
             options={SubDistrictSelect}
             labelText="Sub District:"
             placeholder="ex: Select Sub District"
@@ -422,20 +483,6 @@ const MoleculesFormManageOutlet = ({
               placeholder="ex: Jalan Raya No. 1"
               error={!!errors?.address}
               helperText={errors?.address?.message}
-            />
-          </div>
-
-          <div className="mb-6">
-            <Input
-              {...register('postal_code_id', {
-                setValueAs: (v) => v.replace(/\D/, ''),
-              })}
-              className="w-52"
-              labelText="Postal Code:"
-              type="text"
-              placeholder="ex: 65167"
-              error={!!errors?.postal_code_id}
-              helperText={errors?.postal_code_id?.message}
             />
           </div>
 
@@ -464,7 +511,7 @@ const MoleculesFormManageOutlet = ({
           </div>
 
           <Button
-            isLoading={isLoadingCreate}
+            isLoading={isLoadingCreate || isLoadingUpload}
             type="submit"
             variant="primary"
             size="l"

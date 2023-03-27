@@ -4,7 +4,6 @@ export interface ObjectSelect {
 }
 
 export interface FormManageOutletEntities {
-  postal_code_id: string
   restaurant_uuid: { label: string; value: string }
   outlet_name: string
   outlet_code: string
@@ -17,6 +16,5 @@ export interface FormManageOutletEntities {
   address: string
   phone: string
   email: string
-  status: string
   table: string
 }

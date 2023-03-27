@@ -113,8 +113,8 @@ const ManageOutletLayout: React.FC = () => {
     },
     {
       title: 'City',
-      key: 'city',
-      dataIndex: 'city',
+      key: 'city_name',
+      dataIndex: 'city_name',
     },
     {
       title: 'Address',
@@ -170,6 +170,7 @@ const ManageOutletLayout: React.FC = () => {
         handleClose={handleOpenFormModal}
         isEdit={isEdit}
         selectedData={selectedData}
+        handleRefetch={handleRefetchTable}
       />
       <ModalConfirmation
         isLoadingRemove={isLoadingRemove}
