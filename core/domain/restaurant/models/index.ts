@@ -12,6 +12,7 @@ export interface RestaurantBased {
   pic_name: string
   pic_phone: string
   subscription_uuid: string
+  subscription_name: string
   seconds: number
 }
 
@@ -21,17 +22,17 @@ export type Restaurants = RestaurantBased[]
 export type FormBodyPayload = {
   restaurant_name: string
   restaurant_description: string
-  restaurant_logo: string
+  restaurant_logo_url: string
   restaurant_code: string
   restaurant_phone: string
   restaurant_email: string
   restaurant_address: string
-  nib: string
-  npwp: string
+  nib_url: string
+  npwp_url: string
   owner_name: string
   owner_phone: string
   subscription_uuid: string
-  start_date: string
+  start_date: number
 }
 
 export type FormRestaurant = FormData

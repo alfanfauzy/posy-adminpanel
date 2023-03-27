@@ -1,7 +1,8 @@
 /**
  * Restaurant Form Modal
  */
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import Image from 'next/image'
 import { Button, Input, Select } from 'posy-fnb-core'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
@@ -18,9 +19,10 @@ import { GetAccessListDataResponse } from '@/data/access/types'
 import { GetSubscriptionFilterInput } from '@/domain/subscription/repositories/SubscriptionRepository'
 import { useCreateRestaurantViewModal } from '@/view/restaurant/view-models/CreateRestaurantViewModel'
 import { TimetoUnix } from '@/constants/utils'
-import { Restaurant } from '@/domain/restaurant/models'
+import { FormBodyPayload, Restaurant } from '@/domain/restaurant/models'
 import { useUpdateRestaurantViewModal } from '@/view/restaurant/view-models/UpdateRestaurantViewModel'
 import { GetSubscriptionListDataResponse } from '@/data/subscription/types'
+import { useUploadImagePublicViewModal } from '@/view/file-upload/view-modals/UploadImagePublicViewModels'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -41,6 +43,9 @@ const MoleculesFormRestaurant = ({
   selectedData,
   handleRefetch,
 }: MoleculesFormRestaurantProps) => {
+  const [imageLogo, setImageLogo] = useState('')
+  const [imageNPWP, setImageNPWP] = useState('')
+  const [imageNIB, setImageNIB] = useState('')
   const FormSchema = isEdit ? EditRestaurantFormSchema : RestaurantFormSchema
 
   const {
@@ -77,9 +82,59 @@ const MoleculesFormRestaurant = ({
   }, [ListSubscription])
 
   const handleCloseModal = () => {
+    setImageLogo('')
+    setImageNIB('')
+    setImageNPWP('')
     reset()
     handleClose()
     handleRefetch()
+  }
+
+  const { uploadImagePublic, isLoading: isLoadingUploadImagePublic } =
+    useUploadImagePublicViewModal({
+      onSuccess(data) {
+        const getPrefix = data.data.image_filename.split('_')[0]
+
+        switch (getPrefix) {
+          case 'npwp':
+            setValue('npwp_url', data.data.url)
+            break
+          case 'nib':
+            setValue('nib_url', data.data.url)
+            break
+          default:
+            setValue('restaurant_logo_url', data.data.url)
+        }
+      },
+    })
+
+  const onImageChange = (
+    event: any,
+    prefix: string,
+    type: 'public' | 'private',
+  ) => {
+    if (event.target.files && event.target.files[0]) {
+      switch (prefix) {
+        case 'npwp_url':
+          setImageNPWP(URL.createObjectURL(event.target.files[0]))
+          break
+        case 'nib_url':
+          setImageNIB(URL.createObjectURL(event.target.files[0]))
+          break
+        default:
+          setImageLogo(URL.createObjectURL(event.target.files[0]))
+          break
+      }
+
+      const formDataUploadImagePublic = new FormData()
+
+      formDataUploadImagePublic.append('image_filename_prefix', prefix)
+      formDataUploadImagePublic.append('image_file', event.target.files[0])
+
+      if (type === 'public') {
+        uploadImagePublic(formDataUploadImagePublic)
+      }
+    }
   }
 
   const { createRestaurant, isLoading: isLoadingCreate } =
@@ -99,41 +154,30 @@ const MoleculesFormRestaurant = ({
     })
 
   const handleSubmitForm = (data: FormRestaurantEntities) => {
-    const formData = new FormData()
-
     const isEmptyFile =
-      data.restaurant_logo?.length === 0 ||
-      data.nib?.length === 0 ||
-      data.npwp?.length === 0
+      data.restaurant_logo_url?.length === 0 ||
+      data.nib_url?.length === 0 ||
+      data.npwp_url?.length === 0
 
     if (isEmptyFile) {
       toast.error('Please select a valid file')
       return
     }
 
-    formData.append('restaurant_name', data.restaurant_name)
-    formData.append('restaurant_code', data.restaurant_code)
-    formData.append('restaurant_address', data.restaurant_address)
-    formData.append('restaurant_email', data.restaurant_email)
-    formData.append('restaurant_description', data.restaurant_description)
-    formData.append('restaurant_phone', data.restaurant_phone)
-    formData.append('start_date', TimetoUnix(data.start_date).toString())
-
-    formData.append('owner_name', data.owner_name)
-    formData.append('owner_phone', data.owner_phone)
-    formData.append('subscription_uuid', data.subscription_uuid.value)
-    formData.append('restaurant_logo', data?.restaurant_logo[0])
-    formData.append('nib', data?.nib[0])
-    formData.append('npwp', data?.npwp[0])
+    const newPayload: FormBodyPayload = {
+      ...data,
+      subscription_uuid: data.subscription_uuid.value,
+      start_date: TimetoUnix(data.start_date),
+    }
 
     if (isEdit) {
-      const newPayload = {
+      const newEditPayload = {
         id: selectedData.uuid,
-        payload: formData,
+        payload: newPayload,
       }
-      updateRestaurant(newPayload)
+      updateRestaurant(newEditPayload)
     } else {
-      createRestaurant(formData)
+      createRestaurant(newPayload)
     }
   }
 
@@ -150,22 +194,20 @@ const MoleculesFormRestaurant = ({
         pic_phone,
         seconds,
         subscription_uuid,
+        subscription_name,
+        logo,
+        npwp,
+        nib,
       } = selectedData
 
-      if (ListSubscription) {
-        const getSubscription: GetSubscriptionListDataResponse[] =
-          Object.values(ListSubscription)
-            .map((datafilter) => datafilter)
-            .filter(
-              (data: GetSubscriptionListDataResponse) =>
-                data.uuid === subscription_uuid,
-            )
+      setImageLogo(logo)
+      setImageNPWP(npwp)
+      setImageNIB(nib)
 
+      if (ListSubscription) {
         setValue('subscription_uuid', {
-          label: 'Subscription 1 Bulan',
-          value: '40d4bfd5-5039-49ef-816f-c9b03ff81c35',
-          // label: getSubscription?.[0].subscription_name,
-          // value: getSubscription?.[0].uuid,
+          label: subscription_name,
+          value: subscription_uuid,
         })
 
         setValue('restaurant_name', name)
@@ -177,6 +219,9 @@ const MoleculesFormRestaurant = ({
         setValue('owner_name', pic_name)
         setValue('owner_phone', pic_phone)
         setValue('start_date', seconds)
+        setValue('restaurant_logo_url', logo)
+        setValue('nib_url', nib)
+        setValue('npwp_url', npwp)
       }
     }
   }, [selectedData, isEdit, setValue])
@@ -196,12 +241,32 @@ const MoleculesFormRestaurant = ({
         >
           <div className="flex gap-2">
             <div className="w-1/3 border-r-2 pr-2">
-              <Input
-                {...register('restaurant_logo')}
-                className="w-full"
-                labelText="Restaurant Logo:"
-                type="file"
-              />
+              <p className="mb-1 block text-m-regular">Restaurant Logo</p>
+              {imageLogo ? (
+                <div className="flex h-56 w-56 items-center justify-center rounded-lg transition-all ease-in-out">
+                  <Image
+                    width={224}
+                    height={224}
+                    src={imageLogo}
+                    alt="profile-img"
+                    className="rounded-lg border border-gray-300 object-contain"
+                  />
+                </div>
+              ) : null}
+              <button
+                className="my-4 flex h-8 w-[224px] justify-center rounded !bg-[#00BA9A] p-1 text-center text-white"
+                type="button"
+              >
+                Change Photo
+                <input
+                  onChange={(e) =>
+                    onImageChange(e, 'restaurant_logo_url', 'public')
+                  }
+                  accept="image/png, image/jpeg,"
+                  type="file"
+                  className="absolute h-fit w-[192px] cursor-pointer opacity-0"
+                />
+              </button>
             </div>
             <div className="w-2/3">
               <div className="mb-6">
@@ -281,22 +346,58 @@ const MoleculesFormRestaurant = ({
             <div className="flex gap-2">
               <div className="h-full w-1/2">
                 <div className="flex flex-col justify-center gap-2">
-                  <Input
-                    {...register('npwp')}
-                    className="w-full"
-                    labelText="NPWP: "
-                    type="file"
-                  />
+                  <p className="mb-1 block text-m-regular">NPWP</p>
+                  {imageNPWP ? (
+                    <div className="flex h-56 w-56 items-center justify-center rounded-lg transition-all ease-in-out">
+                      <Image
+                        width={224}
+                        height={224}
+                        src={imageNPWP}
+                        alt="profile-img"
+                        className="rounded-lg border border-gray-300 object-contain"
+                      />
+                    </div>
+                  ) : null}
+                  <button
+                    className="my-4 flex h-8 w-[224px] justify-center rounded !bg-[#00BA9A] p-1 text-center text-white"
+                    type="button"
+                  >
+                    Change Photo
+                    <input
+                      onChange={(e) => onImageChange(e, 'npwp_url', 'public')}
+                      accept="image/png, image/jpeg,"
+                      type="file"
+                      className="absolute h-fit w-[192px] cursor-pointer opacity-0"
+                    />
+                  </button>
                 </div>
               </div>
               <div className="h-full w-1/2">
                 <div className="flex flex-col justify-center gap-2">
-                  <Input
-                    {...register('nib')}
-                    className="w-full"
-                    labelText="NIB: "
-                    type="file"
-                  />
+                  <p className="mb-1 block text-m-regular">NIB</p>
+                  {imageNIB ? (
+                    <div className="flex h-56 w-56 items-center justify-center rounded-lg transition-all ease-in-out">
+                      <Image
+                        width={224}
+                        height={224}
+                        src={imageNIB}
+                        alt="profile-img"
+                        className="rounded-lg border border-gray-300 object-contain"
+                      />
+                    </div>
+                  ) : null}
+                  <button
+                    className="my-4 flex h-8 w-[224px] justify-center rounded !bg-[#00BA9A] p-1 text-center text-white"
+                    type="button"
+                  >
+                    Change Photo
+                    <input
+                      onChange={(e) => onImageChange(e, 'nib_url', 'public')}
+                      accept="image/png, image/jpeg,"
+                      type="file"
+                      className="absolute h-fit w-[192px] cursor-pointer opacity-0"
+                    />
+                  </button>
                 </div>
               </div>
             </div>
@@ -344,7 +445,6 @@ const MoleculesFormRestaurant = ({
                     className="flex items-center justify-center"
                     error={!!errors.subscription_uuid}
                     helperText={errors?.subscription_uuid?.message}
-                    isClearable
                     isLoading={isLoadingSubscription}
                   />
                 </div>

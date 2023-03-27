@@ -42,6 +42,7 @@
     "posy-fnb-core": "^1.0.53",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-easy-crop": "^4.7.4",
     "react-highlight-words": "^0.20.0",
     "react-hook-form": "^7.43.0",
     "react-icons": "^4.7.1",

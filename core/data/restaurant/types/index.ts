@@ -14,6 +14,7 @@ export interface GetRestaurantListDataResponse {
   owner_name: string
   owner_phone: string
   subscription_uuid: string
+  subscription_name: string
   metadata: Metadata
 }
 

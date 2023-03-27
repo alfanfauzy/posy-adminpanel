@@ -1,22 +1,20 @@
 import { CreateRestaurantResponse } from '../types'
 import { Response } from '../../../domain/vo/BaseResponse'
-import axios, { Axios, AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
 import { toast } from 'react-toastify'
 import Post from 'api/post'
 import { MutationOptions } from 'core/domain/vo/BaseMutation'
 import { ErrorType } from 'types/index'
-import { FormRestaurant } from '@/domain/restaurant/models'
-import { store } from 'store/index'
+import { FormBodyPayload } from '@/domain/restaurant/models'
 
 export const CreateRestaurantService = async (
-  payload: FormRestaurant,
+  payload: FormBodyPayload,
 ): Promise<Response<CreateRestaurantResponse>> => {
   try {
     const response = await Post({
       endpoint: `/api/fnb-user-service/internal/restaurant/create`,
       payload,
-      headers: { 'Content-Type': 'multipart/form-data' },
     })
 
     return response
@@ -30,7 +28,7 @@ export const useCreateRestaurantMutation = (
   options?: MutationOptions<CreateRestaurantResponse>,
 ) =>
   useMutation({
-    mutationFn: (payload: FormRestaurant) => CreateRestaurantService(payload),
+    mutationFn: (payload: FormBodyPayload) => CreateRestaurantService(payload),
     onError(error: ErrorType) {
       toast.error(error.message)
     },

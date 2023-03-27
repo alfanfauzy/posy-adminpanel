@@ -40,6 +40,12 @@
       "@/view/*": ["core/view/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/index.jsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/index.jsx",
+    "src/constants/cropImage.js"
+  ],
   "exclude": ["node_modules"]
 }

@@ -1,5 +1,5 @@
-import { FormRestaurant, Restaurant, Restaurants } from '../models'
-import { FilterInputVariables, ParamsPayload } from '@/domain/vo/BaseInput'
+import { FormBodyPayload, Restaurant, Restaurants } from '../models'
+import { FilterInputVariables } from '@/domain/vo/BaseInput'
 import {
   Datalist,
   ResultMutation,
@@ -32,14 +32,14 @@ export type GetRestaurantResult = ResultQuery<Restaurant>
 export type CreateRestaurantResult = ResultMutation<Restaurant | undefined>
 
 export interface CreateRestaurantRepository extends CreateRestaurantResult {
-  createRestaurant(payload: FormRestaurant): void
+  createRestaurant(payload: FormBodyPayload): void
 }
 
 /**
  * UPDATE
  */
 
-export type UpdateRestaurantParams = UpdateParams<FormRestaurant>
+export type UpdateRestaurantParams = UpdateParams<FormBodyPayload>
 
 export type UpdateRestaurantResult = ResultMutation<Restaurant>
 

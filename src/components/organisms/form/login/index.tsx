@@ -47,8 +47,6 @@ const MoleculesLogin = () => {
 
       const newPayload = { ...data.data, permission }
 
-      console.log(newPayload)
-
       dispatch(authSuccess(newPayload))
       toast.success('Login Success')
       handleGoDashboard()
