@@ -21,7 +21,6 @@ import { useCreateRestaurantViewModal } from '@/view/restaurant/view-models/Crea
 import { TimetoUnix } from '@/constants/utils'
 import { FormBodyPayload, Restaurant } from '@/domain/restaurant/models'
 import { useUpdateRestaurantViewModal } from '@/view/restaurant/view-models/UpdateRestaurantViewModel'
-import { GetSubscriptionListDataResponse } from '@/data/subscription/types'
 import { useUploadImagePublicViewModal } from '@/view/file-upload/view-modals/UploadImagePublicViewModels'
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
@@ -90,23 +89,22 @@ const MoleculesFormRestaurant = ({
     handleRefetch()
   }
 
-  const { uploadImagePublic, isLoading: isLoadingUploadImagePublic } =
-    useUploadImagePublicViewModal({
-      onSuccess(data) {
-        const getPrefix = data.data.image_filename.split('_')[0]
+  const { uploadImagePublic } = useUploadImagePublicViewModal({
+    onSuccess(data) {
+      const getPrefix = data.data.image_filename.split('_')[0]
 
-        switch (getPrefix) {
-          case 'npwp':
-            setValue('npwp_url', data.data.url)
-            break
-          case 'nib':
-            setValue('nib_url', data.data.url)
-            break
-          default:
-            setValue('restaurant_logo_url', data.data.url)
-        }
-      },
-    })
+      switch (getPrefix) {
+        case 'npwp':
+          setValue('npwp_url', data.data.url)
+          break
+        case 'nib':
+          setValue('nib_url', data.data.url)
+          break
+        default:
+          setValue('restaurant_logo_url', data.data.url)
+      }
+    },
+  })
 
   const onImageChange = (
     event: any,

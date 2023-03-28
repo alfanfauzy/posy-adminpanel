@@ -4,6 +4,7 @@ import ListProductMenuLayout from '@/pages/user/productMenu'
 import ListCategoryMenuLayout from '@/pages/user/categoryMenu'
 import ManageOutletLayout from '@/pages/user/manageOutlet'
 import UserSubscriptionLayout from '@/pages/user/subscription'
+import { useAppSelector } from 'store/hooks'
 
 const Item = [
   { label: 'Outlet' },
@@ -15,11 +16,13 @@ const Item = [
 const OrganismDetailRestaurantTabs = () => {
   const [tabsVal, setTabsVal] = useState(0)
 
+  const { uuid } = useAppSelector((state) => state.restaurant)
+
   return (
     <section className="mt-10">
       <Tabs items={Item} value={tabsVal} onChange={(e) => setTabsVal(e)} />
 
-      {tabsVal === 0 && <ManageOutletLayout />}
+      {tabsVal === 0 && <ManageOutletLayout restaurant_uuid={uuid} />}
       {tabsVal === 1 && <ListCategoryMenuLayout />}
       {tabsVal === 2 && <ListProductMenuLayout />}
       {tabsVal === 3 && <UserSubscriptionLayout />}

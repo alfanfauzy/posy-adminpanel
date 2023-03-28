@@ -2,6 +2,7 @@
  * This File is docomentation type which can be used to describe to the variables in view
  */
 
+import { GetRoleListDataResponse } from '@/data/role/types'
 import { RestaurantObject } from '@/data/user-restaurant/types'
 
 export interface UserRestaurantBased {
@@ -9,8 +10,9 @@ export interface UserRestaurantBased {
   name: string
   email: string
   phone: string
-  role: string
   outlet: RestaurantObject[]
+  role: Pick<GetRoleListDataResponse, 'is_internal' | 'accesses'>
+  is_admin: string
   seconds: number
 }
 

@@ -13,7 +13,7 @@ import {
  */
 export type GetUserRestaurantFilterInput = FilterInputVariables<
   'created_at',
-  keyof Pick<UserRestaurant, 'name'>
+  keyof Pick<UserRestaurant, 'name' | 'is_admin'>
 >
 
 export type GetUserRestaurantsResult = ResultQuery<

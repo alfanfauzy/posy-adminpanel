@@ -1,25 +1,13 @@
 /**
  * Modal Form Product
  */
-import OrganismAddOnForm from '../addon'
 import { Button, Input } from 'posy-fnb-core'
 import dynamic from 'next/dynamic'
 import React from 'react'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import { FormProvider } from 'react-hook-form'
-import AtomTextArea from '@/atoms/textarea'
-import useToggle from '@/hooks/useToggle'
-import HRLine from '@/atoms/horizontalLine'
-import AtomUploadFile from '@/atoms/uploadFile'
 import { useForm } from '@/hooks/useForm'
 import { ProductSchema } from '@/schemas/product'
-
-const Select = dynamic(
-  () => import('posy-fnb-core').then((comp) => comp.Select),
-  {
-    ssr: false,
-  },
-)
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
   ssr: false,
@@ -40,17 +28,6 @@ const OrganismFormProduct = ({
   const methodForm = useForm({
     schema: ProductSchema,
   })
-
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm({
-    schema: ProductSchema,
-  })
-
-  const { value: isFavorit, toggle: handleiSFavorit } = useToggle(false)
-  const { value: isActive, toggle: handleiSActive } = useToggle(false)
 
   const handleCloseModal = () => {
     handleClose()

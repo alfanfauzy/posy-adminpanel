@@ -10,7 +10,6 @@ import dayjs from 'dayjs'
 import { FormUserSubscriptionEntities } from './entities'
 import { useForm } from '@/hooks/useForm'
 import { UserSubscriptionFormSchema } from '@/schemas/userSubscription'
-import { DataType } from '@/pages/admin/list/entities'
 import { Subscription_Period } from '@/constants/index'
 import AtomDatePicker from '@/atoms/datepicker'
 
@@ -22,24 +21,20 @@ interface MoleculesFormUserSubscriptionProps {
   isEdit: boolean
   isOpenModal: boolean
   handleClose: () => void
-  selectedData: DataType
 }
 
 const MoleculesFormUserSubscription = ({
   isEdit = false,
   isOpenModal,
   handleClose,
-  selectedData,
 }: MoleculesFormUserSubscriptionProps) => {
   const [startDate, setStartDate] = useState(dayjs())
 
   const {
     handleSubmit,
-    register,
     reset,
     setValue,
     formState: { errors },
-    watch,
   } = useForm({
     schema: UserSubscriptionFormSchema,
     mode: 'onChange',

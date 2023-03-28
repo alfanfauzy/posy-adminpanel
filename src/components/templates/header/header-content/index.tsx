@@ -1,6 +1,5 @@
 import { Button } from 'posy-fnb-core'
-import React, { ReactNode, useState } from 'react'
-import AtomDatePicker from '@/atoms/datepicker'
+import React, { ReactNode } from 'react'
 
 interface HeaderContentProps {
   onClick: () => void
@@ -16,26 +15,20 @@ const HeaderContent = ({
   withIconButton = true,
   iconElement,
   flexEnd = false,
-}: HeaderContentProps) => {
-  const [dateValue, setDateValue] = useState()
-
-  return (
-    <header
-      className={`mb-5 flex ${flexEnd ? 'justify-end' : 'justify-start'}`}
-    >
-      <Button
-        type="submit"
-        variant="primary"
-        size="l"
-        className="justify flex items-center  
+}: HeaderContentProps) => (
+  <header className={`mb-5 flex ${flexEnd ? 'justify-end' : 'justify-start'}`}>
+    <Button
+      type="submit"
+      variant="primary"
+      size="l"
+      className="justify flex items-center  
       gap-2 text-sm"
-        onClick={onClick}
-      >
-        {withIconButton && iconElement}
-        {textButton}
-      </Button>
-    </header>
-  )
-}
+      onClick={onClick}
+    >
+      {withIconButton && iconElement}
+      {textButton}
+    </Button>
+  </header>
+)
 
 export default HeaderContent

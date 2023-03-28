@@ -1,6 +1,6 @@
 import { Button, Input } from 'posy-fnb-core'
 import React, { useState } from 'react'
-import { AiFillDelete, AiOutlineDelete } from 'react-icons/ai'
+import { AiOutlineDelete } from 'react-icons/ai'
 import { generateUniqueId } from '@/constants/utils'
 
 const MoleculesFormVariant = () => {
@@ -37,7 +37,7 @@ const MoleculesFormVariant = () => {
         </Button>
       </section>
 
-      {variant.map((data) => (
+      {variant.map(() => (
         <div
           className="mb-3 flex items-center justify-start gap-3 align-bottom"
           key={generateUniqueId(10)}

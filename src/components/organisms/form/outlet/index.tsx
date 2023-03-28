@@ -9,7 +9,6 @@ import { toast } from 'react-toastify'
 import { FormManageOutletEntities, ObjectSelect } from './entities'
 import { useForm } from '@/hooks/useForm'
 import { ManageOutletFormSchema } from '@/schemas/outlet'
-import { Search } from '@/domain/vo/BaseInput'
 import { useGetRestaurantViewModal } from '@/view/restaurant/view-models/GetRestaurantViewModel'
 import { GetFilterRestaurantInput } from '@/domain/restaurant/repositories/RestaurantRepository'
 import { Restaurant } from '@/domain/restaurant/models'
@@ -65,7 +64,6 @@ const MoleculesFormManageOutlet = ({
     mode: 'onChange',
   })
 
-  const [searchParams, setSearchParams] = useState<Search<any>[]>([])
   const [province_id, setProvince_id] = useState<
     ObjectSelect | Record<string, never>
   >({})
@@ -75,17 +73,16 @@ const MoleculesFormManageOutlet = ({
   const [stateDistrict_id, setDistrict_id] = useState<
     ObjectSelect | undefined | null
   >(null)
-  const [_, setSubDistrict] = useState<ObjectSelect | undefined | null>(null)
+  const [stateSubdistrict_id, setSubDistrict] = useState<
+    ObjectSelect | undefined | null
+  >(null)
 
-  const hooksParamsRestaurant: GetFilterRestaurantInput = useMemo(
-    () => ({
-      search: searchParams,
-      sort: { field: 'created_at', value: 'desc' },
-      page: 1,
-      limit: 0,
-    }),
-    [searchParams],
-  )
+  const hooksParamsRestaurant: GetFilterRestaurantInput = {
+    search: [],
+    sort: { field: 'created_at', value: 'desc' },
+    page: 1,
+    limit: 0,
+  }
 
   const hooksParamsProvince: GetFilterProvinceInput = {
     search: [],
@@ -213,7 +210,7 @@ const MoleculesFormManageOutlet = ({
       restaurant_uuid: data.restaurant_uuid.value,
       outlet_name: data.outlet_name,
       outlet_code: data.outlet_code,
-      subdistrict_id: data?.subdistrict_id?.value,
+      subdistrict_id: stateSubdistrict_id?.value,
       address: data?.address,
       latitude: data?.latitude,
       longitude: data?.longitude,

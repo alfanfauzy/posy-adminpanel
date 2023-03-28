@@ -106,6 +106,13 @@
     "semi": ["warn", "never"],
     "react/no-children-prop": "off",
     "react/prop-types": "off",
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": false }]
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": false }
+    ],
+    "no-unused-vars": [
+      "error",
+      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+    ]
   }
 }

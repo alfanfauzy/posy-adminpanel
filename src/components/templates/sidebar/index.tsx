@@ -18,7 +18,6 @@ import PVGLogo from 'public/pvg-logo.png'
 import { MENU_LIST } from '@/constants/index'
 import Footer from '@/atoms/footer'
 import { generateUniqueId } from '@/constants/utils'
-import { store } from 'store/index'
 
 const SidebarTop = ({ onClick }: SideBarTopEntities) => (
   <span
@@ -132,8 +131,6 @@ const SidebarContent = ({ listMenus }: MenuSidebar) => {
 
 const OrganismSidebar = () => {
   const { collapseSidebar } = useProSidebar()
-
-  const permissions = store.getState().permission
 
   return (
     <Sidebar

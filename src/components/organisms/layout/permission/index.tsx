@@ -9,7 +9,6 @@ import { timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
-import { Search } from '@/domain/vo/BaseInput'
 import { GetAccessFilterInput } from '@/domain/access/repositories/AccessRepository'
 import { useGetAccessViewModal } from '@/view/access/view-modals/GetAccessViewModel'
 import { Access } from '@/domain/access/models'
@@ -25,9 +24,6 @@ const ModalConfirmation = dynamic(
 const PermissionLayout = ({ type }: PermissionLayoutProps) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchParams, setSearchParams] = useState<Search<any>[]>([
-    { field: 'is_internal', value: type === 'admin' ? 'true' : 'false' },
-  ])
   const [selectedData, setSelectedData] = useState<Access>({
     uuid: '',
     name: '',
@@ -39,12 +35,14 @@ const PermissionLayout = ({ type }: PermissionLayoutProps) => {
 
   const hooksParams: GetAccessFilterInput = useMemo(
     () => ({
-      search: searchParams,
+      search: [
+        { field: 'is_internal', value: type === 'admin' ? 'true' : 'false' },
+      ],
       sort: { field: 'created_at', value: 'desc' },
       page,
       limit,
     }),
-    [page, limit, searchParams],
+    [page, limit],
   )
 
   const {
@@ -140,7 +138,7 @@ const PermissionLayout = ({ type }: PermissionLayoutProps) => {
 
     {
       title: 'Action',
-      render: (dataValue, record, index) => (
+      render: (dataValue) => (
         <span className="flex gap-1">
           <Button
             variant="secondary"

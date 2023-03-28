@@ -1,23 +1,12 @@
 import { Button } from 'posy-fnb-core'
 import React, { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { generateUniqueId } from '@/constants/utils'
 import Accordion from '@/molecules/addOnAccordion'
 
 const OrganismAddOnForm = () => {
-  const [addOn, setAddOn] = useState([])
+  const [addOn] = useState([])
 
   const handleAddNew = () => {
-    const newField = {
-      id: generateUniqueId(5),
-      addon_name: '',
-      is_optional: '',
-      can_choose_multiple: '',
-      max_variant: '',
-      min_variant: '',
-      addon_priority: '',
-    }
-
     // setAddOn([...addOn, newField])
   }
 

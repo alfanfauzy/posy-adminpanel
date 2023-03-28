@@ -96,7 +96,7 @@ const CategoryLayout: React.FC = () => {
 
     {
       title: 'Action',
-      render: (dataValue, record, index) => (
+      render: (dataValue) => (
         <span className="flex gap-1">
           <Button
             variant="secondary"

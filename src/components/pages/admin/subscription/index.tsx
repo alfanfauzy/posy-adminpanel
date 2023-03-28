@@ -8,7 +8,6 @@ import { FormatToRupiah, timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
-import { Search } from '@/domain/vo/BaseInput'
 import { GetSubscriptionFilterInput } from '@/domain/subscription/repositories/SubscriptionRepository'
 import { useGetSubscriptionViewModal } from '@/view/subscription/view-modals/GetSubscriptionViewModel'
 import { Subscription } from '@/domain/subscription/models'
@@ -23,17 +22,16 @@ const ModalFormSubscription = dynamic(
 const SubscriptionLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchParams, setSearchParams] = useState<Search<any>[]>([])
   const [isEdit, setIsEdit] = useState(false)
 
   const hooksParams: GetSubscriptionFilterInput = useMemo(
     () => ({
-      search: searchParams,
+      search: [],
       sort: { field: 'created_at', value: 'desc' },
       page,
       limit,
     }),
-    [page, limit, searchParams],
+    [page, limit],
   )
 
   const {
@@ -145,7 +143,7 @@ const SubscriptionLayout: React.FC = () => {
     },
     {
       title: 'Action',
-      render: (dataValue, record, index) => (
+      render: (dataValue) => (
         <span className="flex gap-1">
           <Button
             variant="secondary"

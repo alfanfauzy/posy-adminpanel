@@ -2,7 +2,7 @@
  * User Restaurant Form Modal
  */
 import { ObjectSelect } from '../outlet/entities'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Button, Input, Select } from 'posy-fnb-core'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
@@ -13,14 +13,11 @@ import { UserRestauranFormSchema } from '@/schemas/userRestaurant'
 import useToggle from '@/hooks/useToggle'
 import IconEye from '@/atoms/icon/IconEye'
 import { useGetRolesViewModal } from '@/view/role/view-modals/GetRolesViewModel'
-import { GetRoleListDataResponse } from '@/data/role/types'
 import { GetRolesInput } from '@/domain/role/repositories/RoleRepository'
 import { useGetRestaurantViewModal } from '@/view/restaurant/view-models/GetRestaurantViewModel'
 import { GetFilterRestaurantInput } from '@/domain/restaurant/repositories/RestaurantRepository'
-import { GetRestaurantListDataResponse } from '@/data/restaurant/types'
 import { GetFilterOutletInput } from '@/domain/outlet/repositories/OutletRepositories'
 import { useGetOutletViewModal } from '@/view/outlet/view-models/GetOutletViewModel'
-import { GetOutletListDataResponse } from '@/data/outlet/type'
 import { Restaurant } from '@/domain/restaurant/models'
 import { Role } from '@/domain/role/models'
 import { Outlet } from '@/domain/outlet/models'
@@ -51,6 +48,8 @@ const MoleculesFormUserRestaurant = ({
   selectedData,
   handleRefetch,
 }: MoleculesFormUserRestaurantProps) => {
+  const refSelectOutlet: React.MutableRefObject<any> = useRef()
+
   const [restaurant_uuid, setRestaurant_uuid] = useState<
     ObjectSelect | Record<string, never>
   >({})
@@ -181,25 +180,39 @@ const MoleculesFormUserRestaurant = ({
   }
 
   useEffect(() => {
-    setValue('role_uuid', { label: 'Waiters', value: '00000000000000000' })
-    setValue('restaurant_uuid', {
-      label: 'Waiters',
-      value: '00000000000000000',
+    setValue('role_uuid', {
+      label: 'role_eksternal',
+      value: 'ae1b523a-4e11-4dbe-9b23-d533fcaeed6b',
     })
-    setValue('outlet_uuid', { label: 'Waiters', value: '00000000000000000' })
 
     if (isEdit) {
-      const { name, email, phone } = selectedData
+      const { name, email, phone, outlet } = selectedData
 
       setValue('fullname', name)
       setValue('email', email)
       setValue('phone', phone)
-      // setValue('role_uuid', )
-      // setValue('outlet_uuid', outlet)
+
+      if (outlet[0]?.outlet_name && outlet[0]?.outlet_uuid) {
+        setValue('outlet_uuid', {
+          label: outlet[0].outlet_name,
+          value: outlet[0].outlet_uuid,
+        })
+      }
+
+      if (outlet[0]?.restaurant_name && outlet[0]?.restaurant_uuid) {
+        setValue('restaurant_uuid', {
+          label: outlet[0].restaurant_name,
+          value: outlet[0].restaurant_uuid,
+        })
+      }
     }
   }, [selectedData, isEdit, setValue])
 
-  const titleText = isEdit ? 'Edit Restaurant' : 'Create New Restaurant'
+  const titleText = isEdit
+    ? 'Edit User Restaurant'
+    : 'Create New User Restaurant'
+
+  console.log(errors)
 
   return (
     <ModalForm
@@ -250,7 +263,9 @@ const MoleculesFormUserRestaurant = ({
               <div className="mb-6">
                 <Select
                   name="role_uuid"
-                  onChange={(e) => setValue('role_uuid', e)}
+                  onChange={(e) => {
+                    setValue('role_uuid', e)
+                  }}
                   isLoading={isLoadingRole}
                   options={RoleSelect}
                   labelText="Role"
@@ -267,6 +282,7 @@ const MoleculesFormUserRestaurant = ({
                   onChange={(e) => {
                     setValue('restaurant_uuid', e)
                     setRestaurant_uuid(e)
+                    refSelectOutlet.current.clearValue()
                   }}
                   options={RestaurantSelect}
                   isLoading={isLoadingRestaurant}
@@ -280,6 +296,7 @@ const MoleculesFormUserRestaurant = ({
 
               <div className="mb-6">
                 <Select
+                  ref={refSelectOutlet}
                   name="outlet_uuid"
                   onChange={(e) => setValue('outlet_uuid', e)}
                   isLoading={isLoadingOutlet}

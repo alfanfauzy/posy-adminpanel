@@ -15,7 +15,7 @@ import { FormEditAdminEntities } from '@/organisms/form/admin/entities'
 
 export type GetFilterAdminInput = FilterInputVariables<
   'created_at',
-  keyof Pick<Admin, 'email'>
+  keyof Pick<Admin, 'email' | 'is_admin'>
 >
 
 export type GetAdminsResult = ResultQuery<Datalist<Admin> | undefined> & {

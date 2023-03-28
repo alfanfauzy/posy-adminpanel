@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from 'posy-fnb-core'
 import type { ColumnsType } from 'antd/es/table'
 import {
@@ -15,10 +15,11 @@ import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
 import { useGetRestaurantViewModal } from '@/view/restaurant/view-models/GetRestaurantViewModel'
-import { Search } from '@/domain/vo/BaseInput'
 import { GetFilterRestaurantInput } from '@/domain/restaurant/repositories/RestaurantRepository'
 import { Restaurant } from '@/domain/restaurant/models'
 import { useDeleteRestaurantViewModal } from '@/view/restaurant/view-models/DeleteRestaurantViewModel'
+import { useDispatchApp } from 'store/hooks'
+import { restaurantDetail } from 'store/slice/restaurant'
 
 const ModalFormRestaurant = dynamic(() => import('@/organisms/form/restaurant'))
 const ModalConfirmation = dynamic(
@@ -26,22 +27,17 @@ const ModalConfirmation = dynamic(
 )
 
 const ListRestaurantLayout: React.FC = () => {
+  const dispatch = useDispatchApp()
   const router = useRouter()
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchParams, setSearchParams] = useState<Search<any>[]>([
-    { field: 'is_internal', value: 'true' },
-  ])
 
-  const hooksParams: GetFilterRestaurantInput = useMemo(
-    () => ({
-      search: searchParams,
-      sort: { field: 'created_at', value: 'desc' },
-      page,
-      limit,
-    }),
-    [page, limit, searchParams],
-  )
+  const hooksParams: GetFilterRestaurantInput = {
+    search: [],
+    sort: { field: 'created_at', value: 'desc' },
+    page,
+    limit,
+  }
 
   const [selectedData, setSelectedData] = useState<
     Restaurant | Record<string, never>
@@ -127,11 +123,14 @@ const ListRestaurantLayout: React.FC = () => {
 
     {
       title: 'Action',
-      render: (dataValue, record, index) => (
+      render: (dataValue, record) => (
         <span className="flex gap-1">
           <Button
             variant="primary"
-            onClick={() => router.push(`/user/list-restaurant/${record.uuid}`)}
+            onClick={() => {
+              router.push(`/user/list-restaurant/${record.uuid}`)
+              dispatch(restaurantDetail(dataValue))
+            }}
           >
             <AiOutlineFolderOpen />
           </Button>

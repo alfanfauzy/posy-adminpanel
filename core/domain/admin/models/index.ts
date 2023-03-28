@@ -5,6 +5,7 @@ export interface AdminBased {
   roleid: string
   rolename: string
   seconds: number
+  is_admin: string
 }
 
 export type Admin = AdminBased

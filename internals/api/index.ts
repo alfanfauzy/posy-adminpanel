@@ -16,7 +16,7 @@ function addPendingRequest(callback: (token: string) => void) {
   pendingRequest.push(callback)
 }
 
-const { token, refresh_token, uuid } = store.getState().authData
+const { token, refresh_token, uuid } = store.getState().auth.authData
 
 const axiosApiInstance = axios.create()
 

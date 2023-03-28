@@ -1,17 +1,15 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from 'posy-fnb-core'
 import type { ColumnsType } from 'antd/es/table'
 import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
-import { DataType } from './entities'
 import { timeStampConverter } from '@/constants/utils'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
 import { useGetUserRestaurantViewModal } from '@/view/user-restaurant/view-modals/GetUserRestaurantViewModel'
 import { GetUserRestaurantFilterInput } from '@/domain/user-restaurant/repositories/UserRestaurantRepository'
-import { Search } from '@/domain/vo/BaseInput'
 import { UserRestaurant } from '@/domain/user-restaurant/models'
 import { RestaurantObject } from '@/data/user-restaurant/types'
 import { useDeleteUserRestaurantViewModal } from '@/view/user-restaurant/view-modals/DeleteUserRestaurantViewModel'
@@ -26,19 +24,13 @@ const ModalConfirmation = dynamic(
 const ListUserRestaurantLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchParams, setSearchParams] = useState<Search<any>[]>([
-    { field: 'is_internal', value: 'false' },
-  ])
 
-  const hooksParams: GetUserRestaurantFilterInput = useMemo(
-    () => ({
-      search: searchParams,
-      sort: { field: 'created_at', value: 'desc' },
-      page,
-      limit,
-    }),
-    [page, limit, searchParams],
-  )
+  const hooksParams: GetUserRestaurantFilterInput = {
+    search: [{ field: 'is_admin', value: 'false' }],
+    sort: { field: 'created_at', value: 'desc' },
+    page,
+    limit,
+  }
 
   const {
     data: ListUserRestaurant,

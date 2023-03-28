@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Button } from 'posy-fnb-core'
 import type { ColumnsType } from 'antd/es/table'
 import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
@@ -21,7 +21,11 @@ const ModalConfirmation = dynamic(
   () => import('@/molecules/modal/confirmation'),
 )
 
-const ManageOutletLayout: React.FC = () => {
+interface ManageOutletLayoutProps {
+  restaurant_uuid?: string
+}
+
+const ManageOutletLayout = ({ restaurant_uuid }: ManageOutletLayoutProps) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [searchParams, setSearchParams] = useState<Search<any>[]>([])
@@ -33,7 +37,7 @@ const ManageOutletLayout: React.FC = () => {
       page,
       limit,
     }),
-    [page, limit, searchParams],
+    [page, limit, searchParams, restaurant_uuid],
   )
 
   const {
@@ -135,7 +139,7 @@ const ManageOutletLayout: React.FC = () => {
 
     {
       title: 'Action',
-      render: (dataValue, record, index) => (
+      render: (dataValue) => (
         <span className="flex gap-1">
           <Button
             variant="secondary"
@@ -157,6 +161,15 @@ const ManageOutletLayout: React.FC = () => {
       ),
     },
   ]
+
+  useEffect(() => {
+    if (restaurant_uuid) {
+      setSearchParams((prevState) => [
+        ...prevState,
+        { field: 'restaurant_uuid', value: restaurant_uuid },
+      ])
+    }
+  }, [restaurant_uuid])
 
   return (
     <div className="pt-5">

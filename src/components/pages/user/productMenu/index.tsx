@@ -1,15 +1,9 @@
 import React, { useState } from 'react'
 import { Button } from 'posy-fnb-core'
 import type { ColumnsType } from 'antd/es/table'
-import {
-  AiFillDelete,
-  AiFillEdit,
-  AiOutlineFolderOpen,
-  AiOutlinePlus,
-} from 'react-icons/ai'
+import { AiFillDelete, AiFillEdit, AiOutlinePlus } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import { toast } from 'react-toastify'
-import { useRouter } from 'next/router'
 import { DataType } from './entities'
 import { dummy } from 'src/data/restaurant'
 import { timeStampConverter } from '@/constants/utils'
@@ -24,7 +18,6 @@ const ModalConfirmation = dynamic(
 )
 
 const ListProductMenuLayout: React.FC = () => {
-  const router = useRouter()
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
 
@@ -108,12 +101,16 @@ const ListProductMenuLayout: React.FC = () => {
       key: 'is_active',
       dataIndex: 'is_active',
       render: () => (
-        <AtomSwitch onChange={handleSwitchActiveMenu} name="is_active" />
+        <AtomSwitch
+          onChange={handleSwitchActiveMenu}
+          name="is_active"
+          value={switchActiveMenu}
+        />
       ),
     },
     {
       title: 'Action',
-      render: (dataValue, record, index) => (
+      render: (dataValue) => (
         <span className="flex gap-1">
           <Button
             variant="secondary"

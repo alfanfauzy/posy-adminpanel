@@ -9,7 +9,6 @@ import AtomTag from '@/atoms/tag'
 import AtomTable from '@/atoms/table'
 import useToggle from '@/hooks/useToggle'
 import HeaderContent from '@/templates/header/header-content'
-import { Search } from '@/domain/vo/BaseInput'
 import { GetFilterAdminInput } from '@/domain/admin/repositories/AdminRepository'
 import { useGetAdminViewModal } from '@/view/admin/view-models/GetAdminViewModel'
 import { Admin } from '@/domain/admin/models'
@@ -23,18 +22,15 @@ const ModalConfirmation = dynamic(
 const AdminListLayout: React.FC = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
-  const [searchParams, setSearchParams] = useState<Search<any>[]>([
-    { field: 'is_internal', value: 'true' },
-  ])
 
   const hooksParams: GetFilterAdminInput = useMemo(
     () => ({
-      search: searchParams,
+      search: [{ field: 'is_admin', value: 'true' }],
       sort: { field: 'created_at', value: 'desc' },
       page,
       limit,
     }),
-    [page, limit, searchParams],
+    [page, limit],
   )
 
   const {
@@ -129,7 +125,7 @@ const AdminListLayout: React.FC = () => {
     },
     {
       title: 'Action',
-      render: (dataValue, record, index) => (
+      render: (dataValue) => (
         <span className="flex gap-1">
           <Button
             variant="secondary"

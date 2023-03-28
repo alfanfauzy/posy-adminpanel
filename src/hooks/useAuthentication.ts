@@ -4,7 +4,7 @@ import { useAppSelector } from 'store/hooks'
 
 const useAuthentication = () => {
   const router = useRouter()
-  const { isLoggedIn, authData } = useAppSelector((state) => state)
+  const { isLoggedIn, authData } = useAppSelector((state) => state.auth)
 
   useEffect(() => {
     if (!isLoggedIn && authData.token === '') {

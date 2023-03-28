@@ -28,7 +28,7 @@ const ImageCropper = ({ image, setImage, onSubmit }: ImageCropperProps) => {
     try {
       const cropImage = await getCroppedImg(image, croppedAreaPixels)
       setCroppedImage(cropImage)
-      onSubmit(image)
+      onSubmit(croppedImage)
     } catch (e) {
       console.error(e)
     }

@@ -26,6 +26,13 @@ export type GetRestaurantsResult = ResultQuery<
 export type GetRestaurantResult = ResultQuery<Restaurant>
 
 /**
+ * GET DETAIL RESTAURANT
+ */
+
+export type GetDetailRestaurantsResult = ResultQuery<
+  Datalist<Restaurants> | undefined
+>
+/**
  * CREATE
  */
 
