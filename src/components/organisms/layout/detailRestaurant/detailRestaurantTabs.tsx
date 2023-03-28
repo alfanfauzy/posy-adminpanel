@@ -23,7 +23,7 @@ const OrganismDetailRestaurantTabs = () => {
 			<Tabs items={Item} value={tabsVal} onChange={e => setTabsVal(e)} />
 
 			{tabsVal === 0 && <ManageOutletLayout restaurant_uuid={uuid} />}
-			{tabsVal === 1 && <ListCategoryMenuLayout />}
+			{tabsVal === 1 && <ListCategoryMenuLayout restaurant_uuid={uuid} />}
 			{tabsVal === 2 && <ListProductMenuLayout />}
 			{tabsVal === 3 && <UserSubscriptionLayout />}
 		</section>

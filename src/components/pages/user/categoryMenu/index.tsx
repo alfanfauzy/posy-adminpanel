@@ -1,46 +1,50 @@
+import AtomSwitch from '@/atoms/switch';
 import AtomTable from '@/atoms/table';
-import {timeStampConverter} from '@/constants/utils';
+import {Category} from '@/domain/category/models';
+import {GetFilterCategoryInput} from '@/domain/category/repositories/CategoryRepository';
+import {Search} from '@/domain/vo/BaseInput';
 import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
+import {useGetCategoryViewModal} from '@/view/catalog/view-modals/GetCatalogViewModel';
 import type {ColumnsType} from 'antd/es/table';
 import dynamic from 'next/dynamic';
-import {Button} from 'posy-fnb-core';
-import React, {useState} from 'react';
-import {AiFillDelete, AiFillEdit, AiOutlinePlus} from 'react-icons/ai';
-import {toast} from 'react-toastify';
-import {dummy} from 'src/data/restaurant';
-
-import {DataType} from './entities';
+import React, {useEffect, useMemo, useState} from 'react';
+import {AiOutlinePlus} from 'react-icons/ai';
 
 const ModalFormCategory = dynamic(() => import('@/organisms/form/category'));
-const ModalConfirmation = dynamic(
-	() => import('@/molecules/modal/confirmation'),
-);
 
-const CategoryLayout: React.FC = () => {
+type CategoryLayoutProps = {
+	restaurant_uuid: string;
+};
+
+const CategoryLayout = ({restaurant_uuid}: CategoryLayoutProps) => {
+	const {value: isActiveCategory, toggle: handleIsActiveCategory} =
+		useToggle(true);
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
+	const [searchParams, setSearchParams] = useState<Array<Search<any>>>([]);
 
-	const [selectedData, setSelectedData] = useState<DataType>({});
+	const hooksParams: GetFilterCategoryInput = useMemo(
+		() => ({
+			restaurant_uuid,
+			search: searchParams,
+			sort: {field: 'created_at', value: 'desc'},
+			page,
+			limit,
+		}),
+		[page, limit, searchParams],
+	);
+
+	const {
+		data: ListCategory,
+		refetch: handleRefetchTable,
+		isLoading,
+		pagination,
+	} = useGetCategoryViewModal(hooksParams);
+
 	const [isEdit, setIsEdit] = useState(false);
 
 	const {value: openModal, toggle: handleOpenModal} = useToggle(false);
-	const {value: openModalConfirmation, toggle: handleOpenModalConfirmation} =
-		useToggle(false);
-
-	/** Modal Confirmation Action */
-
-	const handleShowConfirmationModal = (data: DataType) => {
-		handleOpenModalConfirmation();
-		setSelectedData(data);
-	};
-
-	const handleCloseModalConfirmation = () => {
-		handleOpenModalConfirmation();
-		setSelectedData({});
-	};
-
-	/** ------------------------- */
 
 	/** Modal Add/Edit Action */
 
@@ -51,19 +55,7 @@ const CategoryLayout: React.FC = () => {
 		}
 	};
 
-	/** ------------------------- */
-
-	const handleDeleteAdmin = () => {
-		const {uuid} = selectedData;
-		/**
-		 * Todo Remove
-		 */
-
-		handleCloseModalConfirmation();
-		toast.success(`Sucessfully remove data ${uuid}`);
-	};
-
-	const columns: ColumnsType<DataType> = [
+	const columns: ColumnsType<Category> = [
 		{
 			title: '#',
 			dataIndex: '',
@@ -77,48 +69,28 @@ const CategoryLayout: React.FC = () => {
 			dataIndex: 'name',
 		},
 		{
-			title: 'Category',
-			key: 'category',
-			dataIndex: 'category',
-		},
-		{
 			title: 'Display',
-			key: 'display',
-			dataIndex: 'display',
-		},
-		{
-			title: 'Created At',
-			key: 'created_at',
-			dataIndex: 'created_at',
-			sorter: (a: any, b: any) => a.created_at.seconds - b.created_at.seconds,
-			render: (dataValue, record: any) =>
-				timeStampConverter(record?.created_at?.seconds, 'DD-MM-YYYY HH:mm'),
-		},
-
-		{
-			title: 'Action',
-			render: (dataValue, record, index) => (
-				<span className="flex gap-1">
-					<Button
-						variant="secondary"
-						onClick={() => {
-							handleOpenFormModal();
-							setIsEdit(true);
-							setSelectedData(dataValue);
-						}}
-					>
-						<AiFillEdit />
-					</Button>
-					<Button
-						variant="red-accent"
-						onClick={() => handleShowConfirmationModal(dataValue)}
-					>
-						<AiFillDelete />
-					</Button>
-				</span>
+			key: 'is_active',
+			dataIndex: 'is_active',
+			render: data => (
+				<AtomSwitch
+					value={data}
+					name="is_active"
+					text={data ? 'Active' : 'Inactive'}
+					onChange={handleIsActiveCategory}
+				/>
 			),
 		},
 	];
+
+	useEffect(() => {
+		if (restaurant_uuid) {
+			setSearchParams(prevState => [
+				...prevState,
+				{field: 'restaurant_uuid', value: restaurant_uuid},
+			]);
+		}
+	}, [restaurant_uuid]);
 
 	return (
 		<div className="pt-5">
@@ -130,26 +102,19 @@ const CategoryLayout: React.FC = () => {
 			<ModalFormCategory
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}
-				isEdit={isEdit}
-				selectedData={selectedData}
-			/>
-			<ModalConfirmation
-				isOpenModal={openModalConfirmation}
-				title="Modal Confirmation"
-				text="Are you sure want to remove ?"
-				onClose={handleCloseModalConfirmation}
-				onOk={handleDeleteAdmin}
+				isEdit={false}
+				selectedData={{}}
 			/>
 			<AtomTable
-				isLoading={false}
+				isLoading={isLoading}
 				columns={columns}
-				dataSource={dummy}
+				dataSource={ListCategory}
 				onChangePaginationItem={(e: {value: number}) => setLimit(e.value)}
 				limitSize={limit}
 				pagination={{
 					current: page,
 					pageSize: limit,
-					total: dummy.length,
+					total: pagination?.total_objs,
 					onChange: setPage,
 				}}
 			/>
