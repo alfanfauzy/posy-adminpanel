@@ -10,6 +10,7 @@ export type Category = CategoryBased;
 export type Categorys = Array<Category>;
 
 export type FormCategory = {
+	restaurant_uuid: string;
 	category_name: string;
 	is_active: boolean;
 };

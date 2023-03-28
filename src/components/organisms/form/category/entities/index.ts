@@ -1,4 +1,4 @@
 export type FormCategoryEntities = {
-	name: string;
-	isDisplay: boolean;
+	category_name: string;
+	is_active: boolean;
 };

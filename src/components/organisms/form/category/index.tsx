@@ -2,15 +2,17 @@
  * Category Form Modal
  */
 import AtomSwitch from '@/atoms/switch';
+import {Category} from '@/domain/category/models';
 import {useForm} from '@/hooks/useForm';
 import useToggle from '@/hooks/useToggle';
-import {DataType} from '@/pages/admin/list/entities';
 import {categorySchema} from '@/schemas/category';
+import {useCreateCategoryViewModal} from '@/view/catalog/view-modals/CreateCategoryViewModel';
 import dynamic from 'next/dynamic';
 import {Button, Input} from 'posy-fnb-core';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {AiOutlineCheckSquare} from 'react-icons/ai';
 import {toast} from 'react-toastify';
+import {useAppSelector} from 'store/hooks';
 
 import {FormCategoryEntities} from './entities';
 
@@ -22,22 +24,26 @@ type MoleculesFormCategoryProps = {
 	isEdit: boolean;
 	isOpenModal: boolean;
 	handleClose: () => void;
-	selectedData: DataType;
+	selectedData: Category | Record<string, never>;
+	handleRefetch: () => void;
 };
 
 const MoleculesFormCategory = ({
 	isEdit = false,
 	isOpenModal,
 	handleClose,
+	handleRefetch,
 }: MoleculesFormCategoryProps) => {
-	const {value: iSDisplayToggle, toggle: handleDisplayToggle} =
-		useToggle(false);
+	const {uuid: restaurant_uuid} = useAppSelector(state => state.restaurant);
+	const {value: isActive, toggle: handleIsActiveToggle} = useToggle(false);
 
 	const {
 		handleSubmit,
 		register,
 		reset,
 		formState: {errors},
+		watch,
+		setValue,
 	} = useForm({
 		schema: categorySchema,
 		mode: 'onChange',
@@ -46,50 +52,30 @@ const MoleculesFormCategory = ({
 	const handleCloseModal = () => {
 		reset();
 		handleClose();
+		handleRefetch();
 	};
 
-	const handleCreateAdmin = (data: FormCategoryEntities) => {
-		/**
-		 * Todo : Send `data` to backend
-		 */
-
-		/**
-		 * Will be remove soon
-		 */
-
-		const getData = JSON.parse(localStorage.getItem('items') || '');
-
-		getData.push(data);
-
-		localStorage.setItem('items', JSON.stringify(getData));
-
-		/** ---------------------------------------------------- */
-
-		if (getData) {
-			handleCloseModal();
-			toast.success('Sucessfully added new admin');
-		}
-	};
-
-	const handleEditAdmin = (data: FormCategoryEntities) => {
-		/**
-		 * Todo : Send `data` to backend
-		 */
-		if (data) {
-			handleCloseModal();
-			toast.success('Sucessfully edit user admin');
-		}
-	};
+	const {createCategory, isLoading: isLoadingCreate} =
+		useCreateCategoryViewModal({
+			onSuccess() {
+				handleCloseModal();
+				toast.success('Sucessfully added new category');
+			},
+		});
 
 	const handleSubmitForm = (data: FormCategoryEntities) => {
-		if (isEdit) {
-			handleEditAdmin(data);
-		} else {
-			handleCreateAdmin(data);
-		}
+		const newPayload = {...data, restaurant_uuid};
+		createCategory(newPayload);
 	};
 
-	const titleText = isEdit ? 'Edit User' : 'Create New Category';
+	useEffect(() => {
+		setValue('is_active', isActive);
+	}, [isActive]);
+
+	const titleText = 'Create New Category';
+
+	console.log(errors);
+	console.log(watch());
 
 	return (
 		<ModalForm
@@ -101,26 +87,28 @@ const MoleculesFormCategory = ({
 				<form onSubmit={handleSubmit(data => handleSubmitForm(data))}>
 					<div className="mb-6">
 						<Input
-							{...register('name')}
+							{...register('category_name')}
 							className="w-52"
 							labelText="Category Name:"
 							type="text"
 							placeholder="ex: Drink, Food, Baverages"
 							disabled={isEdit}
-							error={!!errors?.name}
-							helperText={errors?.name?.message}
+							error={!!errors?.category_name}
+							helperText={errors?.category_name?.message}
 						/>
 					</div>
 					<div className="mb-6">
 						<AtomSwitch
+							{...register('is_active')}
 							name="isDisplay"
 							label="Display on Menu"
-							text={iSDisplayToggle ? 'Yes' : 'No'}
-							onChange={handleDisplayToggle}
+							text={isActive ? 'Active' : 'Inactive'}
+							onChange={handleIsActiveToggle}
 						/>
 					</div>
 
 					<Button
+						isLoading={isLoadingCreate}
 						type="submit"
 						variant="primary"
 						size="l"
