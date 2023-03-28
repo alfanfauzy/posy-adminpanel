@@ -22,6 +22,7 @@ export interface GetUserRestaurantResponse {
   fullname: string
   phone: string
   role: Pick<GetRoleListDataResponse, 'is_internal' | 'accesses'>
+  is_admin: string
   metadata: Metadata
   restaurant_user: RestaurantObject[]
 }

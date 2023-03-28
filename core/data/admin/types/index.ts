@@ -12,6 +12,7 @@ export interface GetAdminListDataResponse {
   name: string
   fullname: string
   role: RoleDataResponse
+  is_admin: string
   metadata: Metadata
 }
 

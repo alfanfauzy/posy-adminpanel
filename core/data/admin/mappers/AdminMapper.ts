@@ -9,4 +9,5 @@ export const mapToAdminModel = (datas: GetAdminListDataResponse[]): Admins =>
     roleid: data.role.uuid,
     rolename: data.role.name,
     seconds: data.metadata.created_at.seconds,
+    is_admin: data.is_admin,
   }))

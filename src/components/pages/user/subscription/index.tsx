@@ -107,7 +107,6 @@ const UserSubscriptionLayout: React.FC = () => {
         isOpenModal={openModal}
         handleClose={handleOpenFormModal}
         isEdit={isEdit}
-        selectedData={selectedData}
       />
       <ModalConfirmation
         isOpenModal={openModalConfirmation}

@@ -12,4 +12,5 @@ export const mapToUserRestaurantModel = (
     phone: data.phone,
     role: data.role,
     seconds: data.metadata.created_at.seconds,
+    is_admin: data.is_admin,
   }))
