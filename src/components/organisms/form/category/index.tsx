@@ -6,7 +6,7 @@ import {Category} from '@/domain/category/models';
 import {useForm} from '@/hooks/useForm';
 import useToggle from '@/hooks/useToggle';
 import {categorySchema} from '@/schemas/category';
-import {useCreateCategoryViewModal} from '@/view/catalog/view-modals/CreateCategoryViewModel';
+import {useCreateCategoryViewModal} from '@/view/category/view-modals/CreateCategoryViewModel';
 import dynamic from 'next/dynamic';
 import {Button, Input} from 'posy-fnb-core';
 import React, {useEffect} from 'react';
@@ -73,9 +73,6 @@ const MoleculesFormCategory = ({
 	}, [isActive]);
 
 	const titleText = 'Create New Category';
-
-	console.log(errors);
-	console.log(watch());
 
 	return (
 		<ModalForm

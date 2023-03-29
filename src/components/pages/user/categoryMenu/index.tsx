@@ -1,11 +1,11 @@
-import AtomSwitch from '@/atoms/switch';
 import AtomTable from '@/atoms/table';
 import {Category} from '@/domain/category/models';
 import {GetFilterCategoryInput} from '@/domain/category/repositories/CategoryRepository';
 import {Search} from '@/domain/vo/BaseInput';
 import useToggle from '@/hooks/useToggle';
+import MoleculesSwitchStatusCategory from '@/molecules/moleculesSwitch';
 import HeaderContent from '@/templates/header/header-content';
-import {useGetCategoryViewModal} from '@/view/catalog/view-modals/GetCatalogViewModel';
+import {useGetCategoryViewModal} from '@/view/category/view-modals/GetCatalogViewModel';
 import type {ColumnsType} from 'antd/es/table';
 import dynamic from 'next/dynamic';
 import React, {useEffect, useMemo, useState} from 'react';
@@ -18,8 +18,6 @@ type CategoryLayoutProps = {
 };
 
 const CategoryLayout = ({restaurant_uuid}: CategoryLayoutProps) => {
-	const {value: isActiveCategory, toggle: handleIsActiveCategory} =
-		useToggle(true);
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 	const [searchParams, setSearchParams] = useState<Array<Search<any>>>([]);
@@ -72,12 +70,11 @@ const CategoryLayout = ({restaurant_uuid}: CategoryLayoutProps) => {
 			title: 'Display',
 			key: 'is_active',
 			dataIndex: 'is_active',
-			render: data => (
-				<AtomSwitch
-					value={data}
-					name="is_active"
-					text={data ? 'Active' : 'Inactive'}
-					onChange={handleIsActiveCategory}
+			render: (data, item) => (
+				<MoleculesSwitchStatusCategory
+					item={item}
+					data={data}
+					handleRefetch={handleRefetchTable}
 				/>
 			),
 		},

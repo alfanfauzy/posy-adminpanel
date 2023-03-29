@@ -16,4 +16,4 @@ export type CreateCategoryResponse = {
 	};
 };
 
-export type UpdateAdminResponse = CreateCategoryResponse;
+export type UpdateCategoryResponse = CreateCategoryResponse;
