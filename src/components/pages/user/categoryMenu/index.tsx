@@ -71,11 +71,7 @@ const CategoryLayout = ({restaurant_uuid}: CategoryLayoutProps) => {
 			key: 'is_active',
 			dataIndex: 'is_active',
 			render: (data, item) => (
-				<MoleculesSwitchStatusCategory
-					item={item}
-					data={data}
-					handleRefetch={handleRefetchTable}
-				/>
+				<MoleculesSwitchStatusCategory item={item} data={data} />
 			),
 		},
 	];

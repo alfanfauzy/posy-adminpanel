@@ -1,5 +1,6 @@
 import AtomSwitch from '@/atoms/switch';
 import {Category, FormCategory} from '@/domain/category/models';
+import {queryClient} from '@/hooks/react-query';
 import useToggle from '@/hooks/useToggle';
 import {useUpdateCategoryViewModal} from '@/view/category/view-modals/UpdateCategoryViewModel';
 import React from 'react';
@@ -8,20 +9,15 @@ import {toast} from 'react-toastify';
 type MoleculesSwitchProps = {
 	data: boolean;
 	item: Category;
-	handleRefetch: () => void;
 };
 
-const MoleculesSwitchStatusCategory = ({
-	data,
-	item,
-	handleRefetch,
-}: MoleculesSwitchProps) => {
-	const {value: statusValue} = useToggle(data);
+const MoleculesSwitchStatusCategory = ({data, item}: MoleculesSwitchProps) => {
+	const {value: statusValue, toggle} = useToggle(data);
 
 	const {updateCategory} = useUpdateCategoryViewModal({
 		onSuccess() {
 			toast.success('Sucessfully update category');
-			handleRefetch();
+			queryClient.invalidateQueries('category/list');
 		},
 	});
 
@@ -33,6 +29,7 @@ const MoleculesSwitchStatusCategory = ({
 		};
 
 		updateCategory({id: item.uuid, payload: newCategory});
+		toggle();
 	};
 
 	return (
@@ -41,7 +38,6 @@ const MoleculesSwitchStatusCategory = ({
 			name="is_active"
 			text={statusValue ? 'Active' : 'Inactive'}
 			onChange={handleCheckedChange}
-			// onChange={handleIsActiveCategory}
 		/>
 	);
 };

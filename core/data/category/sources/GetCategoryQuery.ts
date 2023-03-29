@@ -29,7 +29,7 @@ export const useGetCategoryQuery = (
 	options?: UseQueryOptions<Response<Datalist<GetCategoryListDataResponse>>>,
 ) =>
 	useQuery<Response<Datalist<GetCategoryListDataResponse>>>(
-		['Category/list', JSON.stringify(input)],
+		['category/list', JSON.stringify(input)],
 		() => GetCategory(input),
 		{
 			enabled: !!JSON.stringify(input),

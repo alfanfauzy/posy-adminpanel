@@ -1,11 +1,12 @@
 import {Loading} from '@/atoms/loading';
 import LoadingBar from '@/atoms/loading/loadingBar';
+import {queryClient} from '@/hooks/react-query';
 import {useLoading} from '@/hooks/useLoading';
 import {NextPage} from 'next';
 import type {AppProps} from 'next/app';
 import {useRouter} from 'next/router';
 import {ReactElement, ReactNode, Suspense, useEffect} from 'react';
-import {QueryClient, QueryClientProvider} from 'react-query';
+import {QueryClientProvider} from 'react-query';
 import 'styles/globals.css';
 import 'react-tabs/style/react-tabs.css';
 import 'posy-fnb-core/dist/index.css';
@@ -26,14 +27,7 @@ type AppPropsWithLayout = AppProps & {
 
 const App = ({Component, pageProps}: AppPropsWithLayout) => {
 	const router = useRouter();
-	const queryClient = new QueryClient({
-		defaultOptions: {
-			queries: {
-				refetchOnWindowFocus: false,
-				refetchOnReconnect: false,
-			},
-		},
-	});
+
 	const {asPath} = router;
 
 	const {loadingState} = useLoading();
