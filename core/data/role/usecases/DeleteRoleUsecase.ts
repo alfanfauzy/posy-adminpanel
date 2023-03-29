@@ -1,20 +1,21 @@
-import { DeleteRoleResponse } from '../types'
-import { useDeleteRoleMutation } from '../sources/DeleteRoleQuery'
-import { MutationOptions } from 'core/domain/vo/BaseMutation'
-import { DeleteRoleParams } from '@/domain/role/repositories/RoleRepository'
+import {DeleteRoleParams} from '@/domain/role/repositories/RoleRepository';
+import {MutationOptions} from 'core/domain/vo/BaseMutation';
+
+import {useDeleteRoleMutation} from '../sources/DeleteRoleQuery';
+import {DeleteRoleResponse} from '../types';
 
 export const useDeleteRoleUsecase = (
-  options?: MutationOptions<DeleteRoleResponse>,
+	options?: MutationOptions<DeleteRoleResponse>,
 ): any => {
-  const { mutate, data, ...rest } = useDeleteRoleMutation(options)
+	const {mutate, data, ...rest} = useDeleteRoleMutation(options);
 
-  const deleteRole = (uuid: DeleteRoleParams) => {
-    mutate(uuid)
-  }
+	const deleteRole = (uuid: DeleteRoleParams) => {
+		mutate(uuid);
+	};
 
-  return {
-    deleteRole,
-    data: data?.data.data,
-    ...rest,
-  }
-}
+	return {
+		deleteRole,
+		data: data?.data.data,
+		...rest,
+	};
+};

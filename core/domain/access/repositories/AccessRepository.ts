@@ -1,57 +1,58 @@
-import { Access, Accesss, FormAccess } from '../models'
-import { Pagination } from 'core/domain/vo/BasePagination'
-import { FilterInputVariables } from 'core/domain/vo/BaseInput'
+import {FilterInputVariables} from 'core/domain/vo/BaseInput';
+import {Pagination} from 'core/domain/vo/BasePagination';
 import {
-  Datalist,
-  ResultQuery,
-  ResultMutation,
-  UpdateParams,
-} from 'core/domain/vo/BaseResponse'
+	Datalist,
+	ResultQuery,
+	ResultMutation,
+	UpdateParams,
+} from 'core/domain/vo/BaseResponse';
+
+import {Access, Accesss, FormAccess} from '../models';
 
 /**
  * GET
  */
 export type GetAccessFilterInput = FilterInputVariables<
-  'created_at',
-  keyof Pick<Access, 'name' | 'is_internal'>
->
+	'created_at',
+	keyof Pick<Access, 'name' | 'is_internal'>
+>;
 
 export type GetAccesssResult = ResultQuery<Datalist<Accesss> | undefined> & {
-  pagination: Pagination | undefined
-}
+	pagination: Pagination | undefined;
+};
 
-export type GetAccessResult = ResultQuery<Access>
+export type GetAccessResult = ResultQuery<Access>;
 
 /**
  * CREATE
  */
 
-export type CreateAccessResult = ResultMutation<Access | undefined>
+export type CreateAccessResult = ResultMutation<Access | undefined>;
 
-export interface CreateAccessRepository extends CreateAccessResult {
-  createAccess(params: FormAccess): void
-}
+export type CreateAccessRepository = {
+	createAccess(params: FormAccess): void;
+} & CreateAccessResult;
 
 /**
  * UPDATE
  */
 
-export type UpdateAccessParams = UpdateParams<FormAccess>
+export type UpdateAccessParams = UpdateParams<FormAccess>;
 
-export type UpdateAccessResult = ResultMutation<Access>
+export type UpdateAccessResult = ResultMutation<Access>;
 
-export interface UpdateAccessRepository extends UpdateAccessResult {
-  updateAccess(params: UpdateAccessParams): void
-}
+export type UpdateAccessRepository = {
+	updateAccess(params: UpdateAccessParams): void;
+} & UpdateAccessResult;
 
 /**
  * DELETE
  */
 
-export type DeleteAccessParams = string
+export type DeleteAccessParams = string;
 
-export type DeleteAccessResult = ResultMutation<Access>
+export type DeleteAccessResult = ResultMutation<Access>;
 
-export interface DeleteAccessRepository extends DeleteAccessResult {
-  deleteAccess(params: DeleteAccessParams): void
-}
+export type DeleteAccessRepository = {
+	deleteAccess(params: DeleteAccessParams): void;
+} & DeleteAccessResult;

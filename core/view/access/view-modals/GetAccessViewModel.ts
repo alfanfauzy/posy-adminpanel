@@ -1,13 +1,13 @@
-import { useGetAccessUsecase } from '@/data/access/usecases/GetAccessUsecase'
+import {useGetAccessUsecase} from '@/data/access/usecases/GetAccessUsecase';
 import {
-  GetAccessFilterInput,
-  GetAccesssResult,
-} from '@/domain/access/repositories/AccessRepository'
+	GetAccessFilterInput,
+	GetAccesssResult,
+} from '@/domain/access/repositories/AccessRepository';
 
 export const useGetAccessViewModal = (
-  input: GetAccessFilterInput,
+	input: GetAccessFilterInput,
 ): GetAccesssResult => {
-  const result = useGetAccessUsecase(input)
+	const result = useGetAccessUsecase(input);
 
-  return result
-}
+	return result;
+};

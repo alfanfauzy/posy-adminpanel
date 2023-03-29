@@ -1,5 +1,5 @@
-import moment from 'moment'
-import { ParamsObject } from 'shared/baseResponse'
+import moment from 'moment';
+import {ParamsObject} from 'shared/baseResponse';
 
 /**
  * Function to generate unique id
@@ -12,15 +12,15 @@ import { ParamsObject } from 'shared/baseResponse'
  * generateUniqueId(15) //cSQB2XPpZyHt8XF
  */
 export const generateUniqueId = (length: number) => {
-  let result = ''
-  const characters = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`
-  const charactersLength = characters.length
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength))
-  }
-  return result
-}
+	let result = '';
+	const characters = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`;
+	const charactersLength = characters.length;
+	// eslint-disable-next-line no-plusplus
+	for (let i = 0; i < length; i++) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	return result;
+};
 
 /**
  * Function to convert a unixtime to a date time
@@ -33,12 +33,12 @@ export const generateUniqueId = (length: number) => {
  * timestamp(1678689892, 'DD-MM-YYYY HH:mm') //13-03-2023 13:44
  */
 export const timeStampConverter = (
-  timestamp: number,
-  formatConvert: string,
+	timestamp: number,
+	formatConvert: string,
 ) => {
-  const times = moment.unix(timestamp)
-  return times.format(formatConvert)
-}
+	const times = moment.unix(timestamp);
+	return times.format(formatConvert);
+};
 
 /**
  * Function to find the index of the array element
@@ -48,13 +48,13 @@ export const timeStampConverter = (
  *
  */
 export const findIndexArraySearch = (
-  dataArray: ParamsObject[],
-  field: string,
+	dataArray: Array<ParamsObject>,
+	field: string,
 ) => {
-  const index = dataArray.findIndex((array) => array.field === field)
+	const index = dataArray.findIndex(array => array.field === field);
 
-  return index
-}
+	return index;
+};
 
 /**
  * Function to convert a ammount of numbers to a Rupiah currency
@@ -66,11 +66,11 @@ export const findIndexArraySearch = (
  * FormatToRupiah(10000) // Rp10.000
  */
 export const FormatToRupiah = (ammount: number) =>
-  new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-  }).format(ammount)
+	new Intl.NumberFormat('id-ID', {
+		style: 'currency',
+		currency: 'IDR',
+		minimumFractionDigits: 0,
+	}).format(ammount);
 
 /**
  * Function to convert value date to unix timestamp
@@ -83,13 +83,13 @@ export const FormatToRupiah = (ammount: number) =>
  * TimeToUnix(30-03-2023) //1680220800
  */
 export const TimetoUnix = (valueDate: string | number | Date) => {
-  const date = new Date(valueDate)
+	const date = new Date(valueDate);
 
-  return Math.floor(date.getTime() / 1000)
-}
+	return Math.floor(date.getTime() / 1000);
+};
 
 export const formatCurrencyTextInput = (value: string) =>
-  value
-    .replace(/^[0]/, '')
-    .replace(/\D/g, '')
-    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+	value
+		.replace(/^[0]/, '')
+		.replace(/\D/g, '')
+		.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');

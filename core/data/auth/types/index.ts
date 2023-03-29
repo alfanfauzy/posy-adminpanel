@@ -1,3 +1,3 @@
-import { DataLogin } from '@/domain/auth/models'
+import {DataLogin} from '@/domain/auth/models';
 
-export type LoginResponse = DataLogin
+export type LoginResponse = DataLogin;

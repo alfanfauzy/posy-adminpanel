@@ -1,13 +1,13 @@
-import { useGetSubDistrictUsecase } from '@/data/region/usecases/GerSubDistrictUsecases'
+import {useGetSubDistrictUsecase} from '@/data/region/usecases/GerSubDistrictUsecases';
 import {
-  GetFilterSubDistrictInput,
-  GetSubDistrictResult,
-} from '@/domain/region/repository/RegionRepositories'
+	GetFilterSubDistrictInput,
+	GetSubDistrictResult,
+} from '@/domain/region/repository/RegionRepositories';
 
 export const useGetSubDistrictViewModal = (
-  input?: GetFilterSubDistrictInput,
+	input?: GetFilterSubDistrictInput,
 ): GetSubDistrictResult => {
-  const result = useGetSubDistrictUsecase(input)
+	const result = useGetSubDistrictUsecase(input);
 
-  return result
-}
+	return result;
+};

@@ -1,55 +1,55 @@
 /**
  * Modal Form Product
  */
-import { Button, Input } from 'posy-fnb-core'
-import dynamic from 'next/dynamic'
-import React from 'react'
-import { AiOutlineCheckSquare } from 'react-icons/ai'
-import { FormProvider } from 'react-hook-form'
-import { useForm } from '@/hooks/useForm'
-import { ProductSchema } from '@/schemas/product'
+import {useForm} from '@/hooks/useForm';
+import {ProductSchema} from '@/schemas/product';
+import dynamic from 'next/dynamic';
+import {Button, Input} from 'posy-fnb-core';
+import React from 'react';
+import {FormProvider} from 'react-hook-form';
+import {AiOutlineCheckSquare} from 'react-icons/ai';
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
-  ssr: false,
-})
+	ssr: false,
+});
 
-interface MoleculesFormProductProps {
-  isEdit: boolean
-  isOpenModal: boolean
-  handleClose: () => void
-  selectedData: any
-}
+type MoleculesFormProductProps = {
+	isEdit: boolean;
+	isOpenModal: boolean;
+	handleClose: () => void;
+	selectedData: any;
+};
 
 const OrganismFormProduct = ({
-  isEdit,
-  isOpenModal,
-  handleClose,
+	isEdit,
+	isOpenModal,
+	handleClose,
 }: MoleculesFormProductProps) => {
-  const methodForm = useForm({
-    schema: ProductSchema,
-  })
+	const methodForm = useForm({
+		schema: ProductSchema,
+	});
 
-  const handleCloseModal = () => {
-    handleClose()
-  }
+	const handleCloseModal = () => {
+		handleClose();
+	};
 
-  const onSubmit = (data: object) => {
-    console.log(data)
-  }
+	const onSubmit = (data: object) => {
+		console.log(data);
+	};
 
-  const titleText = isEdit ? 'Edit Product Menu' : 'Add New Product Menu'
+	const titleText = isEdit ? 'Edit Product Menu' : 'Add New Product Menu';
 
-  return (
-    <ModalForm
-      isOpenModal={isOpenModal}
-      handleCloseModal={handleCloseModal}
-      title={titleText}
-    >
-      <section className="w-big-500 p-4">
-        <FormProvider {...methodForm}>
-          <form onSubmit={methodForm.handleSubmit(onSubmit)}>
-            <div className="mb-6">
-              {/* <Select
+	return (
+		<ModalForm
+			isOpenModal={isOpenModal}
+			handleCloseModal={handleCloseModal}
+			title={titleText}
+		>
+			<section className="w-big-500 p-4">
+				<FormProvider {...methodForm}>
+					<form onSubmit={methodForm.handleSubmit(onSubmit)}>
+						<div className="mb-6">
+							{/* <Select
               {...register('category_uuids')}
               name="category_uuids"
               labelText="Choose Outlet:"
@@ -63,19 +63,19 @@ const OrganismFormProduct = ({
               error={!!errors.category_uuids}
               helperText={errors.category_uuids?.message}
             /> */}
-              <Input
-                {...methodForm.register('category_uuids')}
-                name="category_uuids"
-                labelText="Product Name:"
-                placeholder="ex: Product Name"
-                className="flex items-center justify-center"
-                error={!!methodForm.formState.errors.category_uuids}
-                helperText={methodForm.formState.errors.category_uuids?.message}
-              />
-            </div>
+							<Input
+								{...methodForm.register('category_uuids')}
+								name="category_uuids"
+								labelText="Product Name:"
+								placeholder="ex: Product Name"
+								className="flex items-center justify-center"
+								error={!!methodForm.formState.errors.category_uuids}
+								helperText={methodForm.formState.errors.category_uuids?.message}
+							/>
+						</div>
 
-            {/** Product Form Section */}
-            {/* <HRLine text="Product" />
+						{/** Product Form Section */}
+						{/* <HRLine text="Product" />
 
           <div className="mb-6">
             <AtomUploadFile labelText="Product Image" name="product_image" />
@@ -118,8 +118,8 @@ const OrganismFormProduct = ({
             />
           </div> */}
 
-            {/** Price Form Section */}
-            {/* <HRLine text="Price" />
+						{/** Price Form Section */}
+						{/* <HRLine text="Price" />
 
           <div className="mb-6">
             <Input
@@ -149,24 +149,24 @@ const OrganismFormProduct = ({
             <p className="mb-1 block text-m-regular">Discount:</p>
           </div> */}
 
-            {/** Addon Form Section */}
-            {/* <HRLine text="Addon" />
+						{/** Addon Form Section */}
+						{/* <HRLine text="Addon" />
           <OrganismAddOnForm /> */}
-            <Button
-              type="submit"
-              variant="primary"
-              size="l"
-              fullWidth
-              className="flex items-center justify-center gap-2"
-            >
-              <AiOutlineCheckSquare />
-              Submit
-            </Button>
-          </form>
-        </FormProvider>
-      </section>
-    </ModalForm>
-  )
-}
+						<Button
+							type="submit"
+							variant="primary"
+							size="l"
+							fullWidth
+							className="flex items-center justify-center gap-2"
+						>
+							<AiOutlineCheckSquare />
+							Submit
+						</Button>
+					</form>
+				</FormProvider>
+			</section>
+		</ModalForm>
+	);
+};
 
-export default OrganismFormProduct
+export default OrganismFormProduct;

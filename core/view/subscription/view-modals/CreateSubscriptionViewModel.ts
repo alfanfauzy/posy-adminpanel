@@ -1,12 +1,12 @@
-import { MutationOptions } from 'core/domain/vo/BaseMutation'
-import { CreateSubscriptionResponse } from '@/data/subscription/types'
-import { CreateSubscriptionRepository } from '@/domain/subscription/repositories/SubscriptionRepository'
-import { useCreateSubscriptionUsecase } from '@/data/subscription/usecases/CreateSubscriptionUsecase'
+import {CreateSubscriptionResponse} from '@/data/subscription/types';
+import {useCreateSubscriptionUsecase} from '@/data/subscription/usecases/CreateSubscriptionUsecase';
+import {CreateSubscriptionRepository} from '@/domain/subscription/repositories/SubscriptionRepository';
+import {MutationOptions} from 'core/domain/vo/BaseMutation';
 
 export const useCreateSubscriptionViewModal = (
-  options: MutationOptions<CreateSubscriptionResponse>,
+	options: MutationOptions<CreateSubscriptionResponse>,
 ): CreateSubscriptionRepository => {
-  const result = useCreateSubscriptionUsecase(options)
+	const result = useCreateSubscriptionUsecase(options);
 
-  return result
-}
+	return result;
+};

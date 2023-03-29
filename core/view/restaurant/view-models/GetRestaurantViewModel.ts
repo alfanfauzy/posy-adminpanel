@@ -1,13 +1,13 @@
-import { useGetRestaurantUsecase } from '@/data/restaurant/usecases/GetRestaurantUsecase'
+import {useGetRestaurantUsecase} from '@/data/restaurant/usecases/GetRestaurantUsecase';
 import {
-  GetFilterRestaurantInput,
-  GetRestaurantsResult,
-} from '@/domain/restaurant/repositories/RestaurantRepository'
+	GetFilterRestaurantInput,
+	GetRestaurantsResult,
+} from '@/domain/restaurant/repositories/RestaurantRepository';
 
 export const useGetRestaurantViewModal = (
-  input?: GetFilterRestaurantInput,
+	input?: GetFilterRestaurantInput,
 ): GetRestaurantsResult => {
-  const result = useGetRestaurantUsecase(input)
+	const result = useGetRestaurantUsecase(input);
 
-  return result
-}
+	return result;
+};

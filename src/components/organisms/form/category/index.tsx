@@ -1,138 +1,139 @@
 /**
  * Category Form Modal
  */
-import React from 'react'
-import { Button, Input } from 'posy-fnb-core'
-import { AiOutlineCheckSquare } from 'react-icons/ai'
-import dynamic from 'next/dynamic'
-import { toast } from 'react-toastify'
-import { FormCategoryEntities } from './entities'
-import { useForm } from '@/hooks/useForm'
-import { categorySchema } from '@/schemas/category'
-import useToggle from '@/hooks/useToggle'
-import { DataType } from '@/pages/admin/list/entities'
-import AtomSwitch from '@/atoms/switch'
+import AtomSwitch from '@/atoms/switch';
+import {useForm} from '@/hooks/useForm';
+import useToggle from '@/hooks/useToggle';
+import {DataType} from '@/pages/admin/list/entities';
+import {categorySchema} from '@/schemas/category';
+import dynamic from 'next/dynamic';
+import {Button, Input} from 'posy-fnb-core';
+import React from 'react';
+import {AiOutlineCheckSquare} from 'react-icons/ai';
+import {toast} from 'react-toastify';
+
+import {FormCategoryEntities} from './entities';
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
-  ssr: false,
-})
+	ssr: false,
+});
 
-interface MoleculesFormCategoryProps {
-  isEdit: boolean
-  isOpenModal: boolean
-  handleClose: () => void
-  selectedData: DataType
-}
+type MoleculesFormCategoryProps = {
+	isEdit: boolean;
+	isOpenModal: boolean;
+	handleClose: () => void;
+	selectedData: DataType;
+};
 
 const MoleculesFormCategory = ({
-  isEdit = false,
-  isOpenModal,
-  handleClose,
+	isEdit = false,
+	isOpenModal,
+	handleClose,
 }: MoleculesFormCategoryProps) => {
-  const { value: iSDisplayToggle, toggle: handleDisplayToggle } =
-    useToggle(false)
+	const {value: iSDisplayToggle, toggle: handleDisplayToggle} =
+		useToggle(false);
 
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useForm({
-    schema: categorySchema,
-    mode: 'onChange',
-  })
+	const {
+		handleSubmit,
+		register,
+		reset,
+		formState: {errors},
+	} = useForm({
+		schema: categorySchema,
+		mode: 'onChange',
+	});
 
-  const handleCloseModal = () => {
-    reset()
-    handleClose()
-  }
+	const handleCloseModal = () => {
+		reset();
+		handleClose();
+	};
 
-  const handleCreateAdmin = (data: FormCategoryEntities) => {
-    /**
-     * Todo : Send `data` to backend
-     */
+	const handleCreateAdmin = (data: FormCategoryEntities) => {
+		/**
+		 * Todo : Send `data` to backend
+		 */
 
-    /**
-     * Will be remove soon
-     */
+		/**
+		 * Will be remove soon
+		 */
 
-    const getData = JSON.parse(localStorage.getItem('items') || '')
+		const getData = JSON.parse(localStorage.getItem('items') || '');
 
-    getData.push(data)
+		getData.push(data);
 
-    localStorage.setItem('items', JSON.stringify(getData))
+		localStorage.setItem('items', JSON.stringify(getData));
 
-    /** ---------------------------------------------------- */
+		/** ---------------------------------------------------- */
 
-    if (getData) {
-      handleCloseModal()
-      toast.success('Sucessfully added new admin')
-    }
-  }
+		if (getData) {
+			handleCloseModal();
+			toast.success('Sucessfully added new admin');
+		}
+	};
 
-  const handleEditAdmin = (data: FormCategoryEntities) => {
-    /**
-     * Todo : Send `data` to backend
-     */
-    if (data) {
-      handleCloseModal()
-      toast.success('Sucessfully edit user admin')
-    }
-  }
+	const handleEditAdmin = (data: FormCategoryEntities) => {
+		/**
+		 * Todo : Send `data` to backend
+		 */
+		if (data) {
+			handleCloseModal();
+			toast.success('Sucessfully edit user admin');
+		}
+	};
 
-  const handleSubmitForm = (data: FormCategoryEntities) => {
-    if (isEdit) {
-      handleEditAdmin(data)
-    } else {
-      handleCreateAdmin(data)
-    }
-  }
+	const handleSubmitForm = (data: FormCategoryEntities) => {
+		if (isEdit) {
+			handleEditAdmin(data);
+		} else {
+			handleCreateAdmin(data);
+		}
+	};
 
-  const titleText = isEdit ? 'Edit User' : 'Create New Category'
+	const titleText = isEdit ? 'Edit User' : 'Create New Category';
 
-  return (
-    <ModalForm
-      handleCloseModal={handleCloseModal}
-      isOpenModal={isOpenModal}
-      title={titleText}
-    >
-      <section className="w-big-500 p-4">
-        <form onSubmit={handleSubmit((data) => handleSubmitForm(data))}>
-          <div className="mb-6">
-            <Input
-              {...register('name')}
-              className="w-52"
-              labelText="Category Name:"
-              type="text"
-              placeholder="ex: Drink, Food, Baverages"
-              disabled={isEdit}
-              error={!!errors?.name}
-              helperText={errors?.name?.message}
-            />
-          </div>
-          <div className="mb-6">
-            <AtomSwitch
-              name="isDisplay"
-              label="Display on Menu"
-              text={iSDisplayToggle ? 'Yes' : 'No'}
-              onChange={handleDisplayToggle}
-            />
-          </div>
+	return (
+		<ModalForm
+			handleCloseModal={handleCloseModal}
+			isOpenModal={isOpenModal}
+			title={titleText}
+		>
+			<section className="w-big-500 p-4">
+				<form onSubmit={handleSubmit(data => handleSubmitForm(data))}>
+					<div className="mb-6">
+						<Input
+							{...register('name')}
+							className="w-52"
+							labelText="Category Name:"
+							type="text"
+							placeholder="ex: Drink, Food, Baverages"
+							disabled={isEdit}
+							error={!!errors?.name}
+							helperText={errors?.name?.message}
+						/>
+					</div>
+					<div className="mb-6">
+						<AtomSwitch
+							name="isDisplay"
+							label="Display on Menu"
+							text={iSDisplayToggle ? 'Yes' : 'No'}
+							onChange={handleDisplayToggle}
+						/>
+					</div>
 
-          <Button
-            type="submit"
-            variant="primary"
-            size="l"
-            fullWidth
-            className="flex items-center justify-center gap-2"
-          >
-            <AiOutlineCheckSquare />
-            Submit
-          </Button>
-        </form>
-      </section>
-    </ModalForm>
-  )
-}
+					<Button
+						type="submit"
+						variant="primary"
+						size="l"
+						fullWidth
+						className="flex items-center justify-center gap-2"
+					>
+						<AiOutlineCheckSquare />
+						Submit
+					</Button>
+				</form>
+			</section>
+		</ModalForm>
+	);
+};
 
-export default MoleculesFormCategory
+export default MoleculesFormCategory;

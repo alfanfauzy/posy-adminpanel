@@ -1,12 +1,13 @@
-import { FormUploadImage } from '../models'
-import { ResultMutation } from 'core/domain/vo/BaseResponse'
+import {ResultMutation} from 'core/domain/vo/BaseResponse';
+
+import {FormUploadImage} from '../models';
 
 /**
  * Upload Image Public
  */
 
-export type UploadImagePublic = ResultMutation<any>
+export type UploadImagePublic = ResultMutation<any>;
 
-export interface UploadImagePublicRepository extends UploadImagePublic {
-  uploadImagePublic(params: FormUploadImage): void
-}
+export type UploadImagePublicRepository = {
+	uploadImagePublic(params: FormUploadImage): void;
+} & UploadImagePublic;

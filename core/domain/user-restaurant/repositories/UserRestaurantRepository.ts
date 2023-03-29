@@ -1,69 +1,67 @@
-import { FormUserRestaurant, UserRestaurant, UserRestaurants } from '../models'
-import { Pagination } from 'core/domain/vo/BasePagination'
-import { FilterInputVariables } from 'core/domain/vo/BaseInput'
+import {FilterInputVariables} from 'core/domain/vo/BaseInput';
+import {Pagination} from 'core/domain/vo/BasePagination';
 import {
-  Datalist,
-  ResultQuery,
-  ResultMutation,
-  UpdateParams,
-} from 'core/domain/vo/BaseResponse'
+	Datalist,
+	ResultQuery,
+	ResultMutation,
+	UpdateParams,
+} from 'core/domain/vo/BaseResponse';
+
+import {FormUserRestaurant, UserRestaurant, UserRestaurants} from '../models';
 
 /**
  * GET
  */
 export type GetUserRestaurantFilterInput = FilterInputVariables<
-  'created_at',
-  keyof Pick<UserRestaurant, 'name' | 'is_admin'>
->
+	'created_at',
+	keyof Pick<UserRestaurant, 'name' | 'is_admin'>
+>;
 
 export type GetUserRestaurantsResult = ResultQuery<
-  Datalist<UserRestaurants> | undefined
+	Datalist<UserRestaurants> | undefined
 > & {
-  pagination: Pagination | undefined
-}
+	pagination: Pagination | undefined;
+};
 
-export type GetUserRestaurantResult = ResultQuery<UserRestaurant>
+export type GetUserRestaurantResult = ResultQuery<UserRestaurant>;
 
 /**
  * CREATE
  */
 
 export type CreateUserRestaurantResult = ResultMutation<
-  UserRestaurant | undefined
->
+	UserRestaurant | undefined
+>;
 
-export interface CreateUserRestaurantRepository
-  extends CreateUserRestaurantResult {
-  createUserRestaurant(params: FormUserRestaurant): void
-}
+export type CreateUserRestaurantRepository = {
+	createUserRestaurant(params: FormUserRestaurant): void;
+} & CreateUserRestaurantResult;
 
 /**
  * UPDATE
  */
 
 export type FormUpdateUserRestaurant = Omit<
-  FormUserRestaurant,
-  'role_uuid' | 'outlet_uuid'
->
+	FormUserRestaurant,
+	'role_uuid' | 'outlet_uuid'
+>;
 
-export type UpdateUserRestaurantParams = UpdateParams<FormUpdateUserRestaurant>
+export type UpdateUserRestaurantParams = UpdateParams<FormUpdateUserRestaurant>;
 
-export type UpdateUserRestaurantResult = ResultMutation<UserRestaurant>
+export type UpdateUserRestaurantResult = ResultMutation<UserRestaurant>;
 
-export interface UpdateUserRestaurantRepository
-  extends UpdateUserRestaurantResult {
-  updateUserRestaurant(params: UpdateUserRestaurantParams): void
-}
+export type UpdateUserRestaurantRepository = {
+	updateUserRestaurant(params: UpdateUserRestaurantParams): void;
+} & UpdateUserRestaurantResult;
 
 /**
  * DELETE
  */
 
-export type DeleteUserRestaurantParams = string
+export type DeleteUserRestaurantParams = string;
 
-export type DeleteUserRestaurantResult = ResultMutation<UserRestaurant>
+export type DeleteUserRestaurantResult = ResultMutation<UserRestaurant>;
 
-export interface DeleteUserRestaurantRepository
-  extends DeleteUserRestaurantResult {
-  deleteUserRestaurant(params: DeleteUserRestaurantParams): void
-}
+export type DeleteUserRestaurantRepository = {
+	deleteUserRestaurant(params: DeleteUserRestaurantParams): void;
+} & DeleteUserRestaurantResult;

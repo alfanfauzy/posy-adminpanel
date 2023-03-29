@@ -1,1 +1,1 @@
-export type FormUploadImage = FormData
+export type FormUploadImage = FormData;

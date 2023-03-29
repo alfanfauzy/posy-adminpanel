@@ -1,6 +1,6 @@
-import React from 'react'
-import MoleculesLogin from '@/organisms/form/login'
+import MoleculesLogin from '@/organisms/form/login';
+import React from 'react';
 
-const LoginPage = () => <MoleculesLogin />
+const LoginPage = () => <MoleculesLogin />;
 
-export default LoginPage
+export default LoginPage;

@@ -1,18 +1,18 @@
-export interface RegionBased {
-  id: string
-  name: string
-}
+export type RegionBased = {
+	id: string;
+	name: string;
+};
 
-export type GetProvinceList = RegionBased
+export type GetProvinceList = RegionBased;
 
-export interface GetCityList extends RegionBased {
-  province_id: string
-}
+export type GetCityList = {
+	province_id: string;
+} & RegionBased;
 
-export interface GetDistrictList extends RegionBased {
-  city_id: string
-}
+export type GetDistrictList = {
+	city_id: string;
+} & RegionBased;
 
-export interface GetSubDistrictList extends RegionBased {
-  district_id: string
-}
+export type GetSubDistrictList = {
+	district_id: string;
+} & RegionBased;

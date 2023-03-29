@@ -1,12 +1,12 @@
-import { DeleteAdminResponse } from '@/data/admin/types'
-import { useDeleteAdminUsecase } from '@/data/admin/usecases/DeleteAdminUsecase'
-import { MutationOptions } from 'core/domain/vo/BaseMutation'
-import { DeleteAdminRepository } from '@/domain/admin/repositories/AdminRepository'
+import {DeleteAdminResponse} from '@/data/admin/types';
+import {useDeleteAdminUsecase} from '@/data/admin/usecases/DeleteAdminUsecase';
+import {DeleteAdminRepository} from '@/domain/admin/repositories/AdminRepository';
+import {MutationOptions} from 'core/domain/vo/BaseMutation';
 
 export const useDeleteAdminViewModal = (
-  options?: MutationOptions<DeleteAdminResponse>,
+	options?: MutationOptions<DeleteAdminResponse>,
 ): DeleteAdminRepository => {
-  const result = useDeleteAdminUsecase(options)
+	const result = useDeleteAdminUsecase(options);
 
-  return result
-}
+	return result;
+};

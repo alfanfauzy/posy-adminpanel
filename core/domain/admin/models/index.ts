@@ -1,23 +1,23 @@
-export interface AdminBased {
-  uuid: string
-  fullname: string
-  email: string
-  roleid: string
-  rolename: string
-  seconds: number
-  is_admin: string
-}
+export type AdminBased = {
+	uuid: string;
+	fullname: string;
+	email: string;
+	roleid: string;
+	rolename: string;
+	seconds: number;
+	is_admin: string;
+};
 
-export type Admin = AdminBased
+export type Admin = AdminBased;
 
-export type Admins = AdminBased[]
+export type Admins = Array<AdminBased>;
 
-export interface FormAdmin {
-  id: string
-  params: {
-    fullname: string
-    email?: string
-    password?: string
-    role_uuid: string
-  }
-}
+export type FormAdmin = {
+	id: string;
+	params: {
+		fullname: string;
+		email?: string;
+		password?: string;
+		role_uuid: string;
+	};
+};
