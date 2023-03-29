@@ -1,35 +1,53 @@
 import AtomSwitch from '@/atoms/switch';
 import AtomTable from '@/atoms/table';
-import {timeStampConverter} from '@/constants/utils';
+import {FormatToRupiah} from '@/constants/utils';
+import {Product} from '@/domain/product/models';
+import {GetFilterProductInput} from '@/domain/product/repositories/ProductRepository';
 import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
+import {useGetProductViewModal} from '@/view/product/view-models/GetProductViewModel';
 import type {ColumnsType} from 'antd/es/table';
 import dynamic from 'next/dynamic';
-import {useRouter} from 'next/router';
 import {Button} from 'posy-fnb-core';
-import React, {useState} from 'react';
-import {
-	AiFillDelete,
-	AiFillEdit,
-	AiOutlineFolderOpen,
-	AiOutlinePlus,
-} from 'react-icons/ai';
+import React, {useMemo, useState} from 'react';
+import {AiFillDelete, AiFillEdit, AiOutlinePlus} from 'react-icons/ai';
 import {toast} from 'react-toastify';
-import {dummy} from 'src/data/restaurant';
-
-import {DataType} from './entities';
 
 const ModalFormProduct = dynamic(() => import('@/organisms/form/product'));
 const ModalConfirmation = dynamic(
 	() => import('@/molecules/modal/confirmation'),
 );
 
-const ListProductMenuLayout: React.FC = () => {
-	const router = useRouter();
+type ListProductMenuLayoutProps = {
+	restaurant_uuid: string;
+};
+
+const ListProductMenuLayout = ({
+	restaurant_uuid,
+}: ListProductMenuLayoutProps) => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 
-	const [selectedData, setSelectedData] = useState<DataType>({});
+	const hooksParams: GetFilterProductInput = useMemo(
+		() => ({
+			restaurant_uuid,
+			search: [],
+			sort: {field: 'created_at', value: 'desc'},
+			page,
+			limit,
+		}),
+		[page, limit],
+	);
+
+	const {
+		data: ListProduct,
+		isLoading,
+		pagination,
+	} = useGetProductViewModal(hooksParams);
+
+	const [selectedData, setSelectedData] = useState<
+		Product | Record<string, never>
+	>({});
 	const [isEdit, setIsEdit] = useState(false);
 
 	const {value: openModal, toggle: handleOpenModal} = useToggle(false);
@@ -40,7 +58,7 @@ const ListProductMenuLayout: React.FC = () => {
 
 	/** Modal Confirmation Action */
 
-	const handleShowConfirmationModal = (data: DataType) => {
+	const handleShowConfirmationModal = (data: Product) => {
 		handleOpenModalConfirmation();
 		setSelectedData(data);
 	};
@@ -73,7 +91,7 @@ const ListProductMenuLayout: React.FC = () => {
 		toast.success(`Sucessfully remove data ${uuid}`);
 	};
 
-	const columns: ColumnsType<DataType> = [
+	const columns: ColumnsType<Product> = [
 		{
 			title: 'No',
 			dataIndex: '',
@@ -84,33 +102,18 @@ const ListProductMenuLayout: React.FC = () => {
 		{
 			title: 'Product Name',
 			key: 'product_name',
-			dataIndex: 'product_name',
+			dataIndex: 'name',
 		},
 		{
 			title: 'Price',
 			key: 'price',
 			dataIndex: 'price',
-		},
-		{
-			title: 'Discounted Price',
-			key: 'price_after_discount',
-			dataIndex: 'price_after_discount',
-			sorter: (a: any, b: any) => a.created_at.seconds - b.created_at.seconds,
-			render: (dataValue, record: any) =>
-				timeStampConverter(record?.created_at?.seconds, 'DD-MM-YYYY HH:mm'),
+			render: data => FormatToRupiah(data),
 		},
 		{
 			title: 'Cooking Duration',
 			key: 'cooking_duration',
 			dataIndex: 'cooking_duration',
-		},
-		{
-			title: 'Active',
-			key: 'is_active',
-			dataIndex: 'is_active',
-			render: () => (
-				<AtomSwitch onChange={handleSwitchActiveMenu} name="is_active" />
-			),
 		},
 		{
 			title: 'Action',
@@ -158,15 +161,15 @@ const ListProductMenuLayout: React.FC = () => {
 				onOk={handleDeleteAdmin}
 			/>
 			<AtomTable
-				isLoading={false}
+				isLoading={isLoading}
 				columns={columns}
-				dataSource={dummy}
+				dataSource={ListProduct}
 				onChangePaginationItem={(e: {value: number}) => setLimit(e.value)}
 				limitSize={limit}
 				pagination={{
 					current: page,
 					pageSize: limit,
-					total: dummy.length,
+					total: pagination?.total_objs,
 					onChange: setPage,
 				}}
 			/>

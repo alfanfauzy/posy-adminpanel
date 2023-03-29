@@ -24,7 +24,7 @@ const OrganismDetailRestaurantTabs = () => {
 
 			{tabsVal === 0 && <ManageOutletLayout restaurant_uuid={uuid} />}
 			{tabsVal === 1 && <ListCategoryMenuLayout restaurant_uuid={uuid} />}
-			{tabsVal === 2 && <ListProductMenuLayout />}
+			{tabsVal === 2 && <ListProductMenuLayout restaurant_uuid={uuid} />}
 			{tabsVal === 3 && <UserSubscriptionLayout />}
 		</section>
 	);
