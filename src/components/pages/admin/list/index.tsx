@@ -160,7 +160,6 @@ const AdminListLayout: React.FC = () => {
 				handleClose={handleOpenFormModal}
 				isEdit={isEdit}
 				selectedData={selectedData}
-				handleRefecth={handleRefetchTable}
 			/>
 			<ModalConfirmation
 				isOpenModal={openModalConfirmation}

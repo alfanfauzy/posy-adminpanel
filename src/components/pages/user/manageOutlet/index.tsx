@@ -181,7 +181,6 @@ const ManageOutletLayout = ({restaurant_uuid}: ManageOutletLayoutProps) => {
 				handleClose={handleOpenFormModal}
 				isEdit={isEdit}
 				selectedData={selectedData}
-				handleRefetch={handleRefetchTable}
 			/>
 			<ModalConfirmation
 				isLoadingRemove={isLoadingRemove}

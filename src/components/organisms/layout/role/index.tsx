@@ -214,7 +214,6 @@ const RoleLayout = ({type}: RoleLayoutProps) => {
 				handleClose={handleOpenFormModal}
 				isEdit={isEdit}
 				selectedData={selectedData}
-				handleRefetch={handleRefetchTable}
 				type={type}
 			/>
 			<ModalConfirmation

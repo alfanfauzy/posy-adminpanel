@@ -2,6 +2,7 @@
  * Permission Form Modal
  */
 import {Access} from '@/domain/access/models';
+import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
 import {PermissionFormSchema} from '@/schemas/permission';
 import {useCreateAccessViewModal} from '@/view/access/view-modals/CreateAccessViewModel';
@@ -23,7 +24,6 @@ type MoleculesFormPermissionProps = {
 	isOpenModal: boolean;
 	handleClose: () => void;
 	selectedData: Access;
-	handleRefetch: () => void;
 	type: 'admin' | 'client';
 };
 
@@ -32,7 +32,6 @@ const MoleculesFormPermission = ({
 	isOpenModal,
 	handleClose,
 	selectedData,
-	handleRefetch,
 	type,
 }: MoleculesFormPermissionProps) => {
 	const {
@@ -49,7 +48,7 @@ const MoleculesFormPermission = ({
 	const handleCloseModal = () => {
 		reset();
 		handleClose();
-		handleRefetch();
+		queryClient.invalidateQueries('permission/list');
 	};
 
 	const {createAccess, isLoading: isLoadingCreate} = useCreateAccessViewModal({

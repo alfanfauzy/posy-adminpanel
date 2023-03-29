@@ -97,7 +97,6 @@ const CategoryLayout = ({restaurant_uuid}: CategoryLayoutProps) => {
 				handleClose={handleOpenFormModal}
 				isEdit={false}
 				selectedData={{}}
-				handleRefetch={handleRefetchTable}
 			/>
 			<AtomTable
 				isLoading={isLoading}

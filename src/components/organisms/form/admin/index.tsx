@@ -4,6 +4,7 @@
 import IconEye from '@/atoms/icon/IconEye';
 import {Admin} from '@/domain/admin/models';
 import {GetRolesInput} from '@/domain/role/repositories/RoleRepository';
+import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
 import useToggle from '@/hooks/useToggle';
 import {AdminFormSchema, EditAdminFormSchema} from '@/schemas/admin';
@@ -28,7 +29,6 @@ type MoleculesFormAdminProps = {
 	isOpenModal: boolean;
 	handleClose: () => void;
 	selectedData: Admin | Record<string, never>;
-	handleRefecth: () => void;
 };
 
 const MoleculesFormAdmin = ({
@@ -36,7 +36,6 @@ const MoleculesFormAdmin = ({
 	isOpenModal,
 	handleClose,
 	selectedData,
-	handleRefecth,
 }: MoleculesFormAdminProps) => {
 	const {value: showPassword, toggle: handleShowPassword} = useToggle(true);
 	const {value: showConfirmPassword, toggle: handleShowConfirmPassword} =
@@ -78,7 +77,7 @@ const MoleculesFormAdmin = ({
 	const handleCloseModal = () => {
 		reset();
 		handleClose();
-		handleRefecth();
+		queryClient.invalidateQueries('admin/list');
 	};
 
 	const {createAdmin, isLoading: isLoadingCreate} = useCreateAdminViewModal({

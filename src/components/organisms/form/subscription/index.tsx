@@ -4,6 +4,7 @@
 import {Subscription_Period} from '@/constants/index';
 import {formatCurrencyTextInput} from '@/constants/utils';
 import {Subscription} from '@/domain/subscription/models';
+import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
 import {SubscriptionFormSchema} from '@/schemas/subscription';
 import {useCreateSubscriptionViewModal} from '@/view/subscription/view-modals/CreateSubscriptionViewModel';
@@ -25,7 +26,6 @@ type MoleculesFormSubscriptionProps = {
 	isOpenModal: boolean;
 	handleClose: () => void;
 	selectedData: Subscription;
-	handleRefetch: () => void;
 };
 
 const MoleculesFormSubscription = ({
@@ -33,7 +33,6 @@ const MoleculesFormSubscription = ({
 	isOpenModal,
 	handleClose,
 	selectedData,
-	handleRefetch,
 }: MoleculesFormSubscriptionProps) => {
 	const {
 		handleSubmit,
@@ -50,7 +49,7 @@ const MoleculesFormSubscription = ({
 	const handleCloseModal = () => {
 		reset();
 		handleClose();
-		handleRefetch();
+		queryClient.invalidateQueries('subscription/list');
 	};
 
 	const {createSubscription, isLoading: isLoadingCreate} =

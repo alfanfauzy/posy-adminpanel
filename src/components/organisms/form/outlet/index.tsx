@@ -13,6 +13,7 @@ import {
 import {Restaurant} from '@/domain/restaurant/models';
 import {GetFilterRestaurantInput} from '@/domain/restaurant/repositories/RestaurantRepository';
 import {Search} from '@/domain/vo/BaseInput';
+import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
 import {ManageOutletFormSchema} from '@/schemas/outlet';
 import {useCreateOutletViewModal} from '@/view/outlet/view-models/CreateOutletViewModel';
@@ -39,7 +40,6 @@ type MoleculesFormManageOutletProps = {
 	isOpenModal: boolean;
 	handleClose: () => void;
 	selectedData: Outlet | Record<string, never>;
-	handleRefetch: () => void;
 };
 
 const MoleculesFormManageOutlet = ({
@@ -47,7 +47,6 @@ const MoleculesFormManageOutlet = ({
 	isOpenModal,
 	handleClose,
 	selectedData,
-	handleRefetch,
 }: MoleculesFormManageOutletProps) => {
 	const refSelectCity: React.MutableRefObject<any> = useRef();
 	const refSelectDistrict: React.MutableRefObject<any> = useRef();
@@ -188,7 +187,7 @@ const MoleculesFormManageOutlet = ({
 	const handleCloseModal = () => {
 		reset();
 		handleClose();
-		handleRefetch();
+		queryClient.invalidateQueries('outlet/list');
 	};
 
 	const {createOutlet, isLoading: isLoadingCreate} = useCreateOutletViewModal({

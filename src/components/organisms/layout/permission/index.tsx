@@ -174,7 +174,6 @@ const PermissionLayout = ({type}: PermissionLayoutProps) => {
 				handleClose={handleOpenFormModal}
 				isEdit={isEdit}
 				selectedData={selectedData}
-				handleRefetch={handleRefetchTable}
 				type={type}
 			/>
 			<ModalConfirmation

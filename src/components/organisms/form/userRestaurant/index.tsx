@@ -13,6 +13,7 @@ import {
 	UserRestaurant,
 } from '@/domain/user-restaurant/models';
 import {UpdateUserRestaurantParams} from '@/domain/user-restaurant/repositories/UserRestaurantRepository';
+import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
 import useToggle from '@/hooks/useToggle';
 import {UserRestauranFormSchema} from '@/schemas/userRestaurant';
@@ -39,7 +40,6 @@ type MoleculesFormUserRestaurantProps = {
 	isOpenModal: boolean;
 	handleClose: () => void;
 	selectedData: UserRestaurant | Record<string, never>;
-	handleRefetch: () => void;
 };
 
 const MoleculesFormUserRestaurant = ({
@@ -47,7 +47,6 @@ const MoleculesFormUserRestaurant = ({
 	isOpenModal,
 	handleClose,
 	selectedData,
-	handleRefetch,
 }: MoleculesFormUserRestaurantProps) => {
 	const refSelectOutlet: React.MutableRefObject<any> = useRef();
 
@@ -133,6 +132,7 @@ const MoleculesFormUserRestaurant = ({
 	const handleCloseModal = () => {
 		reset();
 		handleClose();
+		queryClient.invalidateQueries('restaurant/user/list');
 	};
 
 	const {createUserRestaurant, isLoading: isLoadingCreate} =
@@ -140,7 +140,6 @@ const MoleculesFormUserRestaurant = ({
 			onSuccess() {
 				handleCloseModal();
 				toast.success('Sucessfully added new user restaurant');
-				handleRefetch();
 			},
 		});
 
@@ -149,7 +148,6 @@ const MoleculesFormUserRestaurant = ({
 			onSuccess() {
 				handleCloseModal();
 				toast.success('Sucessfully update new user restaurant');
-				handleRefetch();
 			},
 		});
 

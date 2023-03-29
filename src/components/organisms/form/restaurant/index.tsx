@@ -7,6 +7,7 @@ import {GetAccessListDataResponse} from '@/data/access/types';
 import {GetSubscriptionListDataResponse} from '@/data/subscription/types';
 import {FormBodyPayload, Restaurant} from '@/domain/restaurant/models';
 import {GetSubscriptionFilterInput} from '@/domain/subscription/repositories/SubscriptionRepository';
+import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
 import {
 	EditRestaurantFormSchema,
@@ -34,7 +35,6 @@ type MoleculesFormRestaurantProps = {
 	isOpenModal: boolean;
 	handleClose: () => void;
 	selectedData: Restaurant | Record<string, never>;
-	handleRefetch: () => void;
 };
 
 const MoleculesFormRestaurant = ({
@@ -42,7 +42,6 @@ const MoleculesFormRestaurant = ({
 	isOpenModal,
 	handleClose,
 	selectedData,
-	handleRefetch,
 }: MoleculesFormRestaurantProps) => {
 	const [imageLogo, setImageLogo] = useState('');
 	const [imageNPWP, setImageNPWP] = useState('');
@@ -88,7 +87,7 @@ const MoleculesFormRestaurant = ({
 		setImageNPWP('');
 		reset();
 		handleClose();
-		handleRefetch();
+		queryClient.invalidateQueries('restaurant/list');
 	};
 
 	const {uploadImagePublic, isLoading: isLoadingUploadImagePublic} =

@@ -172,7 +172,6 @@ const ListUserRestaurantLayout: React.FC = () => {
 				handleClose={handleOpenFormModal}
 				isEdit={isEdit}
 				selectedData={selectedData}
-				handleRefetch={handleRefetchTable}
 			/>
 			<ModalConfirmation
 				isOpenModal={openModalConfirmation}

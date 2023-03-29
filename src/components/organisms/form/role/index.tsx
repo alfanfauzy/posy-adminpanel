@@ -2,6 +2,7 @@
  * Role Form Modal
  */
 import {Role} from '@/domain/role/models';
+import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
 import {RoleFormSchema} from '@/schemas/role';
 import {useCreateRolesViewModal} from '@/view/role/view-modals/CreateRoleViewModel';
@@ -22,7 +23,6 @@ type MoleculesFormRoleProps = {
 	isOpenModal: boolean;
 	handleClose: () => void;
 	selectedData: Role;
-	handleRefetch: () => void;
 	type: 'admin' | 'client';
 };
 
@@ -31,7 +31,6 @@ const MoleculesFormRole = ({
 	isOpenModal,
 	handleClose,
 	selectedData,
-	handleRefetch,
 	type,
 }: MoleculesFormRoleProps) => {
 	const {
@@ -48,7 +47,7 @@ const MoleculesFormRole = ({
 	const handleCloseModal = () => {
 		reset();
 		handleClose();
-		handleRefetch();
+		queryClient.invalidateQueries('role/list');
 	};
 
 	const {createRole, isLoading} = useCreateRolesViewModal({

@@ -3,6 +3,7 @@
  */
 import AtomSwitch from '@/atoms/switch';
 import {Category} from '@/domain/category/models';
+import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
 import useToggle from '@/hooks/useToggle';
 import {categorySchema} from '@/schemas/category';
@@ -25,14 +26,12 @@ type MoleculesFormCategoryProps = {
 	isOpenModal: boolean;
 	handleClose: () => void;
 	selectedData: Category | Record<string, never>;
-	handleRefetch: () => void;
 };
 
 const MoleculesFormCategory = ({
 	isEdit = false,
 	isOpenModal,
 	handleClose,
-	handleRefetch,
 }: MoleculesFormCategoryProps) => {
 	const {uuid: restaurant_uuid} = useAppSelector(state => state.restaurant);
 	const {value: isActive, toggle: handleIsActiveToggle} = useToggle(false);
@@ -52,7 +51,7 @@ const MoleculesFormCategory = ({
 	const handleCloseModal = () => {
 		reset();
 		handleClose();
-		handleRefetch();
+		queryClient.invalidateQueries('category/list');
 	};
 
 	const {createCategory, isLoading: isLoadingCreate} =

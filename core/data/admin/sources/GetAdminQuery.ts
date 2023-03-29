@@ -27,10 +27,10 @@ export const useGetAdminQuery = (
 	options?: UseQueryOptions<Response<Datalist<GetAdminListDataResponse>>>,
 ) =>
 	useQuery<Response<Datalist<GetAdminListDataResponse>>>(
-		['admin/list'],
+		['admin/list', JSON.stringify(input)],
 		() => GetAdmin(input),
 		{
-			// enabled: !!JSON.stringify(input),
+			enabled: !!JSON.stringify(input),
 			...options,
 		},
 	);
