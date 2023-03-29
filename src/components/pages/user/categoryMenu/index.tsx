@@ -1,14 +1,13 @@
 import AtomTable from '@/atoms/table';
 import {Category} from '@/domain/category/models';
 import {GetFilterCategoryInput} from '@/domain/category/repositories/CategoryRepository';
-import {Search} from '@/domain/vo/BaseInput';
 import useToggle from '@/hooks/useToggle';
 import MoleculesSwitchStatusCategory from '@/molecules/moleculesSwitch';
 import HeaderContent from '@/templates/header/header-content';
 import {useGetCategoryViewModal} from '@/view/category/view-modals/GetCatalogViewModel';
 import type {ColumnsType} from 'antd/es/table';
 import dynamic from 'next/dynamic';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {AiOutlinePlus} from 'react-icons/ai';
 
 const ModalFormCategory = dynamic(() => import('@/organisms/form/category'));
@@ -20,22 +19,20 @@ type CategoryLayoutProps = {
 const CategoryLayout = ({restaurant_uuid}: CategoryLayoutProps) => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
-	const [searchParams, setSearchParams] = useState<Array<Search<any>>>([]);
 
 	const hooksParams: GetFilterCategoryInput = useMemo(
 		() => ({
 			restaurant_uuid,
-			search: searchParams,
+			search: [],
 			sort: {field: 'created_at', value: 'desc'},
 			page,
 			limit,
 		}),
-		[page, limit, searchParams],
+		[page, limit],
 	);
 
 	const {
 		data: ListCategory,
-		refetch: handleRefetchTable,
 		isLoading,
 		pagination,
 	} = useGetCategoryViewModal(hooksParams);
@@ -75,15 +72,6 @@ const CategoryLayout = ({restaurant_uuid}: CategoryLayoutProps) => {
 			),
 		},
 	];
-
-	useEffect(() => {
-		if (restaurant_uuid) {
-			setSearchParams(prevState => [
-				...prevState,
-				{field: 'restaurant_uuid', value: restaurant_uuid},
-			]);
-		}
-	}, [restaurant_uuid]);
 
 	return (
 		<div className="pt-5">
