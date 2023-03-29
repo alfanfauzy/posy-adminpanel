@@ -1,24 +1,24 @@
-import React from 'react'
-import MoleculesMetaHeader from '@/molecules/meta-header'
-import GeneralLayout from '@/templates/layouts'
-import AdminListLayout from '@/pages/admin/list'
-import useAuthentication from '@/hooks/useAuthentication'
+import useAuthentication from '@/hooks/useAuthentication';
+import MoleculesMetaHeader from '@/molecules/meta-header';
+import AdminListLayout from '@/pages/admin/list';
+import GeneralLayout from '@/templates/layouts';
+import React from 'react';
 
 const ListAdminPage = () => {
-  // Handle Authentication
-  useAuthentication()
+	// Handle Authentication
+	useAuthentication();
 
-  return (
-    <>
-      <MoleculesMetaHeader
-        title="List Admin - Admin Panel FnB"
-        description="List Admin - Admin Panel FnB"
-      />
-      <GeneralLayout menu="Admin" subMenu="List Admin">
-        <AdminListLayout />
-      </GeneralLayout>
-    </>
-  )
-}
+	return (
+		<>
+			<MoleculesMetaHeader
+				title="List Admin - Admin Panel FnB"
+				description="List Admin - Admin Panel FnB"
+			/>
+			<GeneralLayout menu="Admin" subMenu="List Admin">
+				<AdminListLayout />
+			</GeneralLayout>
+		</>
+	);
+};
 
-export default ListAdminPage
+export default ListAdminPage;

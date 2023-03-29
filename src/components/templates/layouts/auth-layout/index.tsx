@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-export interface AuthLayoutProps {
-  children: React.ReactNode
-}
+export type AuthLayoutProps = {
+	children: React.ReactNode;
+};
 
 const AuthLayout = (props: AuthLayoutProps) => {
-  const { children } = props
-  return <main>{children}</main>
-}
+	const {children} = props;
+	return <main>{children}</main>;
+};
 
-export default AuthLayout
+export default AuthLayout;

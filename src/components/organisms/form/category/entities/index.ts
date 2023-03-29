@@ -1,4 +1,4 @@
-export interface FormCategoryEntities {
-  name: string
-  isDisplay: boolean
-}
+export type FormCategoryEntities = {
+	name: string;
+	isDisplay: boolean;
+};

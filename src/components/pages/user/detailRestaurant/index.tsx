@@ -1,12 +1,12 @@
-import React from 'react'
-import OrganismDetailRestaurant from '@/organisms/layout/detailRestaurant'
-import OrganismDetailRestaurantTabs from '@/organisms/layout/detailRestaurant/detailRestaurantTabs'
+import OrganismDetailRestaurant from '@/organisms/layout/detailRestaurant';
+import OrganismDetailRestaurantTabs from '@/organisms/layout/detailRestaurant/detailRestaurantTabs';
+import React from 'react';
 
 const RestaurantDetailLayout = () => (
-  <div>
-    <OrganismDetailRestaurant />
-    <OrganismDetailRestaurantTabs />
-  </div>
-)
+	<div>
+		<OrganismDetailRestaurant />
+		<OrganismDetailRestaurantTabs />
+	</div>
+);
 
-export default RestaurantDetailLayout
+export default RestaurantDetailLayout;

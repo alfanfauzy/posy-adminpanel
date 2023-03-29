@@ -1,98 +1,94 @@
-import {
-  MdOutlineGroup,
-  MdGroups,
-  MdAccountBalanceWallet,
-} from 'react-icons/md'
+import {MdOutlineGroup, MdGroups, MdAccountBalanceWallet} from 'react-icons/md';
 
 export const MENU_LIST = [
-  {
-    label: 'Admin',
-    icon: <MdOutlineGroup />,
-    type: 'sub-menu',
-    items: [
-      {
-        label: 'List Admin',
-        path: '/admin/list',
-      },
-      {
-        label: 'Role & Permission',
-        path: '/admin/role',
-      },
-      {
-        label: 'Subscription',
-        path: '/admin/subscription',
-      },
-    ],
-  },
-  {
-    label: 'User',
-    icon: <MdGroups />,
-    type: 'sub-menu',
-    items: [
-      {
-        label: 'List Restaurant',
-        path: '/user/list-restaurant',
-      },
-      {
-        label: 'Manage Outlet',
-        path: '/user/manage-outlet',
-      },
-      {
-        label: 'List User',
-        path: '/user/list-user-restaurant',
-      },
-      {
-        label: 'Role User',
-        path: '/user/role-user',
-      },
-      {
-        label: 'User Subscription',
-        path: '/user/subscription',
-      },
-    ],
-  },
-  {
-    label: 'History',
-    icon: <MdAccountBalanceWallet />,
-    type: 'sub-menu',
-    items: [
-      {
-        label: 'Transaction',
-        path: '/history/transaction',
-      },
-    ],
-  },
-]
+	{
+		label: 'Admin',
+		icon: <MdOutlineGroup />,
+		type: 'sub-menu',
+		items: [
+			{
+				label: 'List Admin',
+				path: '/admin/list',
+			},
+			{
+				label: 'Role & Permission',
+				path: '/admin/role',
+			},
+			{
+				label: 'Subscription',
+				path: '/admin/subscription',
+			},
+		],
+	},
+	{
+		label: 'User',
+		icon: <MdGroups />,
+		type: 'sub-menu',
+		items: [
+			{
+				label: 'List Restaurant',
+				path: '/user/list-restaurant',
+			},
+			{
+				label: 'Manage Outlet',
+				path: '/user/manage-outlet',
+			},
+			{
+				label: 'List User',
+				path: '/user/list-user-restaurant',
+			},
+			{
+				label: 'Role User',
+				path: '/user/role-user',
+			},
+			{
+				label: 'User Subscription',
+				path: '/user/subscription',
+			},
+		],
+	},
+	{
+		label: 'History',
+		icon: <MdAccountBalanceWallet />,
+		type: 'sub-menu',
+		items: [
+			{
+				label: 'Transaction',
+				path: '/history/transaction',
+			},
+		],
+	},
+];
 
 export const Subscription_Period = [
-  { label: '1 Month', value: 30 },
-  { label: '2 Month', value: 60 },
-  { label: '3 Month', value: 90 },
-  { label: '4 Month', value: 120 },
-  { label: '5 Month', value: 150 },
-  { label: '6 Month', value: 180 },
-  { label: '7 Month', value: 210 },
-  { label: '8 Month', value: 240 },
-  { label: '9 Month', value: 270 },
-  { label: '10 Month', value: 300 },
-  { label: '11 Month', value: 330 },
-  { label: '12 Month', value: 360 },
-  { label: '24 Month', value: 720 },
-  { label: '36 Month', value: 1080 },
-]
+	{label: '1 Month', value: 30},
+	{label: '2 Month', value: 60},
+	{label: '3 Month', value: 90},
+	{label: '4 Month', value: 120},
+	{label: '5 Month', value: 150},
+	{label: '6 Month', value: 180},
+	{label: '7 Month', value: 210},
+	{label: '8 Month', value: 240},
+	{label: '9 Month', value: 270},
+	{label: '10 Month', value: 300},
+	{label: '11 Month', value: 330},
+	{label: '12 Month', value: 360},
+	{label: '24 Month', value: 720},
+	{label: '36 Month', value: 1080},
+];
 
 export const SERVICE_DOMAIN = {
-  user: 'fnb-user-service',
-}
+	user: 'fnb-user-service',
+};
 
 export const PASSWORD_REGEX =
-  /^(?=.?[A-Z])(?=.?[a-z])(?=.?[0-9])(?=.?[#?!@$%^&*-.]).{8,50}$/
+	/^(?=.?[A-Z])(?=.?[a-z])(?=.?[0-9])(?=.?[#?!@$%^&*-.]).{8,50}$/;
 
 export const VALID_IMAGES_TYPES = [
-  'image/gif',
-  'image/jpeg',
-  'image/png',
-  'image/png',
-]
+	'image/gif',
+	'image/jpeg',
+	'image/png',
+	'image/png',
+];
 
-export const MAX_FILE_SIZE = 500000
+export const MAX_FILE_SIZE = 500000;

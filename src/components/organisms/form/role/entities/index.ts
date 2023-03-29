@@ -1,6 +1,6 @@
-export interface FormRoleEntities {
-  name: string
-  description: string
-}
+export type FormRoleEntities = {
+	name: string;
+	description: string;
+};
 
-export type FormtEditRoleEntities = FormRoleEntities
+export type FormtEditRoleEntities = FormRoleEntities;

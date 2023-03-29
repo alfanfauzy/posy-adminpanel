@@ -1,26 +1,26 @@
-import { Switch } from 'antd'
-import React from 'react'
+import {Switch} from 'antd';
+import React from 'react';
 
-interface SwitchProps {
-  label?: string
-  text?: string
-  onChange: (e: any) => void
-  name: string
-  value?: boolean
-}
+type SwitchProps = {
+	label?: string;
+	text?: string;
+	onChange: (e: any) => void;
+	name: string;
+	value?: boolean;
+};
 
 const AtomSwitch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ label, text, onChange, value, ...props }, ref) => (
-    <div>
-      {label && <label className="mb-1 block text-m-regular">{label}</label>}
-      <span className="flex items-center justify-start gap-2">
-        <Switch onChange={onChange} {...props} checked={value} ref={ref} />
-        {text && <label className="mb-1 block text-m-regular">{text}</label>}
-      </span>
-    </div>
-  ),
-)
+	({label, text, onChange, value, ...props}, ref) => (
+		<div>
+			{label && <label className="mb-1 block text-m-regular">{label}</label>}
+			<span className="flex items-center justify-start gap-2">
+				<Switch onChange={onChange} {...props} checked={value} ref={ref} />
+				{text && <label className="mb-1 block text-m-regular">{text}</label>}
+			</span>
+		</div>
+	),
+);
 
-AtomSwitch.displayName = 'Switch'
+AtomSwitch.displayName = 'Switch';
 
-export default AtomSwitch
+export default AtomSwitch;

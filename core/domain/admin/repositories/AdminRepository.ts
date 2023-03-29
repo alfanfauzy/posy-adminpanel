@@ -1,61 +1,61 @@
+import {FilterInputVariables, ParamsPayload} from '@/domain/vo/BaseInput';
+import {FormEditAdminEntities} from '@/organisms/form/admin/entities';
+import {Admin, FormAdmin} from 'core/domain/admin/models';
+import {Pagination} from 'core/domain/vo/BasePagination';
 import {
-  Datalist,
-  ResultMutation,
-  ResultQuery,
-  UpdateParams,
-} from 'core/domain/vo/BaseResponse'
-import { Admin, FormAdmin } from 'core/domain/admin/models'
-import { Pagination } from 'core/domain/vo/BasePagination'
-import { FilterInputVariables, ParamsPayload } from '@/domain/vo/BaseInput'
-import { FormEditAdminEntities } from '@/organisms/form/admin/entities'
+	Datalist,
+	ResultMutation,
+	ResultQuery,
+	UpdateParams,
+} from 'core/domain/vo/BaseResponse';
 
 /**
  * GET
  */
 
 export type GetFilterAdminInput = FilterInputVariables<
-  'created_at',
-  keyof Pick<Admin, 'email' | 'is_admin'>
->
+	'created_at',
+	keyof Pick<Admin, 'email' | 'is_admin'>
+>;
 
 export type GetAdminsResult = ResultQuery<Datalist<Admin> | undefined> & {
-  pagination: Pagination | undefined
-}
+	pagination: Pagination | undefined;
+};
 
-export type GetAdminResult = ResultQuery<Admin>
+export type GetAdminResult = ResultQuery<Admin>;
 
 /**
  * CREATE
  */
 
-export type CreateAdminInput = ParamsPayload
+export type CreateAdminInput = ParamsPayload;
 
-export type CreateAdminResult = ResultMutation<Admin | undefined>
+export type CreateAdminResult = ResultMutation<Admin | undefined>;
 
-export interface CreateAdminRepository extends CreateAdminResult {
-  createAdmin(payload: FormAdmin): void
-}
+export type CreateAdminRepository = {
+	createAdmin(payload: FormAdmin): void;
+} & CreateAdminResult;
 
 /**
  * UPDATE
  */
 
-export type UpdateAdminParams = UpdateParams<FormEditAdminEntities>
+export type UpdateAdminParams = UpdateParams<FormEditAdminEntities>;
 
-export type UpdateAdminResult = ResultMutation<Admin>
+export type UpdateAdminResult = ResultMutation<Admin>;
 
-export interface UpdateAdminRepository extends UpdateAdminResult {
-  updateAdmin(payload: UpdateAdminParams): void
-}
+export type UpdateAdminRepository = {
+	updateAdmin(payload: UpdateAdminParams): void;
+} & UpdateAdminResult;
 
 /**
  * DELETE
  */
 
-export type DeleteAdminInput = string
+export type DeleteAdminInput = string;
 
-export type DeleteAdminResult = ResultMutation<Admin>
+export type DeleteAdminResult = ResultMutation<Admin>;
 
-export interface DeleteAdminRepository extends DeleteAdminResult {
-  deleteAdmin(payload: DeleteAdminInput): void
-}
+export type DeleteAdminRepository = {
+	deleteAdmin(payload: DeleteAdminInput): void;
+} & DeleteAdminResult;

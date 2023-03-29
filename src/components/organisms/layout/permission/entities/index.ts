@@ -1,3 +1,3 @@
-export interface PermissionLayoutProps {
-  type: 'admin' | 'client'
-}
+export type PermissionLayoutProps = {
+	type: 'admin' | 'client';
+};

@@ -1,3 +1,3 @@
-export interface RoleLayoutProps {
-  type: 'admin' | 'client'
-}
+export type RoleLayoutProps = {
+	type: 'admin' | 'client';
+};

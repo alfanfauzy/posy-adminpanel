@@ -1,13 +1,13 @@
-import { useGetProvinceUsecase } from '@/data/region/usecases/GetProvincUsecases'
+import {useGetProvinceUsecase} from '@/data/region/usecases/GetProvincUsecases';
 import {
-  GetFilterProvinceInput,
-  GetProvinceResult,
-} from '@/domain/region/repository/RegionRepositories'
+	GetFilterProvinceInput,
+	GetProvinceResult,
+} from '@/domain/region/repository/RegionRepositories';
 
 export const useGetProvinceViewModal = (
-  input?: GetFilterProvinceInput,
+	input?: GetFilterProvinceInput,
 ): GetProvinceResult => {
-  const result = useGetProvinceUsecase(input)
+	const result = useGetProvinceUsecase(input);
 
-  return result
-}
+	return result;
+};

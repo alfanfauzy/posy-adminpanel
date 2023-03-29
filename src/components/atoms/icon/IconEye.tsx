@@ -2,18 +2,18 @@
  * Icon Eye Component use for password component
  */
 
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai';
 
-export interface IconLoginEntities {
-  value: boolean
-  handlePassword: () => void
-}
+export type IconLoginEntities = {
+	value: boolean;
+	handlePassword: () => void;
+};
 
-const IconEye = ({ value, handlePassword }: IconLoginEntities) =>
-  value ? (
-    <AiFillEyeInvisible onClick={handlePassword} />
-  ) : (
-    <AiFillEye onClick={handlePassword} />
-  )
+const IconEye = ({value, handlePassword}: IconLoginEntities) =>
+	value ? (
+		<AiFillEyeInvisible onClick={handlePassword} />
+	) : (
+		<AiFillEye onClick={handlePassword} />
+	);
 
-export default IconEye
+export default IconEye;

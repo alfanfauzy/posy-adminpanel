@@ -1,5 +1,5 @@
-export interface FormPermissionEntities {
-  name: string
-  description: string
-  key: string
-}
+export type FormPermissionEntities = {
+	name: string;
+	description: string;
+	key: string;
+};

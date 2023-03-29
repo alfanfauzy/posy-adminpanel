@@ -1,28 +1,28 @@
-export interface RegionBased {
-  id: string
-  name: string
-}
+export type RegionBased = {
+	id: string;
+	name: string;
+};
 
-interface CityBased extends RegionBased {
-  province_id: string
-}
+type CityBased = {
+	province_id: string;
+} & RegionBased;
 
-interface DistrictBased extends RegionBased {
-  city_id: string
-}
+type DistrictBased = {
+	city_id: string;
+} & RegionBased;
 
-interface SubDistrictBased extends RegionBased {
-  district_id: string
-}
+type SubDistrictBased = {
+	district_id: string;
+} & RegionBased;
 
-export type Provinces = RegionBased[]
-export type Province = RegionBased
+export type Provinces = Array<RegionBased>;
+export type Province = RegionBased;
 
-export type Cityes = CityBased[]
-export type City = CityBased
+export type Cityes = Array<CityBased>;
+export type City = CityBased;
 
-export type Districts = DistrictBased[]
-export type District = DistrictBased
+export type Districts = Array<DistrictBased>;
+export type District = DistrictBased;
 
-export type SubDistricts = SubDistrictBased[]
-export type SubDistrict = SubDistrictBased
+export type SubDistricts = Array<SubDistrictBased>;
+export type SubDistrict = SubDistrictBased;

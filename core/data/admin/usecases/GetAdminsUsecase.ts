@@ -1,33 +1,34 @@
-import { mapToAdminModel } from '../mappers/AdminMapper'
-import { useGetAdminQuery } from '../sources/GetAdminQuery'
 import {
-  GetAdminsResult,
-  GetFilterAdminInput,
-} from '@/domain/admin/repositories/AdminRepository'
+	GetAdminsResult,
+	GetFilterAdminInput,
+} from '@/domain/admin/repositories/AdminRepository';
+
+import {mapToAdminModel} from '../mappers/AdminMapper';
+import {useGetAdminQuery} from '../sources/GetAdminQuery';
 
 export const useGetAdminUsecase = (
-  input?: GetFilterAdminInput,
+	input?: GetFilterAdminInput,
 ): GetAdminsResult => {
-  const { data, ...rest } = useGetAdminQuery(input)
+	const {data, ...rest} = useGetAdminQuery(input);
 
-  if (data?.data.objs) {
-    const adminMapper = mapToAdminModel(data.data.objs)
+	if (data?.data.objs) {
+		const adminMapper = mapToAdminModel(data.data.objs);
 
-    return {
-      data: adminMapper,
-      pagination: {
-        curr_page: data.data.curr_page,
-        per_page: data.data.per_page,
-        total_objs: data.data.total_objs,
-        total_page: data.data.total_page,
-      },
-      ...rest,
-    }
-  }
+		return {
+			data: adminMapper,
+			pagination: {
+				curr_page: data.data.curr_page,
+				per_page: data.data.per_page,
+				total_objs: data.data.total_objs,
+				total_page: data.data.total_page,
+			},
+			...rest,
+		};
+	}
 
-  return {
-    data: undefined,
-    pagination: undefined,
-    ...rest,
-  }
-}
+	return {
+		data: undefined,
+		pagination: undefined,
+		...rest,
+	};
+};

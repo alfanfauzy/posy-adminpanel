@@ -1,80 +1,80 @@
-import { DatePicker } from 'antd'
-import React from 'react'
+import {DatePicker} from 'antd';
+import React from 'react';
 
-interface AtomDatePickerProps {
-  type: 'single' | 'range'
-  onChange: (val: any) => number | string
-  value: any
-  label?: string
-  className: string
-  placeholder: string
-  format: string
-}
+type AtomDatePickerProps = {
+	type: 'single' | 'range';
+	onChange: (val: any) => number | string;
+	value: any;
+	label?: string;
+	className: string;
+	placeholder: string;
+	format: string;
+};
 
-interface RenderComponentProps {
-  type: 'single' | 'range'
-  onChange: (val: any) => number | string
-  value: any
-  className: string
-  placeholder: string
-  format: string
-}
+type RenderComponentProps = {
+	type: 'single' | 'range';
+	onChange: (val: any) => number | string;
+	value: any;
+	className: string;
+	placeholder: string;
+	format: string;
+};
 
 const RenderComponent = ({
-  type,
-  onChange,
-  value,
-  className,
-  placeholder,
-  format,
+	type,
+	onChange,
+	value,
+	className,
+	placeholder,
+	format,
 }: RenderComponentProps) => {
-  const { RangePicker } = DatePicker
-  if (type === 'single') {
-    return (
-      <DatePicker
-        onChange={onChange}
-        value={value}
-        className={className}
-        placeholder={placeholder}
-        placement="bottomLeft"
-        format={format}
-      />
-    )
-  }
-  return (
-    <RangePicker
-      onChange={onChange}
-      value={value}
-      className={className}
-      placement="bottomLeft"
-      format={format}
-    />
-  )
-}
+	const {RangePicker} = DatePicker;
+	if (type === 'single') {
+		return (
+			<DatePicker
+				onChange={onChange}
+				value={value}
+				className={className}
+				placeholder={placeholder}
+				placement="bottomLeft"
+				format={format}
+			/>
+		);
+	}
+	return (
+		<RangePicker
+			onChange={onChange}
+			value={value}
+			className={className}
+			placement="bottomLeft"
+			format={format}
+		/>
+	);
+};
 
 const AtomDatePicker = ({
-  type,
-  onChange,
-  value,
-  label,
-  className,
-  placeholder,
-  format,
-  ...props
+	type,
+	onChange,
+	value,
+	label,
+	className,
+	placeholder,
+	format,
+	...props
 }: AtomDatePickerProps) => (
-  <div>
-    {label && <label className="mb-1 block text-m-regular">{label}</label>}
+	<div>
+		{label && <label className="mb-1 block text-m-regular">{label}</label>}
 
-    <RenderComponent
-      type={type}
-      onChange={onChange}
-      value={value}
-      className={className}
-      placeholder={placeholder}
-      format={format}
-      {...props}
-    />
-  </div>
-)
+		<RenderComponent
+			type={type}
+			onChange={onChange}
+			value={value}
+			className={className}
+			placeholder={placeholder}
+			format={format}
+			{...props}
+		/>
+	</div>
+);
 
-export default AtomDatePicker
+export default AtomDatePicker;

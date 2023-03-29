@@ -1,12 +1,12 @@
-import { MutationOptions } from 'core/domain/vo/BaseMutation'
-import { LoginResponse } from '@/data/auth/types'
-import { PostLoginRepository } from '@/domain/auth/repositories/AuthRepository'
-import { useLoginUsecase } from '@/data/auth/usecases/PostAuthLoginUsecases'
+import {LoginResponse} from '@/data/auth/types';
+import {useLoginUsecase} from '@/data/auth/usecases/PostAuthLoginUsecases';
+import {PostLoginRepository} from '@/domain/auth/repositories/AuthRepository';
+import {MutationOptions} from 'core/domain/vo/BaseMutation';
 
 export const useLoginViewModal = (
-  options: MutationOptions<LoginResponse>,
+	options: MutationOptions<LoginResponse>,
 ): PostLoginRepository => {
-  const result = useLoginUsecase(options)
+	const result = useLoginUsecase(options);
 
-  return result
-}
+	return result;
+};

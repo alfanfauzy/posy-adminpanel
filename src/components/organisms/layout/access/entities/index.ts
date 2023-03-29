@@ -1,10 +1,10 @@
-import { GetAccessListDataResponse } from '@/data/access/types'
+import {GetAccessListDataResponse} from '@/data/access/types';
 
-export interface AccessByGroup {
-  group: string
-  access: GetAccessListDataResponse[]
-}
+export type AccessByGroup = {
+	group: string;
+	access: Array<GetAccessListDataResponse>;
+};
 
-export interface AccessSettingLayoutProps {
-  type: 'admin' | 'client'
-}
+export type AccessSettingLayoutProps = {
+	type: 'admin' | 'client';
+};

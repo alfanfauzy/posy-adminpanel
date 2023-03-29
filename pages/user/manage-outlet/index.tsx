@@ -1,24 +1,24 @@
-import React from 'react'
-import MoleculesMetaHeader from '@/molecules/meta-header'
-import GeneralLayout from '@/templates/layouts'
-import useAuthentication from '@/hooks/useAuthentication'
-import ManageOutletLayout from '@/pages/user/manageOutlet'
+import useAuthentication from '@/hooks/useAuthentication';
+import MoleculesMetaHeader from '@/molecules/meta-header';
+import ManageOutletLayout from '@/pages/user/manageOutlet';
+import GeneralLayout from '@/templates/layouts';
+import React from 'react';
 
 const ManageOutletPage = () => {
-  // Handle Authentication
-  useAuthentication()
+	// Handle Authentication
+	useAuthentication();
 
-  return (
-    <>
-      <MoleculesMetaHeader
-        title="Manage Outlet - Admin Panel FnB"
-        description="Manage Outlet - Admin Panel FnB"
-      />
-      <GeneralLayout menu="User" subMenu="Manage Outlet">
-        <ManageOutletLayout />
-      </GeneralLayout>
-    </>
-  )
-}
+	return (
+		<>
+			<MoleculesMetaHeader
+				title="Manage Outlet - Admin Panel FnB"
+				description="Manage Outlet - Admin Panel FnB"
+			/>
+			<GeneralLayout menu="User" subMenu="Manage Outlet">
+				<ManageOutletLayout />
+			</GeneralLayout>
+		</>
+	);
+};
 
-export default ManageOutletPage
+export default ManageOutletPage;

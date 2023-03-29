@@ -1,15 +1,16 @@
-import { useNProgress } from '@tanem/react-nprogress'
+import {useNProgress} from '@tanem/react-nprogress';
 
-const LoadingBar: React.FC<{ isRouteChanging: boolean }> = ({
-  isRouteChanging,
+const LoadingBar: React.FC<{isRouteChanging: boolean}> = ({
+	isRouteChanging,
 }) => {
-  const { animationDuration, isFinished, progress } = useNProgress({
-    isAnimating: isRouteChanging,
-  })
+	const {animationDuration, isFinished, progress} = useNProgress({
+		isAnimating: isRouteChanging,
+	});
 
-  return (
-    <>
-      <style>{`
+	return (
+		<>
+			<style>
+				{`
         .container {
           opacity: ${isFinished ? 0 : 1};
           pointer-events: none;
@@ -38,14 +39,15 @@ const LoadingBar: React.FC<{ isRouteChanging: boolean }> = ({
           transform: rotate(3deg) translate(0px, -4px);
           width: 100px;
         }
-      `}</style>
-      <div className="container">
-        <div className="bar">
-          <div className="spinner" />
-        </div>
-      </div>
-    </>
-  )
-}
+      `}
+			</style>
+			<div className="container">
+				<div className="bar">
+					<div className="spinner" />
+				</div>
+			</div>
+		</>
+	);
+};
 
-export default LoadingBar
+export default LoadingBar;

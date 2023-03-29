@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  posy-admin:
+    container_name: posy-admin
+    image: posy-admin
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP_NAME: $APP_NAME
+        NEXT_PUBLIC_API_ENDPOINT: $NEXT_PUBLIC_API_ENDPOINT
+    env_file:
+      - .env
+    ports:
+      - '3300:3000'

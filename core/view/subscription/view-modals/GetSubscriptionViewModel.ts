@@ -1,13 +1,13 @@
-import { useGetSubscriptionUsecase } from '@/data/subscription/usecases/GetSubscriptionUsecase'
+import {useGetSubscriptionUsecase} from '@/data/subscription/usecases/GetSubscriptionUsecase';
 import {
-  GetSubscriptionFilterInput,
-  GetSubscriptionsResult,
-} from '@/domain/subscription/repositories/SubscriptionRepository'
+	GetSubscriptionFilterInput,
+	GetSubscriptionsResult,
+} from '@/domain/subscription/repositories/SubscriptionRepository';
 
 export const useGetSubscriptionViewModal = (
-  input?: GetSubscriptionFilterInput,
+	input?: GetSubscriptionFilterInput,
 ): GetSubscriptionsResult => {
-  const result = useGetSubscriptionUsecase(input)
+	const result = useGetSubscriptionUsecase(input);
 
-  return result
-}
+	return result;
+};

@@ -1,12 +1,12 @@
-import { MutationOptions } from 'core/domain/vo/BaseMutation'
-import { UpdateRestaurantResponse } from '@/data/restaurant/types'
-import { UpdateRestaurantRepository } from '@/domain/restaurant/repositories/RestaurantRepository'
-import { useUpdateRestaurantUsecase } from '@/data/restaurant/usecases/UpdateRestaurantUsecase'
+import {UpdateRestaurantResponse} from '@/data/restaurant/types';
+import {useUpdateRestaurantUsecase} from '@/data/restaurant/usecases/UpdateRestaurantUsecase';
+import {UpdateRestaurantRepository} from '@/domain/restaurant/repositories/RestaurantRepository';
+import {MutationOptions} from 'core/domain/vo/BaseMutation';
 
 export const useUpdateRestaurantViewModal = (
-  options?: MutationOptions<UpdateRestaurantResponse>,
+	options?: MutationOptions<UpdateRestaurantResponse>,
 ): UpdateRestaurantRepository => {
-  const result = useUpdateRestaurantUsecase(options)
+	const result = useUpdateRestaurantUsecase(options);
 
-  return result
-}
+	return result;
+};

@@ -1,61 +1,61 @@
-import { Pagination } from 'core/domain/vo/BasePagination'
-import { Role, Roles } from 'core/domain/role/models'
-import { FilterInputVariables } from 'core/domain/vo/BaseInput'
 import {
-  Datalist,
-  ResultQuery,
-  ResultMutation,
-  UpdateParams,
-} from 'core/domain/vo/BaseResponse'
+	FormRoleEntities,
+	FormtEditRoleEntities,
+} from '@/organisms/form/role/entities';
+import {Role, Roles} from 'core/domain/role/models';
+import {FilterInputVariables} from 'core/domain/vo/BaseInput';
+import {Pagination} from 'core/domain/vo/BasePagination';
 import {
-  FormRoleEntities,
-  FormtEditRoleEntities,
-} from '@/organisms/form/role/entities'
+	Datalist,
+	ResultQuery,
+	ResultMutation,
+	UpdateParams,
+} from 'core/domain/vo/BaseResponse';
 
 /**
  * GET
  */
 export type GetRolesInput = FilterInputVariables<
-  'created_at',
-  keyof Pick<Role, 'name' | 'is_internal'>
->
+	'created_at',
+	keyof Pick<Role, 'name' | 'is_internal'>
+>;
 
 export type GetRolesResult = ResultQuery<Datalist<Roles> | undefined> & {
-  pagination: Pagination | undefined
-}
+	pagination: Pagination | undefined;
+};
 
-export type GetRoleResult = ResultQuery<Role>
+export type GetRoleResult = ResultQuery<Role>;
 
 /**
  * CREATE
  */
 
-export type CreateRoleResult = ResultMutation<Role | undefined>
+export type CreateRoleResult = ResultMutation<Role | undefined>;
 
-export interface CreateRoleRepository extends CreateRoleResult {
-  createRole(params: FormRoleEntities): void
-}
+export type CreateRoleRepository = {
+	createRole(params: FormRoleEntities): void;
+} & CreateRoleResult;
 
 /**
  * UPDATE
  */
 
-export type UpdateRoleParams = UpdateParams<FormtEditRoleEntities>
+export type UpdateRoleParams = UpdateParams<FormtEditRoleEntities>;
 
-export type UpdateRoleResult = ResultMutation<Role>
+export type UpdateRoleResult = ResultMutation<Role>;
 
-export interface UpdateRoleRepository extends UpdateRoleResult {
-  updateRole(params: UpdateRoleParams): void
-}
+export type UpdateRoleRepository = {
+	updateRole(params: UpdateRoleParams): void;
+} & UpdateRoleResult;
 
 /**
  * DELETE
  */
 
-export type DeleteRoleParams = string
+export type DeleteRoleParams = string;
 
-export type DeleteRoleResult = ResultMutation<Role>
+export type DeleteRoleResult = ResultMutation<Role>;
 
-export interface DeleteRoleRepository extends DeleteRoleResult {
-  deleteRole(params: DeleteRoleParams): void
-}
+export type DeleteRoleRepository = {
+	deleteRole(params: DeleteRoleParams): void;
+} & DeleteRoleResult;

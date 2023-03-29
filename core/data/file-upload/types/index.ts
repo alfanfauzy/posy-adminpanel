@@ -1,4 +1,4 @@
-export interface UploadFilePublicResponse {
-  image_filename: string
-  url: string
-}
+export type UploadFilePublicResponse = {
+	image_filename: string;
+	url: string;
+};

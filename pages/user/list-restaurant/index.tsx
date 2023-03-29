@@ -1,24 +1,24 @@
-import React from 'react'
-import MoleculesMetaHeader from '@/molecules/meta-header'
-import GeneralLayout from '@/templates/layouts'
-import useAuthentication from '@/hooks/useAuthentication'
-import ListRestaurantLayout from '@/pages/user/listRestaurant'
+import useAuthentication from '@/hooks/useAuthentication';
+import MoleculesMetaHeader from '@/molecules/meta-header';
+import ListRestaurantLayout from '@/pages/user/listRestaurant';
+import GeneralLayout from '@/templates/layouts';
+import React from 'react';
 
 const ListRestaurantPage = () => {
-  // Handle Authentication
-  useAuthentication()
+	// Handle Authentication
+	useAuthentication();
 
-  return (
-    <>
-      <MoleculesMetaHeader
-        title="List Restaurant - Admin Panel FnB"
-        description="List Restaurant - Admin Panel FnB"
-      />
-      <GeneralLayout menu="User" subMenu="List Restaurant">
-        <ListRestaurantLayout />
-      </GeneralLayout>
-    </>
-  )
-}
+	return (
+		<>
+			<MoleculesMetaHeader
+				title="List Restaurant - Admin Panel FnB"
+				description="List Restaurant - Admin Panel FnB"
+			/>
+			<GeneralLayout menu="User" subMenu="List Restaurant">
+				<ListRestaurantLayout />
+			</GeneralLayout>
+		</>
+	);
+};
 
-export default ListRestaurantPage
+export default ListRestaurantPage;
