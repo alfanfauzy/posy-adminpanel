@@ -8,6 +8,7 @@ import {formatCurrencyTextInput} from '@/constants/utils';
 import {Category} from '@/domain/category/models';
 import {GetFilterCategoryInput} from '@/domain/category/repositories/CategoryRepository';
 import {Outlet} from '@/domain/outlet/models';
+import {GetFilterOutletInput} from '@/domain/outlet/repositories/OutletRepositories';
 import {FormProduct} from '@/domain/product/models';
 import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
@@ -71,7 +72,15 @@ const OrganismFormProduct = ({
 		name: 'addons',
 	});
 
-	const hooksParams: GetFilterCategoryInput = {
+	const hooksParamsCategory: GetFilterCategoryInput = {
+		restaurant_uuid,
+		search: [{field: 'is_active', value: 'true'}],
+		sort: {field: 'created_at', value: 'desc'},
+		page: 1,
+		limit: 0,
+	};
+
+	const hooksParamsOutlet: GetFilterOutletInput = {
 		restaurant_uuid,
 		search: [],
 		sort: {field: 'created_at', value: 'desc'},
@@ -80,10 +89,10 @@ const OrganismFormProduct = ({
 	};
 
 	const {data: ListCategory, isLoading: isLoadingCategory} =
-		useGetCategoryViewModal(hooksParams);
+		useGetCategoryViewModal(hooksParamsCategory);
 
 	const {data: ListOutlet, isLoading: isLoadingOutlet} =
-		useGetOutletViewModal(hooksParams);
+		useGetOutletViewModal(hooksParamsOutlet);
 
 	const OptionsCategory = useMemo(() => {
 		if (!ListCategory) return [];

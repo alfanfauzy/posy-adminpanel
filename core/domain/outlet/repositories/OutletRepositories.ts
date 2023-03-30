@@ -16,7 +16,7 @@ import {FormOutlet, Outlet, Outlets} from '../models';
 export type GetFilterOutletInput = FilterInputVariables<
 	'created_at',
 	keyof Pick<Outlet, 'uuid' | 'restaurant_uuid'>
->;
+> & {restaurant_uuid?: string};
 
 export type GetOutletsResult = ResultQuery<Datalist<Outlets> | undefined> & {
 	pagination: Pagination | undefined;

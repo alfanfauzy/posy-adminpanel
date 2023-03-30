@@ -15,7 +15,7 @@ import {Category, FormCategory} from '../models/index';
 
 export type GetFilterCategoryInput = FilterInputVariables<
 	'created_at',
-	keyof Pick<Category, 'restaurant_uuid' | 'uuid'>
+	keyof Pick<Category, 'restaurant_uuid' | 'uuid' | 'is_active'>
 > & {restaurant_uuid: string};
 
 export type GetCategorysResult = ResultQuery<Datalist<Category> | undefined> & {
