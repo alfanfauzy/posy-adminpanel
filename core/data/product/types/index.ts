@@ -19,3 +19,13 @@ export type GetListProductDataResponse = {
 	categories: Array<Category>;
 	metadata: Metadata;
 };
+
+export type CreateProductResponse = {
+	code: number;
+	data: {
+		uuid: string;
+		metadata: Metadata;
+	};
+};
+
+export type UpdateProductResponse = CreateProductResponse;

@@ -4,10 +4,10 @@ import {
 	Datalist,
 	ResultMutation,
 	ResultQuery,
-	UpdateParams,
 } from 'core/domain/vo/BaseResponse';
 
 import {Product, Products} from '../models';
+import {FormProduct} from './../models/index';
 
 /**
  * GET
@@ -28,13 +28,13 @@ export type GetProductResult = ResultQuery<Product>;
  * CREATE
  */
 
-// export type CreateOutletInput = FormOutlet;
+export type CreateProductInput = FormProduct;
 
-// export type CreateOutletResult = ResultMutation<Outlet | undefined>;
+export type CreateProductResult = ResultMutation<Product | undefined>;
 
-// export type CreateOutletRepository = {
-// 	createOutlet(payload: FormOutlet): void;
-// } & CreateOutletResult;
+export type CreateProductRepository = {
+	createProduct(payload: CreateProductInput): void;
+} & CreateProductResult;
 
 /**
  * UPDATE

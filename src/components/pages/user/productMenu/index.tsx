@@ -1,4 +1,3 @@
-import AtomSwitch from '@/atoms/switch';
 import AtomTable from '@/atoms/table';
 import {FormatToRupiah} from '@/constants/utils';
 import {Product} from '@/domain/product/models';
@@ -10,7 +9,7 @@ import type {ColumnsType} from 'antd/es/table';
 import dynamic from 'next/dynamic';
 import {Button} from 'posy-fnb-core';
 import React, {useMemo, useState} from 'react';
-import {AiFillDelete, AiFillEdit, AiOutlinePlus} from 'react-icons/ai';
+import {AiFillEdit, AiOutlinePlus} from 'react-icons/ai';
 import {toast} from 'react-toastify';
 
 const ModalFormProduct = dynamic(() => import('@/organisms/form/product'));
@@ -53,15 +52,8 @@ const ListProductMenuLayout = ({
 	const {value: openModal, toggle: handleOpenModal} = useToggle(false);
 	const {value: openModalConfirmation, toggle: handleOpenModalConfirmation} =
 		useToggle(false);
-	const {value: switchActiveMenu, toggle: handleSwitchActiveMenu} =
-		useToggle(false);
 
 	/** Modal Confirmation Action */
-
-	const handleShowConfirmationModal = (data: Product) => {
-		handleOpenModalConfirmation();
-		setSelectedData(data);
-	};
 
 	const handleCloseModalConfirmation = () => {
 		handleOpenModalConfirmation();
@@ -129,12 +121,6 @@ const ListProductMenuLayout = ({
 					>
 						<AiFillEdit />
 					</Button>
-					<Button
-						variant="red-accent"
-						onClick={() => handleShowConfirmationModal(dataValue)}
-					>
-						<AiFillDelete />
-					</Button>
 				</span>
 			),
 		},
@@ -151,7 +137,6 @@ const ListProductMenuLayout = ({
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}
 				isEdit={isEdit}
-				selectedData={selectedData}
 			/>
 			<ModalConfirmation
 				isOpenModal={openModalConfirmation}
