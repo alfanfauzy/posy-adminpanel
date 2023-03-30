@@ -1,3 +1,4 @@
+import {GetOutletListDataResponse} from '@/data/outlet/type';
 import {Category} from '@/domain/category/models';
 import {Metadata} from '@/domain/vo/BaseMetadata';
 import {GetCategoryListDataResponse} from 'core/data/category/types';
@@ -26,6 +27,14 @@ type ProductCategory = Pick<
 	'uuid' | 'category_name' | 'is_active'
 >;
 
+type ProductOutlet = Pick<
+	GetOutletListDataResponse,
+	'uuid' | 'restaurant_uuid'
+> & {
+	name: string;
+	code: string;
+};
+
 export type GetDetailProductResponse = {
 	product: {
 		uuid: string;
@@ -42,6 +51,7 @@ export type GetDetailProductResponse = {
 		price_final: number;
 		cooking_duration: number;
 		categories: Array<ProductCategory>;
+		restaurant_outlets: Array<ProductOutlet>;
 	};
 	addons: Array<{
 		uuid: string;
