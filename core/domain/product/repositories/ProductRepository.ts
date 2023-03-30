@@ -22,6 +22,7 @@ export type GetProductsResult = ResultQuery<Datalist<Products> | undefined> & {
 	pagination: Pagination | undefined;
 };
 
+export type GetFilterDetailProduct = string;
 export type GetProductResult = ResultQuery<Product>;
 
 /**

@@ -1,5 +1,6 @@
 import {Category} from '@/domain/category/models';
 import {Metadata} from '@/domain/vo/BaseMetadata';
+import {GetCategoryListDataResponse} from 'core/data/category/types';
 
 export type GetListProductDataResponse = {
 	uuid: string;
@@ -20,6 +21,11 @@ export type GetListProductDataResponse = {
 	metadata: Metadata;
 };
 
+type ProductCategory = Pick<
+	GetCategoryListDataResponse,
+	'uuid' | 'category_name' | 'is_active'
+>;
+
 export type GetDetailProductResponse = {
 	product: {
 		uuid: string;
@@ -35,7 +41,7 @@ export type GetDetailProductResponse = {
 		price_discount_percentage: number;
 		price_final: number;
 		cooking_duration: number;
-		categories: Array<any>;
+		categories: Array<ProductCategory>;
 	};
 	addons: Array<{
 		uuid: string;

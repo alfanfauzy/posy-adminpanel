@@ -1,7 +1,7 @@
 import {CreateProductInput} from '@/domain/product/repositories/ProductRepository';
 import {MutationOptions} from 'core/domain/vo/BaseMutation';
 
-import {useCreateProductMutation} from '../sources/CreateOutletQuery';
+import {useCreateProductMutation} from '../sources/CreateProductQuery';
 import {CreateProductResponse} from '../types';
 
 export const useCreateProductUsecase = (

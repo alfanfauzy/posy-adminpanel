@@ -1,6 +1,7 @@
 import {Products} from '@/domain/product/models';
 
 import {GetListProductDataResponse} from '../types';
+import {GetDetailProductResponse} from './../types/index';
 
 export const mapToProductModel = (
 	datas: Array<GetListProductDataResponse>,
@@ -23,3 +24,7 @@ export const mapToProductModel = (
 		seconds: data.metadata.created_at.seconds,
 		categories: data.categories.map(category => category.name),
 	}));
+
+export const mapToDetailProductModel = (datas: GetDetailProductResponse) => {
+	datas;
+};
