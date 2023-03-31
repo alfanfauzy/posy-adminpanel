@@ -86,7 +86,7 @@ const VerticalTabs = ({
 			<div className="ml-2 h-full w-full rounded-lg border-2 border-gray-200">
 				{Object.assign(dataRoles).map((role: RoleType) => (
 					<TabPanel key={role.id}>
-						<div className="flex flex-wrap justify-start gap-4 overflow-y-auto">
+						<div className="grid grid-cols-3 gap-4 overflow-y-auto">
 							{dataAccesses.map(access => (
 								<AccessForm
 									key={access.group}
