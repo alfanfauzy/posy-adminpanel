@@ -9,6 +9,7 @@ const useAuthentication = () => {
 	useEffect(() => {
 		if (!isLoggedIn && authData.token === '') {
 			router.push('/auth/login');
+			return;
 		}
 	}, [isLoggedIn]);
 };

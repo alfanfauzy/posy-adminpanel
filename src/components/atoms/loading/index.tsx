@@ -1,19 +1,23 @@
-import React from 'react';
+import React, {CSSProperties} from 'react';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 type LoadingProps = {
 	size: number;
 };
 
+const override: CSSProperties = {
+	display: 'block',
+	margin: '0 auto',
+};
+
 export const Loading: React.FC<LoadingProps> = ({size}) => (
-	<div className="flex-center h-10 w-[50%]">
-		<div
-			style={{width: `${size}px`, height: `${size}px`}}
-			className="animate-spin"
-		>
-			<div
-				className="h-full w-full rounded-[50%] border-4
-       border-t-purple-500 border-b-purple-700"
-			/>
-		</div>
+	<div className="flex h-screen items-center justify-center">
+		<BeatLoader
+			color="#36d7b7"
+			size={size}
+			cssOverride={override}
+			aria-label="Loading Spinner"
+			data-testid="loader"
+		/>
 	</div>
 );

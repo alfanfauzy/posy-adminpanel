@@ -140,7 +140,7 @@ const AccessSettingLayout = ({type}: AccessSettingLayoutProps) => {
 		<main className="mt-4">
 			{isLoadingRole && isLoadingAccess ? (
 				<section className="mx-[50%]">
-					<Loading size={50} />
+					<Loading size={10} />
 				</section>
 			) : (
 				<VerticalTabs
