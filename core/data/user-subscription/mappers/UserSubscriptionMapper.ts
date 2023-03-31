@@ -12,5 +12,6 @@ export const mapToUserSubscriptionModel = (
 		rest_name: data.restaurant_name,
 		rest_id: data.restaurant_uuid,
 		start_date: data.start_date,
+		status: data.subscription_status,
 		end_date: data.end_date,
 	}));

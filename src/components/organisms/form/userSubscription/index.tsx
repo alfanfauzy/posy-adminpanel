@@ -140,7 +140,7 @@ const MoleculesFormUserSubscription = ({
 		}
 	}, [RestaurantSelect]);
 
-	const titleText = 'Renewal Subscription';
+	const titleText = 'Create New Subscription';
 
 	return (
 		<ModalForm

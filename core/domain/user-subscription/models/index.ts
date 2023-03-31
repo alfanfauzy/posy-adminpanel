@@ -2,6 +2,7 @@ export type UserSubscriptionBased = {
 	sub_history_id: string;
 	sub_id: string;
 	sub_name: string;
+	status: string;
 	rest_id: string;
 	rest_name: string;
 	start_date: number;

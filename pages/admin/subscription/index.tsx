@@ -14,7 +14,7 @@ const SubscriptionPage = () => {
 				title="Subscription - Admin Panel FnB"
 				description="Subscription - Admin Panel FnB"
 			/>
-			<GeneralLayout menu="Admin" subMenu="Subscription">
+			<GeneralLayout menu="Admin" subMenu="Subscription Plan">
 				<SubscriptionLayout />
 			</GeneralLayout>
 		</>

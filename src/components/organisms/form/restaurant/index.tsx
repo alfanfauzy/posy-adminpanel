@@ -226,7 +226,7 @@ const MoleculesFormRestaurant = ({
 		}
 	}, [selectedData, isEdit, setValue]);
 
-	const titleText = isEdit ? 'Edit Restaurant' : 'Create New Restaurant';
+	const titleText = isEdit ? 'Edit Restaurant' : 'Add New Restaurant';
 
 	return (
 		<ModalForm

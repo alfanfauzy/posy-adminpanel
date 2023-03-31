@@ -207,9 +207,7 @@ const MoleculesFormUserRestaurant = ({
 		}
 	}, [selectedData, isEdit, setValue]);
 
-	const titleText = isEdit
-		? 'Edit User Restaurant'
-		: 'Create New User Restaurant';
+	const titleText = isEdit ? 'Edit User' : 'Add New User';
 
 	return (
 		<ModalForm

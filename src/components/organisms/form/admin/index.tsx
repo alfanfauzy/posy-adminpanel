@@ -146,6 +146,8 @@ const MoleculesFormAdmin = ({
 		? {title: 'Edit User', button: 'Save'}
 		: {title: 'Create New User', button: 'Submit'};
 
+	console.log(errors);
+
 	return (
 		<ModalForm
 			handleCloseModal={handleCloseModal}
@@ -207,7 +209,7 @@ const MoleculesFormAdmin = ({
 					<div className="mb-6">
 						<Input
 							{...register('fullname')}
-							labelText="Fullname"
+							labelText="Full Name"
 							placeholder="ex: John Doe"
 							className="flex items-center justify-center"
 							error={!!errors.fullname}

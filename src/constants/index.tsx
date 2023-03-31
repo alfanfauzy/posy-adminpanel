@@ -15,7 +15,7 @@ export const MENU_LIST = [
 				path: '/admin/role',
 			},
 			{
-				label: 'Subscription',
+				label: 'Subscription Plan',
 				path: '/admin/subscription',
 			},
 		],

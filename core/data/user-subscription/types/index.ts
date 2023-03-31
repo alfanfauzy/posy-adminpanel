@@ -7,6 +7,7 @@ export type GetUserSubscriptionListDataResponse = {
 	subscription_name: string;
 	restaurant_uuid: string;
 	restaurant_name: string;
+	subscription_status: string;
 	start_date: number;
 	end_date: number;
 };

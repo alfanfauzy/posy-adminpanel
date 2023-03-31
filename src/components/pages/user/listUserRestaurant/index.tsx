@@ -164,7 +164,7 @@ const ListUserRestaurantLayout: React.FC = () => {
 		<div>
 			<HeaderContent
 				onClick={handleOpenFormModal}
-				textButton="Add New User Restaurant"
+				textButton="Add New User"
 				iconElement={<AiOutlinePlus />}
 			/>
 			<MoleculesFormUserRestaurant

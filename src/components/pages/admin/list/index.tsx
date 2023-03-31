@@ -97,7 +97,7 @@ const AdminListLayout: React.FC = () => {
 			render: (value, item, index) => (page - 1) * 10 + index + 1,
 		},
 		{
-			title: 'Fullname',
+			title: 'Full Name',
 			key: 'fullname',
 			dataIndex: 'fullname',
 		},

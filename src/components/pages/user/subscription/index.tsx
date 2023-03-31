@@ -74,6 +74,11 @@ const UserSubscriptionLayout = ({
 			dataIndex: 'sub_name',
 		},
 		{
+			title: 'Subscription Status',
+			key: 'status',
+			dataIndex: 'status',
+		},
+		{
 			title: 'Start Date',
 			key: 'start_date',
 			dataIndex: 'start_date',
