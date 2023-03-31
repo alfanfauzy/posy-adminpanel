@@ -2,6 +2,7 @@ import AtomTable from '@/atoms/table';
 import {FormatToRupiah} from '@/constants/utils';
 import {Product} from '@/domain/product/models';
 import {GetFilterProductInput} from '@/domain/product/repositories/ProductRepository';
+import {queryClient} from '@/hooks/react-query';
 import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
 import {useGetProductViewModal} from '@/view/product/view-models/GetProductViewModel';

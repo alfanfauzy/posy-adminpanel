@@ -3,21 +3,23 @@ import React from 'react';
 
 type AtomDatePickerProps = {
 	type: 'single' | 'range';
-	onChange: (val: any) => number | string;
+	onChange: (...event: Array<any>) => void;
 	value: any;
 	label?: string;
 	className: string;
 	placeholder: string;
 	format: string;
+	name: string;
 };
 
 type RenderComponentProps = {
 	type: 'single' | 'range';
-	onChange: (val: any) => number | string;
+	onChange: (...event: Array<any>) => void;
 	value: any;
 	className: string;
 	placeholder: string;
 	format: string;
+	name: string;
 };
 
 const RenderComponent = ({
@@ -27,11 +29,13 @@ const RenderComponent = ({
 	className,
 	placeholder,
 	format,
+	name,
 }: RenderComponentProps) => {
 	const {RangePicker} = DatePicker;
 	if (type === 'single') {
 		return (
 			<DatePicker
+				name={name}
 				onChange={onChange}
 				value={value}
 				className={className}
@@ -60,12 +64,14 @@ const AtomDatePicker = ({
 	className,
 	placeholder,
 	format,
+	name,
 	...props
 }: AtomDatePickerProps) => (
 	<div>
 		{label && <label className="mb-1 block text-m-regular">{label}</label>}
 
 		<RenderComponent
+			name={name}
 			type={type}
 			onChange={onChange}
 			value={value}

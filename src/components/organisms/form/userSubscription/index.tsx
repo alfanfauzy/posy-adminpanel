@@ -2,16 +2,26 @@
  * Subscription Form Modal
  */
 import AtomDatePicker from '@/atoms/datepicker';
-import {Subscription_Period} from '@/constants/index';
+import {TimetoUnix} from '@/constants/utils';
+import {Restaurant} from '@/domain/restaurant/models';
+import {GetFilterRestaurantInput} from '@/domain/restaurant/repositories/RestaurantRepository';
+import {Subscription} from '@/domain/subscription/models';
+import {GetSubscriptionFilterInput} from '@/domain/subscription/repositories/SubscriptionRepository';
+import {FormUserSubscriptionRenew} from '@/domain/user-subscription/models';
+import {Search} from '@/domain/vo/BaseInput';
+import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
-import {DataType} from '@/pages/admin/list/entities';
 import {UserSubscriptionFormSchema} from '@/schemas/userSubscription';
-import dayjs from 'dayjs';
+import {useGetRestaurantViewModal} from '@/view/restaurant/view-models/GetRestaurantViewModel';
+import {useGetSubscriptionViewModal} from '@/view/subscription/view-modals/GetSubscriptionViewModel';
+import {useCreateUserSubscriptionViewModal} from '@/view/user-subscription/view-modals/CreateUserSubscriptionViewModel';
 import dynamic from 'next/dynamic';
 import {Button, Select} from 'posy-fnb-core';
-import React, {useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
+import {Controller} from 'react-hook-form';
 import {AiOutlineCheckSquare} from 'react-icons/ai';
 import {toast} from 'react-toastify';
+import {useAppSelector} from 'store/hooks';
 
 import {FormUserSubscriptionEntities} from './entities';
 
@@ -23,20 +33,22 @@ type MoleculesFormUserSubscriptionProps = {
 	isEdit: boolean;
 	isOpenModal: boolean;
 	handleClose: () => void;
-	selectedData: DataType;
+	restaurant_uuid?: string;
 };
 
 const MoleculesFormUserSubscription = ({
-	isEdit = false,
 	isOpenModal,
 	handleClose,
-	selectedData,
+	restaurant_uuid,
 }: MoleculesFormUserSubscriptionProps) => {
-	const [startDate, setStartDate] = useState(dayjs());
+	const restaurant = useAppSelector(state => state.restaurant);
+	const [searchRestaurantParams, setSearchRestaurantParams] = useState<
+		Array<Search<any>>
+	>([]);
 
 	const {
 		handleSubmit,
-		register,
+		control,
 		reset,
 		setValue,
 		formState: {errors},
@@ -46,53 +58,89 @@ const MoleculesFormUserSubscription = ({
 		mode: 'onChange',
 	});
 
+	const hooksRestaurantParams: GetFilterRestaurantInput = useMemo(
+		() => ({
+			search: searchRestaurantParams,
+			sort: {field: 'created_at', value: 'desc'},
+			page: 1,
+			limit: 0,
+		}),
+		[searchRestaurantParams],
+	);
+
+	const hooksSubscriptionParams: GetSubscriptionFilterInput = {
+		search: [],
+		sort: {field: 'created_at', value: 'desc'},
+		page: 1,
+		limit: 0,
+	};
+
+	const {data: ListDataRestaurant, isLoading: isLoadingRestaurant} =
+		useGetRestaurantViewModal(hooksRestaurantParams);
+
+	const {data: ListSubscriptions, isLoading: isLoadingSubscription} =
+		useGetSubscriptionViewModal(hooksSubscriptionParams);
+
+	const RestaurantSelect = useMemo(() => {
+		if (!ListDataRestaurant) return [];
+
+		return Object.values(ListDataRestaurant).map((restaurant: Restaurant) => ({
+			label: restaurant.name,
+			value: restaurant.uuid,
+		}));
+	}, [ListDataRestaurant]);
+
+	const SubscriptionsSelect = useMemo(() => {
+		if (!ListSubscriptions) return [];
+
+		return Object.values(ListSubscriptions).map(
+			(subscription: Subscription) => ({
+				label: subscription.name,
+				value: subscription.uuid,
+			}),
+		);
+	}, [ListSubscriptions]);
+
 	const handleCloseModal = () => {
 		reset();
 		handleClose();
+		queryClient.invalidateQueries('user-subscription/list');
 	};
 
-	const handleCreateAdmin = (data: FormUserSubscriptionEntities) => {
-		/**
-		 * Todo : Send `data` to backend
-		 */
-
-		/**
-		 * Will be remove soon
-		 */
-
-		const getData = JSON.parse(localStorage.getItem('items') || '');
-
-		getData.push(data);
-
-		localStorage.setItem('items', JSON.stringify(getData));
-
-		/** ---------------------------------------------------- */
-
-		if (getData) {
-			handleCloseModal();
-			toast.success('Sucessfully added new admin');
-		}
-	};
-
-	const handleEditAdmin = (data: FormUserSubscriptionEntities) => {
-		/**
-		 * Todo : Send `data` to backend
-		 */
-		if (data) {
-			handleCloseModal();
-			toast.success('Sucessfully edit user admin');
-		}
-	};
+	const {createUserSubscriptionRenew, isLoading: isLoadingSubscriptionRenew} =
+		useCreateUserSubscriptionViewModal({
+			onSuccess() {
+				handleCloseModal();
+				toast.success('Sucessfully renew subscripton');
+			},
+		});
 
 	const handleSubmitForm = (data: FormUserSubscriptionEntities) => {
-		if (isEdit) {
-			handleEditAdmin(data);
-		} else {
-			handleCreateAdmin(data);
-		}
+		const newPayload: FormUserSubscriptionRenew = {
+			restaurant_uuid: data.restaurant_uuid.value,
+			subscription_uuid: data.subscription_uuid.value,
+			start_date: TimetoUnix(data.start_date),
+		};
+
+		createUserSubscriptionRenew(newPayload);
 	};
 
-	const titleText = isEdit ? 'Edit User' : 'Register Subscription';
+	useEffect(() => {
+		if (restaurant_uuid) {
+			setSearchRestaurantParams(prevState => [
+				...prevState,
+				{field: 'uuid', value: restaurant_uuid},
+			]);
+		}
+	}, [restaurant_uuid]);
+
+	useEffect(() => {
+		if (restaurant_uuid) {
+			setValue('restaurant_uuid', RestaurantSelect[0]);
+		}
+	}, [RestaurantSelect]);
+
+	const titleText = 'Renewal Subscription';
 
 	return (
 		<ModalForm
@@ -103,44 +151,69 @@ const MoleculesFormUserSubscription = ({
 			<section className="w-big-500 p-4">
 				<form onSubmit={handleSubmit(data => handleSubmitForm(data))}>
 					<div className="mb-6">
-						<Select
-							name="restaurantName"
-							onChange={e => setValue('restaurantName', e)}
-							options={Subscription_Period}
-							labelText="Restaurant Name"
-							placeholder="ex: Restaurant Name, etc"
-							className="flex items-center justify-center"
-							error={!!errors.restaurantName}
-							helperText={errors?.restaurantName?.message}
+						<Controller
+							name="restaurant_uuid"
+							control={control}
+							render={({field: {name, value}}) => (
+								<Select
+									name={name}
+									value={value}
+									onChange={e => setValue('restaurant_uuid', e)}
+									options={RestaurantSelect}
+									isLoading={isLoadingRestaurant}
+									disabled={!!restaurant_uuid}
+									labelText="Restaurant Name"
+									placeholder="ex: Restaurant Name, etc"
+									className="flex items-center justify-center"
+									error={!!errors.restaurant_uuid}
+									helperText={errors?.restaurant_uuid?.message}
+								/>
+							)}
 						/>
 					</div>
 					<div className="mb-6">
-						<Select
-							name="subscriptionPlan"
-							onChange={e => setValue('subscriptionPlan', e)}
-							options={Subscription_Period}
-							labelText="Subscription Plan"
-							placeholder="ex: Package, etc"
-							className="flex items-center justify-center"
-							error={!!errors.subscriptionPlan}
-							helperText={errors?.subscriptionPlan?.message}
+						<Controller
+							name="subscription_uuid"
+							control={control}
+							render={({field: {name, value}}) => (
+								<Select
+									name={name}
+									value={value}
+									onChange={e => setValue('subscription_uuid', e)}
+									options={SubscriptionsSelect}
+									isLoading={isLoadingSubscription}
+									labelText="Subscription Plan"
+									placeholder="ex: Package, etc"
+									className="flex items-center justify-center"
+									error={!!errors.subscription_uuid}
+									helperText={errors?.subscription_uuid?.message}
+								/>
+							)}
 						/>
 					</div>
 					<div className="mb-6">
-						<AtomDatePicker
-							label="Start Date"
-							type="single"
-							value={startDate}
-							onChange={date => Number(setStartDate(date))}
-							className="w-full p-2"
-							placeholder="Select Start Date"
-							format="DD MMMM YYYY"
+						<Controller
+							name="start_date"
+							control={control}
+							render={({field: {name, value, onChange}}) => (
+								<AtomDatePicker
+									name={name}
+									label="Start Date"
+									type="single"
+									value={value}
+									onChange={onChange}
+									className="w-full p-2"
+									placeholder="Select Start Date"
+									format="DD MMMM YYYY"
+								/>
+							)}
 						/>
 					</div>
 
 					<Button
 						type="submit"
 						variant="primary"
+						isLoading={isLoadingSubscriptionRenew}
 						size="l"
 						fullWidth
 						className="flex items-center justify-center gap-2"

@@ -1,5 +1,5 @@
 export type FormUserSubscriptionEntities = {
-	restaurantName: string;
-	subscriptionPlan: {label: string; value: string};
-	startDate: number;
+	restaurant_uuid: {label: string; value: string};
+	subscription_uuid: {label: string; value: string};
+	start_date?: any;
 };

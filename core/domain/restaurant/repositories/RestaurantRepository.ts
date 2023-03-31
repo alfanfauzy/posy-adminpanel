@@ -15,7 +15,7 @@ import {FormBodyPayload, Restaurant, Restaurants} from '../models';
 
 export type GetFilterRestaurantInput = FilterInputVariables<
 	'created_at',
-	keyof Pick<Restaurant, 'email'>
+	keyof Pick<Restaurant, 'email' | 'uuid'>
 >;
 
 export type GetRestaurantsResult = ResultQuery<
