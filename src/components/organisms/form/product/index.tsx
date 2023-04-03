@@ -112,7 +112,6 @@ const OrganismFormProduct = ({
 					setValue('cooking_duration', mappedData.cooking_duration.toString());
 					setValue('product_description', mappedData.product_description);
 					setValue('price', mappedData.price.toString());
-					setValue('is_discount', mappedData.is_discount);
 					setValue('is_show', mappedData.is_show ?? false);
 					setValue('is_available', mappedData.is_available ?? false);
 					setValue('is_favourite', mappedData.is_favourite);
@@ -254,7 +253,7 @@ const OrganismFormProduct = ({
 
 	useMemo(() => {
 		const price = getValues('price') || '0';
-		const discount = Number(getValues('discount'));
+		const discount = Number(getValues('price_discount_percentage'));
 
 		const convert = Number(price.split('.').join(''));
 		const calculatedPriceDiscount = (convert * discount) / 100;
@@ -264,9 +263,11 @@ const OrganismFormProduct = ({
 			'price_after_discount',
 			formatCurrencyTextInput(priceAfterDiscount.toString()),
 		);
-	}, [getValues('price'), getValues('discount')]);
+	}, [getValues('price'), getValues('price_discount_percentage')]);
 
 	const titleText = isEdit ? 'Edit Product Menu' : 'Add New Product Menu';
+
+	console.log(errors);
 
 	return (
 		<ModalForm
@@ -407,10 +408,10 @@ const OrganismFormProduct = ({
 										<Input
 											labelText="Discount (%)"
 											placeholder="ex: 2%"
-											{...methodsForm.register('discount', {
+											{...methodsForm.register('price_discount_percentage', {
 												setValueAs: v => v.replace(/\D/, ''),
 											})}
-											value={watch('discount')}
+											value={watch('price_discount_percentage')}
 										/>
 									</div>
 									<div className="w-1/3">
