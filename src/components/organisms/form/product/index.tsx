@@ -88,8 +88,7 @@ const OrganismFormProduct = ({
 	};
 
 	const hooksParamsOutlet: GetFilterOutletInput = {
-		restaurant_uuid,
-		search: [],
+		search: [{field: 'restaurant_uuid', value: restaurant_uuid}],
 		sort: {field: 'created_at', value: 'desc'},
 		page: 1,
 		limit: 0,
