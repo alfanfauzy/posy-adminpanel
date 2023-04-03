@@ -40,7 +40,7 @@ const App = ({Component, pageProps}: AppPropsWithLayout) => {
 				router.push('/dashboard');
 				setTimeout(() => {
 					setLoading(false);
-				}, 1000);
+				}, 5000);
 				return;
 			}
 

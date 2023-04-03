@@ -112,8 +112,11 @@ const ListUserRestaurantLayout: React.FC = () => {
 		},
 		{
 			title: 'Role',
-			key: 'roles',
-			dataIndex: 'roles',
+			key: 'role',
+			dataIndex: 'role',
+			render: role => {
+				return <p>{role.name}</p>;
+			},
 		},
 		{
 			title: 'Outlet',

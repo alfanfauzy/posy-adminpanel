@@ -11,7 +11,7 @@ export type UserRestaurantBased = {
 	email: string;
 	phone: string;
 	outlet: Array<RestaurantObject>;
-	role: Pick<GetRoleListDataResponse, 'is_internal' | 'accesses'>;
+	role: Pick<GetRoleListDataResponse, 'accesses'>;
 	is_admin: string;
 	seconds: number;
 };

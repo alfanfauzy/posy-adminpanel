@@ -1,7 +1,6 @@
 import AtomTable from '@/atoms/table';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useState} from 'react';
-import {dummy} from 'src/data/restaurant';
 
 import {DataType} from './entities';
 
@@ -56,13 +55,13 @@ const HistoryTransactionLayout: React.FC = () => {
 			<AtomTable
 				isLoading={false}
 				columns={columns}
-				dataSource={dummy}
+				dataSource={[]}
 				onChangePaginationItem={(e: {value: number}) => setLimit(e.value)}
 				limitSize={limit}
 				pagination={{
 					current: page,
 					pageSize: limit,
-					total: dummy.length,
+					total: 10,
 					onChange: setPage,
 				}}
 			/>

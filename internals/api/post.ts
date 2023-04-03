@@ -1,3 +1,5 @@
+import {useRouter} from 'next/router';
+
 // eslint-disable-next-line import/no-cycle
 import axios from '.';
 

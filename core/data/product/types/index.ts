@@ -10,6 +10,7 @@ export type GetListProductDataResponse = {
 	product_description: string;
 	product_image: string;
 	product_image_url: string;
+	is_available: boolean;
 	is_favourite: boolean;
 	is_discount: boolean;
 	price: number;
@@ -18,7 +19,9 @@ export type GetListProductDataResponse = {
 	price_discount_percentage: number;
 	price_final: number;
 	cooking_duration: number;
+	is_show: boolean;
 	categories: Array<Category>;
+	restaurant_outlets: Array<ProductOutlet>;
 	metadata: Metadata;
 };
 
@@ -37,11 +40,13 @@ type ProductOutlet = Pick<
 
 export type GetDetailProductResponse = {
 	product: {
+		is_show: boolean;
 		uuid: string;
 		restaurant_uuid: string;
 		product_name: string;
 		product_description: string;
 		product_image_url: string;
+		is_available: boolean;
 		is_favourite: boolean;
 		is_discount: boolean;
 		price: number;
@@ -61,6 +66,7 @@ export type GetDetailProductResponse = {
 		min_variant: number;
 		max_variant: number;
 		variants: Array<{
+			variant_priority: any;
 			uuid: string;
 			variant_name: string;
 			variant_price: number;

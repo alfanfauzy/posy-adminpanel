@@ -1,5 +1,6 @@
 import {FormAddonVariant} from '@/domain/addon-variant/models';
-import {FormAddon} from '@/domain/addon/models';
+import {Addons, FormAddon} from '@/domain/addon/models';
+import {Category} from '@/domain/category/models';
 
 export type ProductBased = {
 	uuid: string;
@@ -8,6 +9,7 @@ export type ProductBased = {
 	product_description: string;
 	product_image: string;
 	product_image_url: string;
+	is_available: boolean;
 	is_favourite: boolean;
 	is_discount: boolean;
 	price: number;
@@ -16,11 +18,13 @@ export type ProductBased = {
 	price_discount_percentage: number;
 	price_final: number;
 	cooking_duration: number;
-	categories: Array<string>;
-	seconds: number;
+	categories: Array<{label: string; value: string}>;
+	restaurant_outlets: Array<{label: string; value: string}>;
+	seconds?: number;
+	is_show: boolean;
 };
 
-export type Product = ProductBased;
+export type Product = {addons?: Addons} & ProductBased;
 export type Products = Array<ProductBased>;
 
 type AddonVariant = Omit<

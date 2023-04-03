@@ -70,6 +70,7 @@ const ListProductMenuLayout = ({
 		if (isEdit) {
 			setIsEdit(!isEdit);
 		}
+		setSelectedData({});
 	};
 
 	/** ------------------------- */
@@ -103,28 +104,23 @@ const ListProductMenuLayout = ({
 			dataIndex: 'price',
 			render: data => FormatToRupiah(data),
 		},
-		{
-			title: 'Cooking Duration',
-			key: 'cooking_duration',
-			dataIndex: 'cooking_duration',
-		},
-		{
-			title: 'Action',
-			render: (dataValue, record, index) => (
-				<span className="flex gap-1">
-					<Button
-						variant="secondary"
-						onClick={() => {
-							handleOpenFormModal();
-							setIsEdit(true);
-							setSelectedData(dataValue);
-						}}
-					>
-						<AiFillEdit />
-					</Button>
-				</span>
-			),
-		},
+		// {
+		// 	title: 'Action',
+		// 	render: (dataValue, record, index) => (
+		// 		<span className="flex gap-1">
+		// 			<Button
+		// 				variant="secondary"
+		// 				onClick={() => {
+		// 					handleOpenFormModal();
+		// 					setIsEdit(true);
+		// 					setSelectedData(dataValue);
+		// 				}}
+		// 			>
+		// 				<AiFillEdit />
+		// 			</Button>
+		// 		</span>
+		// 	),
+		// },
 	];
 
 	return (
@@ -138,6 +134,7 @@ const ListProductMenuLayout = ({
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}
 				isEdit={isEdit}
+				selectedData={selectedData}
 			/>
 			<ModalConfirmation
 				isOpenModal={openModalConfirmation}

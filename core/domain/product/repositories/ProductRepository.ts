@@ -4,6 +4,7 @@ import {
 	Datalist,
 	ResultMutation,
 	ResultQuery,
+	UpdateParams,
 } from 'core/domain/vo/BaseResponse';
 
 import {Product, Products} from '../models';
@@ -41,10 +42,10 @@ export type CreateProductRepository = {
  * UPDATE
  */
 
-// export type UpdateOutletParams = UpdateParams<FormOutlet>;
+export type UpdateProductParams = UpdateParams<FormProduct>;
 
-// export type UpdateOutletResult = ResultMutation<Outlet>;
+export type UpdateProductResult = ResultMutation<Product>;
 
-// export type UpdateOutletRepository = {
-// 	updateOutlet(payload: UpdateOutletParams): void;
-// } & UpdateOutletResult;
+export type UpdateProductRepository = {
+	updateProduct(payload: UpdateProductParams): void;
+} & UpdateProductResult;

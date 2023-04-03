@@ -146,8 +146,6 @@ const MoleculesFormAdmin = ({
 		? {title: 'Edit User', button: 'Save'}
 		: {title: 'Create New User', button: 'Submit'};
 
-	console.log(errors);
-
 	return (
 		<ModalForm
 			handleCloseModal={handleCloseModal}

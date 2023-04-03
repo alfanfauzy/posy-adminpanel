@@ -1,4 +1,4 @@
-import Post from 'api/post';
+import Get from 'api/get';
 import {AxiosError} from 'axios';
 import {useQuery, UseQueryOptions} from 'react-query';
 
@@ -9,9 +9,8 @@ export const GetDetailProduct = async (
 	product_uuid: string,
 ): Promise<Response<GetDetailProductResponse>> => {
 	try {
-		const response = await Post({
+		const response = await Get({
 			endpoint: `/api/fnb-product-service/internal/product/get-detail/${product_uuid}`,
-			payload: {},
 		});
 
 		return response;

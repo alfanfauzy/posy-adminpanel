@@ -23,8 +23,6 @@ const Variant = ({addonIdx}: VariantTempProps) => {
 		name: `addons.${addonIdx}.variants`,
 	});
 
-	console.log(errors);
-
 	return (
 		<div className="mt-4">
 			<HRLine text="Addon Variant" />
