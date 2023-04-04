@@ -72,10 +72,12 @@ const MoleculesFormSubscription = ({
 		const {uuid} = selectedData;
 		const {subscription_name, description, period, price} = data;
 
+		console.log(data);
+
 		const newPayload = {
 			subscription_name,
 			description,
-			price: Number(price),
+			price: Number(price.split('.').join('')),
 			period: period.value,
 		};
 
@@ -84,7 +86,7 @@ const MoleculesFormSubscription = ({
 			payload: {
 				subscription_name,
 				description,
-				price: Number(price),
+				price: Number(price.split('.').join('')),
 				period: period.value,
 			},
 		};
