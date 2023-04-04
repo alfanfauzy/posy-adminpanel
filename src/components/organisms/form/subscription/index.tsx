@@ -72,8 +72,6 @@ const MoleculesFormSubscription = ({
 		const {uuid} = selectedData;
 		const {subscription_name, description, period, price} = data;
 
-		console.log(data);
-
 		const newPayload = {
 			subscription_name,
 			description,
