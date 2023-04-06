@@ -26,7 +26,7 @@ import {add} from 'date-fns';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import {Button, Input, Select, Textarea} from 'posy-fnb-core';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Controller, FormProvider, useFieldArray} from 'react-hook-form';
 import {AiFillDelete, AiOutlineCheckSquare} from 'react-icons/ai';
 import {toast} from 'react-toastify';
@@ -102,8 +102,9 @@ const OrganismFormProduct = ({
 	const {data: ListOutlet, isLoading: isLoadingOutlet} =
 		useGetOutletViewModal(hooksParamsOutlet);
 
-	const {data: DetailProduct, isLoading: isLoadingProductDetail} =
-		useGetDetailProductViewModal(selectedData.uuid, {
+	const {isLoading: isLoadingProductDetail} = useGetDetailProductViewModal(
+		selectedData.uuid,
+		{
 			enabled: isEdit,
 			onSuccess(data) {
 				if (data) {
@@ -137,7 +138,9 @@ const OrganismFormProduct = ({
 						'price_discount_percentage',
 						mapperProductDetail.price_discount_percentage.toString(),
 					);
+
 					if (mapperProductDetail?.addons) {
+						setValue('addons', []);
 						mapperProductDetail?.addons.forEach(addon => {
 							append({
 								addon_name: addon.addon_name,
@@ -157,7 +160,8 @@ const OrganismFormProduct = ({
 					}
 				}
 			},
-		});
+		},
+	);
 
 	const OptionsCategory = useMemo(() => {
 		if (!ListCategory) return [];
@@ -278,8 +282,6 @@ const OrganismFormProduct = ({
 	}, [getValues('price'), getValues('price_discount_percentage')]);
 
 	const titleText = isEdit ? 'Edit Product Menu' : 'Add New Product Menu';
-
-	console.log(DetailProduct);
 
 	return (
 		<ModalForm
