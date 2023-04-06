@@ -118,7 +118,7 @@ const AccessSettingLayout = ({type}: AccessSettingLayoutProps) => {
 	const handleSubmit = () => {
 		const {id: role_uuid} = selectedRole;
 
-		const access_uuids = tempAccess.map(access => access.uuid);
+		const access_uuids = tempAccess?.map(access => access.uuid);
 
 		const payload = {
 			role_uuid,

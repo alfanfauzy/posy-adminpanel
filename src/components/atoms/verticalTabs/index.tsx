@@ -24,7 +24,7 @@ const AccessForm = ({
 
 	const RenderItemAccessComponent = access.map(item => {
 		const isChecked =
-			tempAccess.findIndex(dataAcc => dataAcc.uuid === item.uuid) !== -1;
+			tempAccess?.findIndex(dataAcc => dataAcc.uuid === item.uuid) !== -1;
 
 		return (
 			<span className="flex gap-2 align-top" key={item.name}>
