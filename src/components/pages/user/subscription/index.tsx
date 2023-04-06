@@ -7,6 +7,7 @@ import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
 import {useGetUserSubscriptionViewModal} from '@/view/user-subscription/view-modals/GetUserSubscriptionViewModel';
 import type {ColumnsType} from 'antd/es/table';
+import moment from 'moment';
 import dynamic from 'next/dynamic';
 import React, {useEffect, useMemo, useState} from 'react';
 import {AiOutlinePlus} from 'react-icons/ai';
@@ -77,6 +78,16 @@ const UserSubscriptionLayout = ({
 			title: 'Subscription Status',
 			key: 'status',
 			dataIndex: 'status',
+			render: (value, record) => {
+				const currentDateTime = moment();
+				const endDate = moment(record.end_date);
+
+				if (endDate.isBefore(currentDateTime)) {
+					return <p className="text-m-medium text-green-success">Active</p>;
+				} else {
+					return <p className="text-m-medium text-red-caution">Inactive</p>;
+				}
+			},
 		},
 		{
 			title: 'Start Date',
