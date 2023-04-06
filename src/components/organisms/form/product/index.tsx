@@ -72,6 +72,7 @@ const OrganismFormProduct = ({
 		watch,
 		getValues,
 		reset,
+		trigger,
 	} = methodsForm;
 
 	const {fields, append, remove} = useFieldArray({
@@ -302,12 +303,20 @@ const OrganismFormProduct = ({
 										>
 											Change Photo
 											<input
-												onChange={e => onImageChange(e, 'product_image_url')}
+												onChange={e => {
+													onImageChange(e, 'product_image_url');
+													trigger('product_image_url');
+												}}
 												accept="image/png, image/jpeg,"
 												type="file"
 												className="absolute h-fit w-[192px] cursor-pointer opacity-0"
 											/>
 										</button>
+										{errors.product_image_url && (
+											<span className="mt-1 block text-m-regular text-red-caution">
+												Please choose image
+											</span>
+										)}
 									</div>
 
 									<div className="flex-1">
