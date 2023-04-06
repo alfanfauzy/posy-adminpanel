@@ -22,6 +22,7 @@ import {useGetOutletViewModal} from '@/view/outlet/view-models/GetOutletViewMode
 import {useCreateProductViewModal} from '@/view/product/view-models/CreateProductViewModel';
 import {useGetDetailProductViewModal} from '@/view/product/view-models/GetDetailProductViewModel';
 import {useUpdateProductViewModal} from '@/view/product/view-models/UpdateProductViewModel';
+import {add} from 'date-fns';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import {Button, Input, Select, Textarea} from 'posy-fnb-core';
@@ -101,33 +102,43 @@ const OrganismFormProduct = ({
 	const {data: ListOutlet, isLoading: isLoadingOutlet} =
 		useGetOutletViewModal(hooksParamsOutlet);
 
-	const {data: DetailProduct, isLoading: isLoadingProduct} =
+	const {data: DetailProduct, isLoading: isLoadingProductDetail} =
 		useGetDetailProductViewModal(selectedData.uuid, {
-			onSuccess: data => {
-				if (data.message === 'OK' && data.data) {
-					const mappedData = mapToDetailProductModel(data.data);
+			enabled: isEdit,
+			onSuccess(data) {
+				if (data) {
+					const mapperProductDetail = mapToDetailProductModel(data.data);
 					setValue('force_outlet_update', false);
-					setImageProduct(mappedData.product_image_url);
-					setValue('product_image_url', mappedData.product_image_url);
-					setValue('product_name', mappedData.name);
-					setValue('cooking_duration', mappedData.cooking_duration.toString());
-					setValue('product_description', mappedData.product_description);
-					setValue('price', mappedData.price.toString());
-					setValue('is_show', mappedData.is_show ?? false);
-					setValue('is_available', mappedData.is_available ?? false);
-					setValue('is_favourite', mappedData.is_favourite);
-					setValue('category_uuids', mappedData.categories);
-					setValue('restaurant_outlet_uuids', mappedData.restaurant_outlets);
+					setImageProduct(mapperProductDetail.product_image_url);
+					setValue('product_image_url', mapperProductDetail.product_image_url);
+					setValue('product_name', mapperProductDetail.name);
+					setValue(
+						'cooking_duration',
+						mapperProductDetail.cooking_duration.toString(),
+					);
+					setValue(
+						'product_description',
+						mapperProductDetail.product_description,
+					);
+					setValue('price', mapperProductDetail.price.toString());
+					setValue('is_show', mapperProductDetail.is_show ?? false);
+					setValue('is_available', mapperProductDetail.is_available ?? false);
+					setValue('is_favourite', mapperProductDetail.is_favourite);
+					setValue('category_uuids', mapperProductDetail.categories);
+					setValue(
+						'restaurant_outlet_uuids',
+						mapperProductDetail.restaurant_outlets,
+					);
 					setValue(
 						'price_after_discount',
-						mappedData.price_after_discount.toString(),
+						mapperProductDetail.price_after_discount.toString(),
 					);
 					setValue(
 						'price_discount_percentage',
-						mappedData.price_discount_percentage.toString(),
+						mapperProductDetail.price_discount_percentage.toString(),
 					);
-					if (mappedData?.addons) {
-						mappedData?.addons.forEach(addon => {
+					if (mapperProductDetail?.addons) {
+						mapperProductDetail?.addons.forEach(addon => {
 							append({
 								addon_name: addon.addon_name,
 								can_choose_multiple: addon.can_choose_multiple,
@@ -268,14 +279,17 @@ const OrganismFormProduct = ({
 
 	const titleText = isEdit ? 'Edit Product Menu' : 'Add New Product Menu';
 
+	console.log(DetailProduct);
+
 	return (
 		<ModalForm
+			isLoading={isLoadingProductDetail}
 			isOpenModal={isOpenModal}
 			handleCloseModal={handleCloseModal}
 			title={titleText}
 		>
 			<section className="w-[750px] p-4">
-				{isEdit && isLoadingProduct ? (
+				{isEdit && isLoadingProductDetail ? (
 					<Loading size={10} />
 				) : (
 					<FormProvider {...methodsForm}>
@@ -601,9 +615,9 @@ const OrganismFormProduct = ({
 
 								<aside className="mt-6 flex items-center justify-center ">
 									<button
+										type="button"
 										role="presentation"
 										onClick={() => {
-											console.log('call here');
 											append(
 												{
 													addon_name: '',

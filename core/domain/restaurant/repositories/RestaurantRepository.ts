@@ -18,9 +18,7 @@ export type GetFilterRestaurantInput = FilterInputVariables<
 	keyof Pick<Restaurant, 'email' | 'uuid'>
 >;
 
-export type GetRestaurantsResult = ResultQuery<
-	Datalist<Restaurants> | undefined
-> & {
+export type GetRestaurantsResult = ResultQuery<Restaurants | undefined> & {
 	pagination: Pagination | undefined;
 };
 

@@ -3,9 +3,8 @@
  */
 import HRLine from '@/atoms/horizontalLine';
 import {TimetoUnix} from '@/constants/utils';
-import {GetAccessListDataResponse} from '@/data/access/types';
-import {GetSubscriptionListDataResponse} from '@/data/subscription/types';
 import {FormBodyPayload, Restaurant} from '@/domain/restaurant/models';
+import {Subscription} from '@/domain/subscription/models';
 import {GetSubscriptionFilterInput} from '@/domain/subscription/repositories/SubscriptionRepository';
 import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
@@ -74,9 +73,9 @@ const MoleculesFormRestaurant = ({
 		if (!ListSubscription) return [];
 
 		return Object.values(ListSubscription).map(
-			(role: GetAccessListDataResponse) => ({
-				label: role.name,
-				value: role.uuid,
+			(subscription: Subscription) => ({
+				label: subscription.name,
+				value: subscription.uuid,
 			}),
 		);
 	}, [ListSubscription]);

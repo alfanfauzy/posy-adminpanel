@@ -21,7 +21,7 @@ export type GetUserSubscriptionFilterInput = FilterInputVariables<
 >;
 
 export type GetUserSubscriptionsResult = ResultQuery<
-	Datalist<UserSubscriptions> | undefined
+	UserSubscriptions | undefined
 > & {
 	pagination: Pagination | undefined;
 };

@@ -17,7 +17,7 @@ export type GetAccessFilterInput = FilterInputVariables<
 	keyof Pick<Access, 'name' | 'is_internal'>
 >;
 
-export type GetAccesssResult = ResultQuery<Datalist<Accesss> | undefined> & {
+export type GetAccesssResult = ResultQuery<Accesss | undefined> & {
 	pagination: Pagination | undefined;
 };
 

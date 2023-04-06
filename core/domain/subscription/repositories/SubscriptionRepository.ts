@@ -20,9 +20,7 @@ export type GetSubscriptionFilterInput = FilterInputVariables<
 	keyof Pick<Subscription, 'name'>
 >;
 
-export type GetSubscriptionsResult = ResultQuery<
-	Datalist<Subscriptions> | undefined
-> & {
+export type GetSubscriptionsResult = ResultQuery<Subscriptions | undefined> & {
 	pagination: Pagination | undefined;
 };
 

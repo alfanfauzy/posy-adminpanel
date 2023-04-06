@@ -6,6 +6,7 @@ type ModalFormProps = {
 	handleCloseModal: () => void;
 	children: React.ReactNode;
 	title?: string;
+	isLoading?: boolean;
 };
 
 const ModalForm = ({
@@ -13,8 +14,10 @@ const ModalForm = ({
 	handleCloseModal,
 	children,
 	title,
+	isLoading,
 }: ModalFormProps) => (
 	<Modal
+		isLoading={isLoading}
 		open={isOpenModal}
 		handleClose={handleCloseModal}
 		showCloseButton

@@ -20,7 +20,7 @@ export type GetRolesInput = FilterInputVariables<
 	keyof Pick<Role, 'name' | 'is_internal'>
 >;
 
-export type GetRolesResult = ResultQuery<Datalist<Roles> | undefined> & {
+export type GetRolesResult = ResultQuery<Roles | undefined> & {
 	pagination: Pagination | undefined;
 };
 

@@ -18,7 +18,7 @@ export type GetUserRestaurantFilterInput = FilterInputVariables<
 >;
 
 export type GetUserRestaurantsResult = ResultQuery<
-	Datalist<UserRestaurants> | undefined
+	UserRestaurants | undefined
 > & {
 	pagination: Pagination | undefined;
 };

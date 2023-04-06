@@ -19,12 +19,12 @@ export type GetFilterProductInput = FilterInputVariables<
 	keyof Pick<Product, 'uuid' | 'restaurant_uuid'>
 > & {restaurant_uuid: string};
 
-export type GetProductsResult = ResultQuery<Datalist<Products> | undefined> & {
+export type GetProductsResult = ResultQuery<Products | undefined> & {
 	pagination: Pagination | undefined;
 };
 
 export type GetFilterDetailProduct = string;
-export type GetProductResult = ResultQuery<Product>;
+export type GetProductResult = ResultQuery<Product | undefined>;
 
 /**
  * CREATE

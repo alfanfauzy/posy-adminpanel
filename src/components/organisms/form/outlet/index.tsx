@@ -345,18 +345,21 @@ const MoleculesFormManageOutlet = ({
 							/>
 						</div>
 
-						<div className="mb-6 w-1/3">
-							<Input
-								{...register('qty_table', {
-									setValueAs: v => v.replace(/\D/, ''),
-								})}
-								labelText="Total Table:"
-								type="text"
-								placeholder="ex: 20"
-								error={!!errors?.qty_table}
-								helperText={errors?.qty_table?.message}
-							/>
-						</div>
+						{!isEdit && (
+							<div className="mb-6 w-1/3">
+								<Input
+									{...register('qty_table', {
+										setValueAs: v => v.replace(/\D/, ''),
+									})}
+									disabled={isEdit}
+									labelText="Total Table:"
+									type="text"
+									placeholder="ex: 20"
+									error={!!errors?.qty_table}
+									helperText={errors?.qty_table?.message}
+								/>
+							</div>
+						)}
 					</div>
 
 					<div className="flex justify-between gap-2">

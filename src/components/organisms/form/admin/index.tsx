@@ -3,6 +3,7 @@
  */
 import IconEye from '@/atoms/icon/IconEye';
 import {Admin} from '@/domain/admin/models';
+import {Role, Roles} from '@/domain/role/models';
 import {GetRolesInput} from '@/domain/role/repositories/RoleRepository';
 import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
@@ -11,7 +12,6 @@ import {AdminFormSchema, EditAdminFormSchema} from '@/schemas/admin';
 import {useCreateAdminViewModal} from '@/view/admin/view-models/CreateAdminViewModel';
 import {useUpdateAdminViewModal} from '@/view/admin/view-models/UpdateAdminViewModel';
 import {useGetRolesViewModal} from '@/view/role/view-modals/GetRolesViewModel';
-import {GetRoleListDataResponse} from 'core/data/role/types/index';
 import dynamic from 'next/dynamic';
 import {Button, Input, Select} from 'posy-fnb-core';
 import React, {useEffect, useMemo} from 'react';
@@ -68,7 +68,7 @@ const MoleculesFormAdmin = ({
 	const RoleSelect = useMemo(() => {
 		if (!RolesList) return [];
 
-		return Object.values(RolesList).map((role: GetRoleListDataResponse) => ({
+		return Object.values(RolesList).map((role: Role) => ({
 			label: role.name,
 			value: role.uuid,
 		}));
@@ -128,9 +128,9 @@ const MoleculesFormAdmin = ({
 				setValue('email', email || '');
 				setValue('fullname', fullname || '');
 
-				const getRole: Array<GetRoleListDataResponse> = Object.values(RolesList)
+				const getRole: Roles = Object.values(RolesList)
 					.map(datafilter => datafilter)
-					.filter((data: GetRoleListDataResponse) => data.uuid === roleid);
+					.filter((data: Role) => data.uuid === roleid);
 
 				setValue('role_uuid', {
 					label: getRole?.[0].name,

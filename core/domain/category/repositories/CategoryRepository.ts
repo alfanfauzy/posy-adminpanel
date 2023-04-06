@@ -7,7 +7,7 @@ import {
 	UpdateParams,
 } from 'core/domain/vo/BaseResponse';
 
-import {Category, FormCategory} from '../models/index';
+import {Category, Categorys, FormCategory} from '../models/index';
 
 /**
  * GET
@@ -18,7 +18,7 @@ export type GetFilterCategoryInput = FilterInputVariables<
 	keyof Pick<Category, 'restaurant_uuid' | 'uuid' | 'is_active'>
 > & {restaurant_uuid: string};
 
-export type GetCategorysResult = ResultQuery<Datalist<Category> | undefined> & {
+export type GetCategorysResult = ResultQuery<Categorys | undefined> & {
 	pagination: Pagination | undefined;
 };
 

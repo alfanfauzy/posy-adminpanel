@@ -1,6 +1,6 @@
 import {FilterInputVariables, ParamsPayload} from '@/domain/vo/BaseInput';
 import {FormEditAdminEntities} from '@/organisms/form/admin/entities';
-import {Admin, FormAdmin} from 'core/domain/admin/models';
+import {Admin, Admins, FormAdmin} from 'core/domain/admin/models';
 import {Pagination} from 'core/domain/vo/BasePagination';
 import {
 	Datalist,
@@ -18,7 +18,7 @@ export type GetFilterAdminInput = FilterInputVariables<
 	keyof Pick<Admin, 'email' | 'is_admin'>
 >;
 
-export type GetAdminsResult = ResultQuery<Datalist<Admin> | undefined> & {
+export type GetAdminsResult = ResultQuery<Admins | undefined> & {
 	pagination: Pagination | undefined;
 };
 

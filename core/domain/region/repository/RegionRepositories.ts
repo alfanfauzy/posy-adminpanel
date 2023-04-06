@@ -22,7 +22,7 @@ export type GetFilterProvinceInput = FilterInputVariables<
 	keyof Pick<RegionBased, 'id'>
 >;
 
-export type GetProvinceResult = ResultQuery<Datalist<Provinces> | undefined> & {
+export type GetProvinceResult = ResultQuery<Provinces | undefined> & {
 	pagination: Pagination | undefined;
 };
 
@@ -35,7 +35,7 @@ export type GetFilterCityInput = FilterInputVariables<
 	keyof Pick<City, 'province_id'>
 >;
 
-export type GetCityResult = ResultQuery<Datalist<Cityes> | undefined> & {
+export type GetCityResult = ResultQuery<Cityes | undefined> & {
 	pagination: Pagination | undefined;
 };
 
@@ -48,7 +48,7 @@ export type GetFilterDistrictInput = FilterInputVariables<
 	keyof Pick<District, 'city_id'>
 >;
 
-export type GetDistrictResult = ResultQuery<Datalist<Districts> | undefined> & {
+export type GetDistrictResult = ResultQuery<Districts | undefined> & {
 	pagination: Pagination | undefined;
 };
 
@@ -61,8 +61,6 @@ export type GetFilterSubDistrictInput = FilterInputVariables<
 	keyof Pick<SubDistrict, 'district_id'>
 >;
 
-export type GetSubDistrictResult = ResultQuery<
-	Datalist<SubDistricts> | undefined
-> & {
+export type GetSubDistrictResult = ResultQuery<SubDistricts | undefined> & {
 	pagination: Pagination | undefined;
 };
