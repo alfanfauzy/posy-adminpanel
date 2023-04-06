@@ -16,5 +16,5 @@ export type FormManageOutletEntities = {
 	address: string;
 	phone: string;
 	email: string;
-	table: string;
+	qty_table: string;
 };

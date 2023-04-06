@@ -104,23 +104,23 @@ const ListProductMenuLayout = ({
 			dataIndex: 'price',
 			render: data => FormatToRupiah(data),
 		},
-		// {
-		// 	title: 'Action',
-		// 	render: (dataValue, record, index) => (
-		// 		<span className="flex gap-1">
-		// 			<Button
-		// 				variant="secondary"
-		// 				onClick={() => {
-		// 					handleOpenFormModal();
-		// 					setIsEdit(true);
-		// 					setSelectedData(dataValue);
-		// 				}}
-		// 			>
-		// 				<AiFillEdit />
-		// 			</Button>
-		// 		</span>
-		// 	),
-		// },
+		{
+			title: 'Action',
+			render: (dataValue, record, index) => (
+				<span className="flex gap-1">
+					<Button
+						variant="secondary"
+						onClick={() => {
+							handleOpenFormModal();
+							setIsEdit(true);
+							setSelectedData(dataValue);
+						}}
+					>
+						<AiFillEdit />
+					</Button>
+				</span>
+			),
+		},
 	];
 
 	return (

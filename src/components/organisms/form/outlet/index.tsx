@@ -215,6 +215,7 @@ const MoleculesFormManageOutlet = ({
 			longitude: data?.longitude,
 			phone: data?.phone,
 			email: data?.email,
+			qty_table: Number(data.qty_table),
 		};
 
 		if (isEdit) {
@@ -248,6 +249,7 @@ const MoleculesFormManageOutlet = ({
 				district_name,
 				subdistrict_id,
 				subdistrict_name,
+				qty_table,
 			} = selectedData;
 
 			setValue('restaurant_uuid', {
@@ -290,6 +292,7 @@ const MoleculesFormManageOutlet = ({
 			setValue('latitude', latitude);
 			setValue('longitude', longitude);
 			setValue('email', email);
+			setValue('qty_table', qty_table);
 		}
 	}, [selectedData, isEdit, setValue]);
 
@@ -344,14 +347,14 @@ const MoleculesFormManageOutlet = ({
 
 						<div className="mb-6 w-1/3">
 							<Input
-								{...register('table', {
+								{...register('qty_table', {
 									setValueAs: v => v.replace(/\D/, ''),
 								})}
 								labelText="Total Table:"
 								type="text"
 								placeholder="ex: 20"
-								error={!!errors?.table}
-								helperText={errors?.table?.message}
+								error={!!errors?.qty_table}
+								helperText={errors?.qty_table?.message}
 							/>
 						</div>
 					</div>

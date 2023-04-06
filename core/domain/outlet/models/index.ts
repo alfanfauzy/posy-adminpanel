@@ -9,7 +9,7 @@ export type OutletBased = {
 	latitude: string;
 	longitude: string;
 	email: string;
-	table: string;
+	qty_table: string;
 	provincy_id: string;
 	provincy_name: string;
 	city_id: string;
@@ -34,4 +34,5 @@ export type FormOutlet = {
 	longitude: string;
 	phone: string;
 	email: string;
+	qty_table: number;
 };

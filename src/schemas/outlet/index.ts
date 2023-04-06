@@ -12,6 +12,6 @@ export const ManageOutletFormSchema = z.object({
 	phone: z.string().min(10),
 	latitude: z.string().min(5),
 	longitude: z.string().min(5),
-	table: z.string(),
+	qty_table: z.string(),
 	email: z.string().email('Please Input valid email'),
 });

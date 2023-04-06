@@ -268,8 +268,6 @@ const OrganismFormProduct = ({
 
 	const titleText = isEdit ? 'Edit Product Menu' : 'Add New Product Menu';
 
-	console.log(errors);
-
 	return (
 		<ModalForm
 			isOpenModal={isOpenModal}
@@ -602,28 +600,32 @@ const OrganismFormProduct = ({
 								))}
 
 								<aside className="mt-6 flex items-center justify-center ">
-									<p
+									<button
 										role="presentation"
-										onClick={() =>
-											append({
-												addon_name: '',
-												addon_priority: '',
-												can_choose_multiple: false,
-												is_optional: false,
-												max_variant: '',
-												variants: [
-													{
-														variant_name: '',
-														variant_price: '',
-														variant_priority: 0,
-													},
-												],
-											})
-										}
+										onClick={() => {
+											console.log('call here');
+											append(
+												{
+													addon_name: '',
+													addon_priority: '',
+													can_choose_multiple: false,
+													is_optional: false,
+													max_variant: '',
+													variants: [
+														{
+															variant_name: '',
+															variant_price: '',
+															variant_priority: 0,
+														},
+													],
+												},
+												{shouldFocus: false},
+											);
+										}}
 										className="cursor-pointer border p-2 text-l-semibold text-secondary-main hover:opacity-70"
 									>
 										+ Add addon
-									</p>
+									</button>
 								</aside>
 							</div>
 

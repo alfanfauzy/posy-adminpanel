@@ -1,7 +1,6 @@
 import {Metadata} from '@/domain/vo/BaseMetadata';
 
-export type GetOutletListDataResponse = {
-	restaurant_code: string;
+export type Region = {
 	province_id: string;
 	province_name: string;
 	city_id: string;
@@ -10,6 +9,12 @@ export type GetOutletListDataResponse = {
 	district_name: string;
 	subdistrict_id: string;
 	subdistrict_name: string;
+	postal_code: string;
+};
+
+export type GetOutletListDataResponse = {
+	restaurant_code: string;
+	region: Region;
 	latitude: string;
 	longitude: string;
 	email: string;
@@ -22,7 +27,7 @@ export type GetOutletListDataResponse = {
 	city: string;
 	phone: string;
 	restaurant_name: string;
-	table: string;
+	qty_table: string;
 	metadata: Metadata;
 };
 
