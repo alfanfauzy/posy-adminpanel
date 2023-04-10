@@ -49,3 +49,15 @@ export type UpdateProductResult = ResultMutation<Product>;
 export type UpdateProductRepository = {
 	updateProduct(payload: UpdateProductParams): void;
 } & UpdateProductResult;
+
+/**
+ * DELETE
+ */
+
+export type DeleteProductInput = string;
+
+export type DeleteProductResult = ResultMutation<Product>;
+
+export type DeleteProductRepository = {
+	deleteProduct(payload: DeleteProductInput): void;
+} & DeleteProductResult;

@@ -2,15 +2,15 @@ import AtomTable from '@/atoms/table';
 import {FormatToRupiah} from '@/constants/utils';
 import {Product} from '@/domain/product/models';
 import {GetFilterProductInput} from '@/domain/product/repositories/ProductRepository';
-import {queryClient} from '@/hooks/react-query';
 import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
+import {useDeleteProductViewModal} from '@/view/product/view-models/DeleteProductViewModel';
 import {useGetProductViewModal} from '@/view/product/view-models/GetProductViewModel';
 import type {ColumnsType} from 'antd/es/table';
 import dynamic from 'next/dynamic';
 import {Button} from 'posy-fnb-core';
 import React, {useMemo, useState} from 'react';
-import {AiFillEdit, AiOutlinePlus} from 'react-icons/ai';
+import {AiFillDelete, AiFillEdit, AiOutlinePlus} from 'react-icons/ai';
 import {toast} from 'react-toastify';
 
 const ModalFormProduct = dynamic(() => import('@/organisms/form/product'));
@@ -43,6 +43,7 @@ const ListProductMenuLayout = ({
 		data: ListProduct,
 		isLoading,
 		pagination,
+		refetch,
 	} = useGetProductViewModal(hooksParams);
 
 	const [selectedData, setSelectedData] = useState<
@@ -56,12 +57,27 @@ const ListProductMenuLayout = ({
 
 	/** Modal Confirmation Action */
 
+	const handleShowConfirmationModal = (data: Product) => {
+		handleOpenModalConfirmation();
+		setSelectedData(data);
+	};
+
 	const handleCloseModalConfirmation = () => {
+		refetch();
 		handleOpenModalConfirmation();
 		setSelectedData({});
 	};
 
 	/** ------------------------- */
+
+	const {deleteProduct, isLoading: isLoadingRemove} = useDeleteProductViewModal(
+		{
+			onSuccess() {
+				handleCloseModalConfirmation();
+				toast.success('Sucessfully delete Product');
+			},
+		},
+	);
 
 	/** Modal Add/Edit Action */
 
@@ -77,12 +93,8 @@ const ListProductMenuLayout = ({
 
 	const handleDeleteAdmin = () => {
 		const {uuid} = selectedData;
-		/**
-		 * Todo Remove
-		 */
 
-		handleCloseModalConfirmation();
-		toast.success(`Sucessfully remove data ${uuid}`);
+		deleteProduct(uuid);
 	};
 
 	const columns: ColumnsType<Product> = [
@@ -118,6 +130,12 @@ const ListProductMenuLayout = ({
 					>
 						<AiFillEdit />
 					</Button>
+					<Button
+						variant="red-accent"
+						onClick={() => handleShowConfirmationModal(dataValue)}
+					>
+						<AiFillDelete />
+					</Button>
 				</span>
 			),
 		},
@@ -137,6 +155,7 @@ const ListProductMenuLayout = ({
 				selectedData={selectedData}
 			/>
 			<ModalConfirmation
+				isLoadingRemove={isLoadingRemove}
 				isOpenModal={openModalConfirmation}
 				title="Modal Confirmation"
 				text="Are you sure want to remove ?"

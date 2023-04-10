@@ -22,7 +22,6 @@ import {useGetOutletViewModal} from '@/view/outlet/view-models/GetOutletViewMode
 import {useCreateProductViewModal} from '@/view/product/view-models/CreateProductViewModel';
 import {useGetDetailProductViewModal} from '@/view/product/view-models/GetDetailProductViewModel';
 import {useUpdateProductViewModal} from '@/view/product/view-models/UpdateProductViewModel';
-import {add} from 'date-fns';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import {Button, Input, Select, Textarea} from 'posy-fnb-core';
@@ -74,6 +73,7 @@ const OrganismFormProduct = ({
 		getValues,
 		reset,
 		trigger,
+		clearErrors,
 	} = methodsForm;
 
 	const {fields, append, remove} = useFieldArray({
@@ -209,7 +209,7 @@ const OrganismFormProduct = ({
 	const onSubmit = (data: FormManageProduct) => {
 		delete data.discount;
 
-		const newAddon = data.addons.map(addon => ({
+		const newAddon = data.addons?.map(addon => ({
 			...addon,
 			max_variant: Number(addon.max_variant),
 			addon_priority: Number(addon.addon_priority),
@@ -383,7 +383,13 @@ const OrganismFormProduct = ({
 														isMulti
 														onChange={e => {
 															setValue('category_uuids', e);
+															clearErrors('category_uuids');
 														}}
+														error={!!errors?.category_uuids}
+														helperText={
+															errors?.category_uuids &&
+															'This field cannot be empty'
+														}
 													/>
 												)}
 											/>
@@ -534,25 +540,6 @@ const OrganismFormProduct = ({
 										<aside className="mt-6 grid grid-cols-4 gap-6">
 											<div>
 												<Input
-													labelText="Max Variant"
-													placeholder="ex: 1, 2, etc"
-													{...methodsForm.register(
-														`addons.${addonIdx}.max_variant`,
-													)}
-													error={
-														methodsForm.formState.errors?.addons &&
-														!!methodsForm.formState.errors?.addons[addonIdx]
-															?.max_variant
-													}
-													helperText={
-														methodsForm.formState.errors?.addons &&
-														methodsForm.formState.errors?.addons[addonIdx]
-															?.max_variant?.message
-													}
-												/>
-											</div>
-											<div>
-												<Input
 													labelText="Addon Priority"
 													placeholder="ex: 1, 2, etc"
 													{...methodsForm.register(
@@ -609,6 +596,27 @@ const OrganismFormProduct = ({
 													)}
 												/>
 											</div>
+											{watch(`addons.${addonIdx}.can_choose_multiple`) && (
+												<div>
+													<Input
+														labelText="Max Variant"
+														placeholder="ex: 1, 2, etc"
+														{...methodsForm.register(
+															`addons.${addonIdx}.max_variant`,
+														)}
+														error={
+															methodsForm.formState.errors?.addons &&
+															!!methodsForm.formState.errors?.addons[addonIdx]
+																?.max_variant
+														}
+														helperText={
+															methodsForm.formState.errors?.addons &&
+															methodsForm.formState.errors?.addons[addonIdx]
+																?.max_variant?.message
+														}
+													/>
+												</div>
+											)}
 										</aside>
 
 										<Variant addonIdx={addonIdx} />

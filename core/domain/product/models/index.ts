@@ -33,23 +33,23 @@ type AddonVariant = Omit<
 > & {variant_price: number};
 
 type Addon = Omit<FormAddon, 'restaurant_uuid' | 'product_uuid'> & {
-	max_variant: number;
-	addon_priority: number;
+	max_variant?: number | undefined;
+	addon_priority: number | undefined;
 	variants: Array<AddonVariant>;
 };
 
 export type FormProduct = {
 	restaurant_uuid: string;
 	product_name: string;
-	product_description: string;
-	product_image_url: string;
+	product_description?: string | undefined;
+	product_image_url?: string | undefined;
 	is_favourite: boolean;
 	is_show: boolean;
 	is_available: boolean;
 	price: number;
 	price_after_discount: number;
-	cooking_duration: number;
+	cooking_duration?: number | undefined;
 	restaurant_outlet_uuids: Array<string>;
 	category_uuids: Array<string>;
-	addons: Array<Addon>;
+	addons?: Array<Addon> | undefined;
 };

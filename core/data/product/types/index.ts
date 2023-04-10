@@ -83,3 +83,4 @@ export type CreateProductResponse = {
 };
 
 export type UpdateProductResponse = CreateProductResponse;
+export type DeleteProductResponse = CreateProductResponse;
