@@ -78,14 +78,18 @@ const MoleculesFormUserRestaurant = ({
 		};
 	}, [restaurant_uuid]);
 
-	const {data: ListDataRole, isLoading: isLoadingRole} =
-		useGetRolesViewModal(hooksRoleParams);
+	const {data: ListDataRole, isLoading: isLoadingRole} = useGetRolesViewModal(
+		hooksRoleParams,
+		{enabled: isOpenModal},
+	);
 
 	const {data: ListDataRestaurant, isLoading: isLoadingRestaurant} =
-		useGetRestaurantViewModal(hooksRoleRestaurant);
+		useGetRestaurantViewModal(hooksRoleRestaurant, {enabled: isOpenModal});
 
 	const {data: ListDataOutlet, isLoading: isLoadingOutlet} =
-		useGetOutletViewModal(hooksOutletRestaurant);
+		useGetOutletViewModal(hooksOutletRestaurant, {
+			enabled: !!restaurant_uuid && !!restaurant_uuid.value,
+		});
 
 	const RoleSelect = useMemo(() => {
 		if (!ListDataRole) return [];
@@ -124,6 +128,8 @@ const MoleculesFormUserRestaurant = ({
 		reset,
 		setValue,
 		formState: {errors},
+		watch,
+		clearErrors,
 	} = useForm({
 		schema: UserRestauranFormSchema,
 		mode: 'onChange',
@@ -179,11 +185,6 @@ const MoleculesFormUserRestaurant = ({
 	};
 
 	useEffect(() => {
-		setValue('role_uuid', {
-			label: 'role_eksternal',
-			value: 'ae1b523a-4e11-4dbe-9b23-d533fcaeed6b',
-		});
-
 		if (isEdit) {
 			const {name, email, phone, outlet} = selectedData;
 
@@ -208,6 +209,9 @@ const MoleculesFormUserRestaurant = ({
 	}, [selectedData, isEdit, setValue]);
 
 	const titleText = isEdit ? 'Edit User' : 'Add New User';
+
+	console.log(watch());
+	console.log(errors);
 
 	return (
 		<ModalForm
@@ -260,6 +264,7 @@ const MoleculesFormUserRestaurant = ({
 									name="role_uuid"
 									onChange={e => {
 										setValue('role_uuid', e);
+										clearErrors('role_uuid');
 									}}
 									isLoading={isLoadingRole}
 									options={RoleSelect}
@@ -267,7 +272,7 @@ const MoleculesFormUserRestaurant = ({
 									placeholder="ex: Select Role"
 									className="flex items-center justify-center"
 									error={!!errors.role_uuid}
-									helperText={errors?.role_uuid?.message}
+									helperText={errors?.role_uuid && 'This field cannot be empty'}
 								/>
 							</div>
 
@@ -277,6 +282,7 @@ const MoleculesFormUserRestaurant = ({
 									onChange={e => {
 										setValue('restaurant_uuid', e);
 										setRestaurant_uuid(e);
+										clearErrors('restaurant_uuid');
 										refSelectOutlet.current.clearValue();
 									}}
 									options={RestaurantSelect}
@@ -285,7 +291,9 @@ const MoleculesFormUserRestaurant = ({
 									placeholder="ex: Select Restaurant"
 									className="flex items-center justify-center"
 									error={!!errors.restaurant_uuid}
-									helperText={errors?.restaurant_uuid?.message}
+									helperText={
+										errors?.restaurant_uuid && 'This field cannot be empty'
+									}
 								/>
 							</div>
 
@@ -293,14 +301,19 @@ const MoleculesFormUserRestaurant = ({
 								<Select
 									ref={refSelectOutlet}
 									name="outlet_uuid"
-									onChange={e => setValue('outlet_uuid', e)}
+									onChange={e => {
+										setValue('outlet_uuid', e);
+										clearErrors('outlet_uuid');
+									}}
 									isLoading={isLoadingOutlet}
 									options={OutletSelect}
 									labelText="Outlet:"
 									placeholder="ex: Select Outlet"
 									className="flex items-center justify-center"
 									error={!!errors.outlet_uuid}
-									helperText={errors?.outlet_uuid?.message}
+									helperText={
+										errors?.outlet_uuid && 'This field cannot be empty'
+									}
 								/>
 							</div>
 						</div>

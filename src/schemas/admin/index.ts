@@ -11,16 +11,14 @@ export const AdminFormSchema = z
 			.string()
 			.regex(
 				/^(?=.*[A-Z])(?=.*[a-z]).{8,}$/,
-				'Password must contain at least one uppercase letter and one lowercase letter',
-			)
-			.min(8, 'Must be at least 8 characters in length'),
+				'Password must be at least 8 Characters, 1 Uppercase and 1 Lowercase',
+			),
 		confirmPassword: z
 			.string()
 			.regex(
 				/^(?=.*[A-Z])(?=.*[a-z]).{8,}$/,
-				'Password must contain at least one uppercase letter and one lowercase letter',
-			)
-			.min(8, 'Must be at least 8 characters in length'),
+				'Password must be at least 8 Characters, 1 Uppercase and 1 Lowercase',
+			),
 	})
 	.refine(data => data.password === data.confirmPassword, {
 		message: 'Passwords do not match',

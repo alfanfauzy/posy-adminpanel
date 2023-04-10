@@ -123,8 +123,6 @@ const MoleculesFormAdmin = ({
 		}
 	};
 
-	console.log(errors);
-
 	useEffect(() => {
 		if (isEdit) {
 			if (RolesList) {

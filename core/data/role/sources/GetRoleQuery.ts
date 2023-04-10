@@ -23,7 +23,7 @@ export const GetRole = async (
 };
 
 export const useGetRolesQuery = (
-	input: any,
+	input: GetRolesInput,
 	options?: UseQueryOptions<Response<Datalist<GetRoleListDataResponse>>>,
 ) =>
 	useQuery<Response<Datalist<GetRoleListDataResponse>>>(
