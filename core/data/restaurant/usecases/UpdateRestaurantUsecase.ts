@@ -1,7 +1,7 @@
 import {UpdateRestaurantParams} from '@/domain/restaurant/repositories/RestaurantRepository';
 import {MutationOptions} from 'core/domain/vo/BaseMutation';
 
-import {useUpdateRestaurantMutation} from '../sources/UpdateRestaurantQuery';
+import {useUpdateRestaurantMutation} from '../sources/UpdateRestaurantMutation';
 import {UpdateRestaurantResponse} from '../types';
 
 export const useUpdateRestaurantUsecase = (

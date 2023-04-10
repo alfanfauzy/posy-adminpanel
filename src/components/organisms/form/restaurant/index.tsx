@@ -54,6 +54,7 @@ const MoleculesFormRestaurant = ({
 		setValue,
 		formState: {errors},
 		watch,
+		clearErrors,
 	} = useForm({
 		schema: FormSchema,
 		mode: 'onChange',
@@ -89,23 +90,22 @@ const MoleculesFormRestaurant = ({
 		queryClient.invalidateQueries('restaurant/list');
 	};
 
-	const {uploadImagePublic, isLoading: isLoadingUploadImagePublic} =
-		useUploadImagePublicViewModal({
-			onSuccess(data) {
-				const getPrefix = data.data.image_filename.split('_')[0];
+	const {uploadImagePublic} = useUploadImagePublicViewModal({
+		onSuccess(data) {
+			const getPrefix = data.data.image_filename.split('_')[0];
 
-				switch (getPrefix) {
-					case 'npwp':
-						setValue('npwp_url', data.data.url);
-						break;
-					case 'nib':
-						setValue('nib_url', data.data.url);
-						break;
-					default:
-						setValue('restaurant_logo_url', data.data.url);
-				}
-			},
-		});
+			switch (getPrefix) {
+				case 'npwp':
+					setValue('npwp_url', data.data.url);
+					break;
+				case 'nib':
+					setValue('nib_url', data.data.url);
+					break;
+				default:
+					setValue('restaurant_logo_url', data.data.url);
+			}
+		},
+	});
 
 	const onImageChange = (
 		event: any,
@@ -332,7 +332,7 @@ const MoleculesFormRestaurant = ({
 									className="w-52"
 									labelText="Restaurant description:"
 									type="text"
-									placeholder="ex: Jl. Raya No. 1"
+									placeholder="ex: Description"
 									error={!!errors?.restaurant_description}
 									helperText={errors?.restaurant_description?.message}
 								/>
@@ -437,13 +437,18 @@ const MoleculesFormRestaurant = ({
 								<div className="mb-6 w-1/2">
 									<Select
 										name="subscription_uuid"
-										onChange={e => setValue('subscription_uuid', e)}
+										onChange={e => {
+											setValue('subscription_uuid', e);
+											clearErrors('subscription_uuid');
+										}}
 										options={SubscriptionSelect}
 										labelText="Subscription"
 										placeholder="Select Subscription Plan"
 										className="flex items-center justify-center"
 										error={!!errors.subscription_uuid}
-										helperText={errors?.subscription_uuid?.message}
+										helperText={
+											errors?.subscription_uuid && 'This field cannot be empty'
+										}
 										isLoading={isLoadingSubscription}
 									/>
 								</div>

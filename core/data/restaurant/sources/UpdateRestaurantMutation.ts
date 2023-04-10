@@ -34,7 +34,8 @@ export const useUpdateRestaurantMutation = (
 		mutationFn: (payload: UpdateRestaurantParams) =>
 			UpdateRestaurantService(payload),
 		onError(error: ErrorType) {
-			toast.error(error.message);
+			const textMessage = `${error.more_info} : ${error.message}`;
+			toast.error(textMessage);
 		},
 		...options,
 	});

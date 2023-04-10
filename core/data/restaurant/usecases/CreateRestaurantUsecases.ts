@@ -1,7 +1,7 @@
 import {FormBodyPayload} from '@/domain/restaurant/models';
 import {MutationOptions} from 'core/domain/vo/BaseMutation';
 
-import {useCreateRestaurantMutation} from '../sources/CreateRestaurantQuery';
+import {useCreateRestaurantMutation} from '../sources/CreateRestaurantMutation';
 import {CreateRestaurantResponse} from '../types';
 
 export const useCreateRestaurantUsecase = (

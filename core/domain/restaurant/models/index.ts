@@ -22,13 +22,13 @@ export type Restaurants = Array<RestaurantBased>;
 export type FormBodyPayload = {
 	restaurant_name: string;
 	restaurant_description: string;
-	restaurant_logo_url: string;
-	restaurant_code: string;
+	restaurant_logo_url?: string | undefined;
+	restaurant_code?: string | undefined;
 	restaurant_phone: string;
 	restaurant_email: string;
 	restaurant_address: string;
-	nib_url: string;
-	npwp_url: string;
+	nib_url?: string | undefined;
+	npwp_url?: string | undefined;
 	owner_name: string;
 	owner_phone: string;
 	subscription_uuid: string;

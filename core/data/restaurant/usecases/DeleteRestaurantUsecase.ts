@@ -1,7 +1,7 @@
 import {DeleteRestaurantInput} from '@/domain/restaurant/repositories/RestaurantRepository';
 import {MutationOptions} from 'core/domain/vo/BaseMutation';
 
-import {useDeleteRestaurantMutation} from '../sources/DeleteRestaurantQuery';
+import {useDeleteRestaurantMutation} from '../sources/DeleteRestaurantMutation';
 import {DeleteRestaurantResponse} from '../types';
 
 export const useDeleteRestaurantUsecase = (

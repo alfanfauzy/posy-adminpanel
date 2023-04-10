@@ -32,7 +32,8 @@ export const useDeleteRestaurantMutation = (
 		mutationFn: (payload: DeleteRestaurantInput) =>
 			DeleteRestaurantService(payload),
 		onError(error: ErrorType) {
-			toast.error(error.message);
+			const textMessage = `${error.more_info} : ${error.message}`;
+			toast.error(textMessage);
 		},
 		...options,
 	});

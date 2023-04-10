@@ -31,7 +31,8 @@ export const useCreateRestaurantMutation = (
 	useMutation({
 		mutationFn: (payload: FormBodyPayload) => CreateRestaurantService(payload),
 		onError(error: ErrorType) {
-			toast.error(error.message);
+			const textMessage = `${error.more_info} : ${error.message}`;
+			toast.error(textMessage);
 		},
 		...options,
 	});
