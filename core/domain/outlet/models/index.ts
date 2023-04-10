@@ -27,11 +27,11 @@ export type Outlets = Array<OutletBased>;
 export type FormOutlet = {
 	restaurant_uuid: string;
 	outlet_name: string;
-	outlet_code: string;
+	outlet_code?: string | undefined;
 	subdistrict_id: string | undefined;
 	address: string;
-	latitude: string;
-	longitude: string;
+	latitude?: string | undefined;
+	longitude?: string | undefined;
 	phone: string;
 	email: string;
 	qty_table: number;

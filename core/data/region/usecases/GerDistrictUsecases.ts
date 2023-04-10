@@ -2,14 +2,18 @@ import {
 	GetDistrictResult,
 	GetFilterDistrictInput,
 } from '@/domain/region/repository/RegionRepositories';
+import {Datalist, Response} from '@/domain/vo/BaseResponse';
+import {UseQueryOptions} from 'react-query';
 
 import {mapToDistrictModel} from '../mappers/RegionMapper';
 import {useGetDistricesQuery} from '../sources/GetDistrictQuery';
+import {GetDistrictList} from '../type';
 
 export const useGetDistrictUsecase = (
 	input?: GetFilterDistrictInput,
+	options?: UseQueryOptions<Response<Datalist<GetDistrictList>>>,
 ): GetDistrictResult => {
-	const {data, ...rest} = useGetDistricesQuery(input);
+	const {data, ...rest} = useGetDistricesQuery(input, options);
 
 	if (data?.data.objs) {
 		const districtMapper = mapToDistrictModel(data.data.objs);

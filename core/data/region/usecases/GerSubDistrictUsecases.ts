@@ -2,14 +2,18 @@ import {
 	GetFilterSubDistrictInput,
 	GetSubDistrictResult,
 } from '@/domain/region/repository/RegionRepositories';
+import {Datalist, Response} from '@/domain/vo/BaseResponse';
+import {UseQueryOptions} from 'react-query';
 
 import {mapToSubDistrictModel} from '../mappers/RegionMapper';
 import {useGetSubDistricesQuery} from '../sources/GetSubDistrictQuery';
+import {GetSubDistrictList} from '../type';
 
 export const useGetSubDistrictUsecase = (
 	input?: GetFilterSubDistrictInput,
+	options?: UseQueryOptions<Response<Datalist<GetSubDistrictList>>>,
 ): GetSubDistrictResult => {
-	const {data, ...rest} = useGetSubDistricesQuery(input);
+	const {data, ...rest} = useGetSubDistricesQuery(input, options);
 
 	if (data?.data.objs) {
 		const cityMapper = mapToSubDistrictModel(data.data.objs);

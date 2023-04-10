@@ -69,13 +69,15 @@ const MoleculesFormManageOutlet = ({
 	const [province_id, setProvince_id] = useState<
 		ObjectSelect | Record<string, never>
 	>({});
-	const [stateCity_id, setCity_id] = useState<ObjectSelect | undefined | null>(
-		null,
-	);
+	const [stateCity_id, setCity_id] = useState<
+		ObjectSelect | Record<string, never>
+	>({});
 	const [stateDistrict_id, setDistrict_id] = useState<
-		ObjectSelect | undefined | null
-	>(null);
-	const [_, setSubDistrict] = useState<ObjectSelect | undefined | null>(null);
+		ObjectSelect | Record<string, never>
+	>({});
+	const [_, setSubDistrict] = useState<ObjectSelect | Record<string, never>>(
+		{},
+	);
 
 	const hooksParamsRestaurant: GetFilterRestaurantInput = useMemo(
 		() => ({
@@ -125,19 +127,25 @@ const MoleculesFormManageOutlet = ({
 	}, [stateDistrict_id]);
 
 	const {data: ListRestaurant, isLoading: isLoadingRestaurant} =
-		useGetRestaurantViewModal(hooksParamsRestaurant);
+		useGetRestaurantViewModal(hooksParamsRestaurant, {enabled: isOpenModal});
 
 	const {data: ListProvince, isLoading: isLoadingProvince} =
-		useGetProvinceViewModal(hooksParamsProvince);
+		useGetProvinceViewModal(hooksParamsProvince, {enabled: isOpenModal});
 
-	const {data: ListCity, isLoading: isLoadingCity} =
-		useGetCityViewModal(hooksParamsCity);
+	const {data: ListCity, isLoading: isLoadingCity} = useGetCityViewModal(
+		hooksParamsCity,
+		{enabled: !!province_id && !!province_id.value},
+	);
 
 	const {data: ListDistrict, isLoading: isLoadingDistrict} =
-		useGetDistrictViewModal(hooksParamsDistrict);
+		useGetDistrictViewModal(hooksParamsDistrict, {
+			enabled: !!stateCity_id && !!stateCity_id.value,
+		});
 
 	const {data: ListSubDistrict, isLoading: isLoadingSubDistrict} =
-		useGetSubDistrictViewModal(hooksParamsSubDistrict);
+		useGetSubDistrictViewModal(hooksParamsSubDistrict, {
+			enabled: !!stateDistrict_id && !!stateDistrict_id.value,
+		});
 
 	const RestaurantSelect = useMemo(() => {
 		if (!ListRestaurant) return [];
@@ -337,9 +345,9 @@ const MoleculesFormManageOutlet = ({
 						<div className="mb-6 w-1/3">
 							<Input
 								{...register('outlet_name')}
-								labelText="Outlet:"
+								labelText="Outlet Name:"
 								type="text"
-								placeholder="ex: Outlet"
+								placeholder="ex: Outlet Name"
 								error={!!errors?.outlet_name}
 								helperText={errors?.outlet_code?.message}
 							/>
@@ -356,7 +364,7 @@ const MoleculesFormManageOutlet = ({
 									type="text"
 									placeholder="ex: 20"
 									error={!!errors?.qty_table}
-									helperText={errors?.qty_table?.message}
+									helperText={errors?.qty_table && 'This field cannot be empty'}
 								/>
 							</div>
 						)}
@@ -393,88 +401,96 @@ const MoleculesFormManageOutlet = ({
 
 					<HRLine text="Outlet Address" />
 
-					<Select
-						name="province_id"
-						onChange={e => {
-							setValue('province_id', e);
-							setProvince_id(e);
-							refSelectCity.current.clearValue();
-						}}
-						value={watch('province_id')}
-						options={ProvinceSelect}
-						labelText="Province:"
-						placeholder="ex: Select Province"
-						className="flex items-center justify-center"
-						error={!!errors.province_id}
-						helperText={errors?.province_id?.message}
-						isLoading={isLoadingProvince}
-						isClearable
-					/>
+					<div className="pb-2">
+						<Select
+							name="province_id"
+							onChange={e => {
+								setValue('province_id', e);
+								setProvince_id(e);
+								refSelectCity.current.clearValue();
+							}}
+							value={watch('province_id')}
+							options={ProvinceSelect}
+							labelText="Province:"
+							placeholder="ex: Select Province"
+							className="mb-3 flex items-center justify-center"
+							error={!!errors.province_id}
+							helperText={errors?.province_id?.message}
+							isLoading={isLoadingProvince}
+							isClearable
+						/>
+					</div>
 
-					<Select
-						ref={refSelectCity}
-						name="city_id"
-						onChange={e => {
-							setValue('city_id', e);
-							setCity_id(e);
-							refSelectDistrict.current.clearValue();
-						}}
-						value={watch('city_id')}
-						options={CitySelect}
-						labelText="City:"
-						placeholder="ex: Select City"
-						className="flex items-center justify-center"
-						error={!!errors.city_id}
-						helperText={errors?.city_id?.message}
-						isLoading={isLoadingCity}
-						disabled={
-							getValues('province_id') === undefined ||
-							getValues('province_id') === null
-						}
-					/>
+					<div className="pb-2">
+						<Select
+							ref={refSelectCity}
+							name="city_id"
+							onChange={e => {
+								setValue('city_id', e);
+								setCity_id(e);
+								refSelectDistrict.current.clearValue();
+							}}
+							value={watch('city_id')}
+							options={CitySelect}
+							labelText="City:"
+							placeholder="ex: Select City"
+							className="flex items-center justify-center"
+							error={!!errors.city_id}
+							helperText={errors?.city_id?.message}
+							isLoading={isLoadingCity}
+							disabled={
+								getValues('province_id') === undefined ||
+								getValues('province_id') === null
+							}
+						/>
+					</div>
 
-					<Select
-						ref={refSelectDistrict}
-						name="district_id"
-						onChange={e => {
-							setValue('district_id', e);
-							setDistrict_id(e);
-							refSelectSubDistrict.current.clearValue();
-						}}
-						value={watch('district_id')}
-						options={DistrictSelect}
-						labelText="District:"
-						placeholder="ex: Select District"
-						className="flex items-center justify-center"
-						error={!!errors.district_id}
-						helperText={errors?.district_id?.message}
-						isLoading={isLoadingDistrict}
-						disabled={
-							getValues('city_id') === undefined ||
-							getValues('city_id') === null
-						}
-					/>
+					<div className="pb-2">
+						<Select
+							ref={refSelectDistrict}
+							name="district_id"
+							onChange={e => {
+								setValue('district_id', e);
+								setDistrict_id(e);
+								refSelectSubDistrict.current.clearValue();
+							}}
+							value={watch('district_id')}
+							options={DistrictSelect}
+							labelText="District:"
+							placeholder="ex: Select District"
+							className="flex items-center justify-center"
+							error={!!errors.district_id}
+							helperText={errors?.district_id?.message}
+							isLoading={isLoadingDistrict}
+							disabled={
+								getValues('city_id') === undefined ||
+								getValues('city_id') === null
+							}
+						/>
+					</div>
 
-					<Select
-						ref={refSelectSubDistrict}
-						name="subdistrict_id"
-						onChange={e => {
-							setValue('subdistrict_id', e);
-							setSubDistrict(e);
-						}}
-						value={watch('subdistrict_id')}
-						options={SubDistrictSelect}
-						labelText="Sub District:"
-						placeholder="ex: Select Sub District"
-						className="flex items-center justify-center"
-						error={!!errors.subdistrict_id}
-						helperText={errors?.subdistrict_id?.message}
-						isLoading={isLoadingSubDistrict}
-						disabled={
-							getValues('district_id') === undefined ||
-							getValues('district_id') === null
-						}
-					/>
+					<div className="pb-2">
+						<Select
+							ref={refSelectSubDistrict}
+							name="subdistrict_id"
+							onChange={e => {
+								setValue('subdistrict_id', e);
+								setSubDistrict(e);
+							}}
+							value={watch('subdistrict_id')}
+							options={SubDistrictSelect}
+							labelText="Sub District:"
+							placeholder="ex: Select Sub District"
+							className="flex items-center justify-center"
+							error={!!errors.subdistrict_id}
+							helperText={errors?.subdistrict_id?.message}
+							isLoading={isLoadingSubDistrict}
+							disabled={
+								getValues('district_id') === undefined ||
+								getValues('district_id') === null
+							}
+						/>
+					</div>
 
 					<div className="mb-6">
 						<Input

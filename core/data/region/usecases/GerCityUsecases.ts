@@ -2,14 +2,18 @@ import {
 	GetCityResult,
 	GetFilterCityInput,
 } from '@/domain/region/repository/RegionRepositories';
+import {Datalist, Response} from '@/domain/vo/BaseResponse';
+import {UseQueryOptions} from 'react-query';
 
 import {mapToCityModel} from '../mappers/RegionMapper';
 import {useGetCityQuery} from '../sources/GetCityQuery';
+import {GetCityList} from '../type';
 
 export const useGetCityUsecase = (
 	input?: GetFilterCityInput,
+	options?: UseQueryOptions<Response<Datalist<GetCityList>>>,
 ): GetCityResult => {
-	const {data, ...rest} = useGetCityQuery(input);
+	const {data, ...rest} = useGetCityQuery(input, options);
 
 	if (data?.data.objs) {
 		const cityMapper = mapToCityModel(data.data.objs);
