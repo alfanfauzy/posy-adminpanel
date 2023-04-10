@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
+import {toast} from 'react-toastify';
 // eslint-disable-next-line import/no-cycle
 import {HandleRefreshTokenLogin} from 'services/login';
 import {store} from 'store/index';
@@ -44,6 +45,7 @@ axiosApiInstance.interceptors.response.use(
 		const statusCode = response.status;
 
 		if (statusCode !== 401) {
+			toast.error(response.more_info);
 			return Promise.reject(error);
 		}
 

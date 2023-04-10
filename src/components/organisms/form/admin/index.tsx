@@ -15,6 +15,7 @@ import {useGetRolesViewModal} from '@/view/role/view-modals/GetRolesViewModel';
 import dynamic from 'next/dynamic';
 import {Button, Input, Select} from 'posy-fnb-core';
 import React, {useEffect, useMemo} from 'react';
+import {Controller} from 'react-hook-form';
 import {AiOutlineCheckSquare} from 'react-icons/ai';
 import {toast} from 'react-toastify';
 
@@ -49,7 +50,8 @@ const MoleculesFormAdmin = ({
 		reset,
 		setValue,
 		formState: {errors},
-		watch,
+		clearErrors,
+		control,
 	} = useForm({
 		schema: FormSchema,
 		mode: 'onChange',
@@ -120,6 +122,8 @@ const MoleculesFormAdmin = ({
 			createAdmin(newPayload);
 		}
 	};
+
+	console.log(errors);
 
 	useEffect(() => {
 		if (isEdit) {
@@ -215,18 +219,27 @@ const MoleculesFormAdmin = ({
 						/>
 					</div>
 					<div className="mb-6">
-						<Select
+						<Controller
 							name="role_uuid"
-							onChange={e => setValue('role_uuid', e)}
-							value={watch('role_uuid')}
-							options={RoleSelect}
-							labelText="Role"
-							placeholder="ex: Select role"
-							className="flex items-center justify-center"
-							error={!!errors.role_uuid}
-							helperText={errors?.role_uuid?.message}
-							isClearable
-							isLoading={isLoadingGetRole}
+							control={control}
+							render={({field: {name, value}}) => (
+								<Select
+									name={name}
+									onChange={e => {
+										setValue('role_uuid', e);
+										clearErrors('role_uuid');
+									}}
+									value={value}
+									options={RoleSelect}
+									labelText="Role"
+									placeholder="ex: Select role"
+									className="flex items-center justify-center"
+									error={!!errors.role_uuid}
+									helperText={errors?.role_uuid && 'This field cannot be empty'}
+									isClearable
+									isLoading={isLoadingGetRole}
+								/>
+							)}
 						/>
 					</div>
 

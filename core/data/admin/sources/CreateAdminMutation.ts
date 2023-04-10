@@ -31,7 +31,7 @@ export const useCreateAdminMutation = (
 	useMutation({
 		mutationFn: (payload: CreateAdminInput) => CreateAdminService(payload),
 		onError(error: ErrorType) {
-			toast.error(error.message);
+			toast.error(error.more_info);
 		},
 		...options,
 	});

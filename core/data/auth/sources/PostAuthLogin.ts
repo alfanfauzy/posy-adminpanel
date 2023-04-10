@@ -29,7 +29,8 @@ export const useLoginMutation = (options?: MutationOptions<LoginResponse>) =>
 	useMutation({
 		mutationFn: (payload: PostLoginPayload) => Login(payload),
 		onError(error: ErrorType) {
-			toast.error(error.message);
+			const textMessage = `${error.message} : ${error.more_info}`;
+			toast.error(textMessage);
 		},
 		...options,
 	});
