@@ -80,12 +80,12 @@ const UserSubscriptionLayout = ({
 			dataIndex: 'status',
 			render: (value, record) => {
 				const currentDateTime = moment();
-				const endDate = moment(record.end_date);
+				const endDate = moment.unix(record.end_date);
 
-				if (endDate.isBefore(currentDateTime)) {
+				if (!endDate.isBefore(currentDateTime)) {
 					return <p className="text-m-medium text-green-success">Active</p>;
 				} else {
-					return <p className="text-m-medium text-red-caution">Inactive</p>;
+					return <p className="text-m-medium text-red-caution">Expired</p>;
 				}
 			},
 		},
