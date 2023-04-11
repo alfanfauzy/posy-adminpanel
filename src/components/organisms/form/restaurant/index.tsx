@@ -16,6 +16,7 @@ import {useUploadImagePublicViewModal} from '@/view/file-upload/view-modals/Uplo
 import {useCreateRestaurantViewModal} from '@/view/restaurant/view-models/CreateRestaurantViewModel';
 import {useUpdateRestaurantViewModal} from '@/view/restaurant/view-models/UpdateRestaurantViewModel';
 import {useGetSubscriptionViewModal} from '@/view/subscription/view-modals/GetSubscriptionViewModel';
+import {format} from 'date-fns';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import {Button, Input, Select} from 'posy-fnb-core';
@@ -226,6 +227,7 @@ const MoleculesFormRestaurant = ({
 	}, [selectedData, isEdit, setValue]);
 
 	const titleText = isEdit ? 'Edit Restaurant' : 'Add New Restaurant';
+	const today = format(new Date(), 'yyyy-MM-dd');
 
 	return (
 		<ModalForm
@@ -457,6 +459,7 @@ const MoleculesFormRestaurant = ({
 										{...register('start_date')}
 										className="w-52"
 										labelText="Start Date:"
+										min={today}
 										type="date"
 										placeholder="ex: 3 Maret 2023, etc"
 										error={!!errors?.start_date}

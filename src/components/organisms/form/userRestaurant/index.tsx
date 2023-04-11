@@ -16,7 +16,10 @@ import {UpdateUserRestaurantParams} from '@/domain/user-restaurant/repositories/
 import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
 import useToggle from '@/hooks/useToggle';
-import {UserRestauranFormSchema} from '@/schemas/userRestaurant';
+import {
+	EditUserRestauranFormSchema,
+	UserRestauranFormSchema,
+} from '@/schemas/userRestaurant';
 import {useGetOutletViewModal} from '@/view/outlet/view-models/GetOutletViewModel';
 import {useGetRestaurantViewModal} from '@/view/restaurant/view-models/GetRestaurantViewModel';
 import {useGetRolesViewModal} from '@/view/role/view-modals/GetRolesViewModel';
@@ -122,16 +125,19 @@ const MoleculesFormUserRestaurant = ({
 	const {value: showConfirmPassword, toggle: handleShowConfirmPassword} =
 		useToggle(true);
 
+	const UserFormSchema = isEdit
+		? EditUserRestauranFormSchema
+		: UserRestauranFormSchema;
+
 	const {
 		handleSubmit,
 		register,
 		reset,
 		setValue,
 		formState: {errors},
-		watch,
 		clearErrors,
 	} = useForm({
-		schema: UserRestauranFormSchema,
+		schema: UserFormSchema,
 		mode: 'onChange',
 	});
 
@@ -163,18 +169,13 @@ const MoleculesFormUserRestaurant = ({
 			fullname: data.fullname,
 			password: data.password,
 			role_uuid: data.role_uuid.value,
-			outlet_uuid: data.outlet_uuid.value,
+			outlet_uuid: data.outlet_uuid.map(outlet => outlet.value),
 			phone: data.phone,
 		};
 
 		const newEditPayload: UpdateUserRestaurantParams = {
 			id: selectedData.uuid,
-			payload: {
-				email: data.email,
-				fullname: data.fullname,
-				password: data.password,
-				phone: data.phone,
-			},
+			payload: newPayload,
 		};
 
 		if (isEdit) {
@@ -186,17 +187,21 @@ const MoleculesFormUserRestaurant = ({
 
 	useEffect(() => {
 		if (isEdit) {
-			const {name, email, phone, outlet} = selectedData;
+			const {name, email, phone, outlet, role} = selectedData;
+
+			const setRole = {value: role.uuid, label: role.name};
 
 			setValue('fullname', name);
 			setValue('email', email);
 			setValue('phone', phone);
+			setValue('role_uuid', setRole);
 
 			if (outlet[0]?.outlet_name && outlet[0]?.outlet_uuid) {
-				setValue('outlet_uuid', {
-					label: outlet[0].outlet_name,
-					value: outlet[0].outlet_uuid,
-				});
+				const outletMapper = outlet.map(data => ({
+					label: data.outlet_name,
+					value: data.outlet_uuid,
+				}));
+				setValue('outlet_uuid', outletMapper);
 			}
 
 			if (outlet[0]?.restaurant_name && outlet[0]?.restaurant_uuid) {
@@ -209,9 +214,6 @@ const MoleculesFormUserRestaurant = ({
 	}, [selectedData, isEdit, setValue]);
 
 	const titleText = isEdit ? 'Edit User' : 'Add New User';
-
-	console.log(watch());
-	console.log(errors);
 
 	return (
 		<ModalForm
@@ -314,6 +316,7 @@ const MoleculesFormUserRestaurant = ({
 									helperText={
 										errors?.outlet_uuid && 'This field cannot be empty'
 									}
+									isMulti
 								/>
 							</div>
 						</div>

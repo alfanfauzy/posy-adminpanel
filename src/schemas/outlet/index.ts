@@ -8,7 +8,9 @@ export const ManageOutletFormSchema = z.object({
 	subdistrict_id: z.object({value: z.string(), label: z.string()}),
 	outlet_name: z.string().min(3),
 	outlet_code: z.string().optional(),
-	address: z.string().min(3),
+	address: z
+		.string()
+		.min(3, {message: 'Address must contain at least 3 character(s)'}),
 	phone: z.string().min(10),
 	latitude: z.string().optional(),
 	longitude: z.string().optional(),

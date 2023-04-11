@@ -1,3 +1,4 @@
+import {Role} from '@/domain/role/models';
 import {Metadata} from '@/domain/vo/BaseMetadata';
 import {GetRoleListDataResponse} from 'core/data/role/types/index';
 /**
@@ -20,7 +21,7 @@ export type GetUserRestaurantResponse = {
 	email: string;
 	fullname: string;
 	phone: string;
-	role: Pick<GetRoleListDataResponse, 'is_internal' | 'accesses'>;
+	role: Role;
 	is_admin: string;
 	metadata: Metadata;
 	restaurant_user: Array<RestaurantObject>;

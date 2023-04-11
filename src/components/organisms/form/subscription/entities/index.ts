@@ -5,5 +5,5 @@ export type FormSubscriptionEntities = {
 		value: number;
 	};
 	price: string;
-	description: string;
+	description?: string | undefined;
 };

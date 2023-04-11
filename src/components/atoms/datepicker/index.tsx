@@ -1,4 +1,4 @@
-import {DatePicker} from 'antd';
+import {DatePicker, DatePickerProps} from 'antd';
 import React from 'react';
 
 type AtomDatePickerProps = {
@@ -10,7 +10,7 @@ type AtomDatePickerProps = {
 	placeholder: string;
 	format: string;
 	name: string;
-};
+} & DatePickerProps;
 
 type RenderComponentProps = {
 	type: 'single' | 'range';
@@ -20,7 +20,7 @@ type RenderComponentProps = {
 	placeholder: string;
 	format: string;
 	name: string;
-};
+} & DatePickerProps;
 
 const RenderComponent = ({
 	type,
@@ -30,6 +30,7 @@ const RenderComponent = ({
 	placeholder,
 	format,
 	name,
+	...rest
 }: RenderComponentProps) => {
 	const {RangePicker} = DatePicker;
 	if (type === 'single') {
@@ -42,6 +43,7 @@ const RenderComponent = ({
 				placeholder={placeholder}
 				placement="bottomLeft"
 				format={format}
+				{...rest}
 			/>
 		);
 	}

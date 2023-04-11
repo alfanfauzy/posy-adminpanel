@@ -60,6 +60,7 @@ const MoleculesFormManageOutlet = ({
 		formState: {errors},
 		watch,
 		getValues,
+		clearErrors,
 	} = useForm({
 		schema: ManageOutletFormSchema,
 		mode: 'onChange',
@@ -318,20 +319,25 @@ const MoleculesFormManageOutlet = ({
 						{!isEdit && (
 							<Select
 								name="restaurant_uuid"
-								onChange={e => setValue('restaurant_uuid', e)}
+								onChange={e => {
+									setValue('restaurant_uuid', e);
+									clearErrors('restaurant_uuid');
+								}}
 								options={RestaurantSelect}
 								labelText="Restaurant"
 								placeholder="ex: Select Restaurant"
 								className="flex items-center justify-center"
 								error={!!errors.restaurant_uuid}
-								helperText={errors?.restaurant_uuid?.message}
+								helperText={
+									errors?.restaurant_uuid && 'This field cannot be empty'
+								}
 								isLoading={isLoadingRestaurant}
 							/>
 						)}
 					</div>
 
 					<div className="flex w-full gap-2">
-						<div className="mb-6 w-1/3">
+						<div className={`mb-6 ${isEdit ? 'w-1/2' : 'w-1/3'}`}>
 							<Input
 								{...register('outlet_code')}
 								labelText="Outlet Code:"
@@ -342,7 +348,7 @@ const MoleculesFormManageOutlet = ({
 							/>
 						</div>
 
-						<div className="mb-6 w-1/3">
+						<div className={`mb-6 ${isEdit ? 'w-1/2' : 'w-1/3'}`}>
 							<Input
 								{...register('outlet_name')}
 								labelText="Outlet Name:"
@@ -408,6 +414,7 @@ const MoleculesFormManageOutlet = ({
 								setValue('province_id', e);
 								setProvince_id(e);
 								refSelectCity.current.clearValue();
+								clearErrors('province_id');
 							}}
 							value={watch('province_id')}
 							options={ProvinceSelect}
@@ -415,7 +422,7 @@ const MoleculesFormManageOutlet = ({
 							placeholder="ex: Select Province"
 							className="mb-3 flex items-center justify-center"
 							error={!!errors.province_id}
-							helperText={errors?.province_id?.message}
+							helperText={errors?.province_id && 'This field cannot be empty'}
 							isLoading={isLoadingProvince}
 							isClearable
 						/>
@@ -429,6 +436,7 @@ const MoleculesFormManageOutlet = ({
 								setValue('city_id', e);
 								setCity_id(e);
 								refSelectDistrict.current.clearValue();
+								clearErrors('city_id');
 							}}
 							value={watch('city_id')}
 							options={CitySelect}
@@ -436,7 +444,7 @@ const MoleculesFormManageOutlet = ({
 							placeholder="ex: Select City"
 							className="flex items-center justify-center"
 							error={!!errors.city_id}
-							helperText={errors?.city_id?.message}
+							helperText={errors?.city_id && 'This field cannot be empty'}
 							isLoading={isLoadingCity}
 							disabled={
 								getValues('province_id') === undefined ||
@@ -453,6 +461,7 @@ const MoleculesFormManageOutlet = ({
 								setValue('district_id', e);
 								setDistrict_id(e);
 								refSelectSubDistrict.current.clearValue();
+								clearErrors('district_id');
 							}}
 							value={watch('district_id')}
 							options={DistrictSelect}
@@ -460,7 +469,7 @@ const MoleculesFormManageOutlet = ({
 							placeholder="ex: Select District"
 							className="flex items-center justify-center"
 							error={!!errors.district_id}
-							helperText={errors?.district_id?.message}
+							helperText={errors?.district_id && 'This field cannot be empty'}
 							isLoading={isLoadingDistrict}
 							disabled={
 								getValues('city_id') === undefined ||
@@ -476,6 +485,7 @@ const MoleculesFormManageOutlet = ({
 							onChange={e => {
 								setValue('subdistrict_id', e);
 								setSubDistrict(e);
+								clearErrors('subdistrict_id');
 							}}
 							value={watch('subdistrict_id')}
 							options={SubDistrictSelect}
@@ -483,7 +493,9 @@ const MoleculesFormManageOutlet = ({
 							placeholder="ex: Select Sub District"
 							className="flex items-center justify-center"
 							error={!!errors.subdistrict_id}
-							helperText={errors?.subdistrict_id?.message}
+							helperText={
+								errors?.subdistrict_id && 'This field cannot be empty'
+							}
 							isLoading={isLoadingSubDistrict}
 							disabled={
 								getValues('district_id') === undefined ||
@@ -503,31 +515,33 @@ const MoleculesFormManageOutlet = ({
 							helperText={errors?.address?.message}
 						/>
 					</div>
+					{!isEdit && (
+						<>
+							<div className="mb-6">
+								<Input
+									{...register('longitude')}
+									className="w-52"
+									labelText="Longitude:"
+									type="text"
+									placeholder="ex: -6.175969197650049"
+									error={!!errors?.longitude}
+									helperText={errors?.longitude?.message}
+								/>
+							</div>
 
-					<div className="mb-6">
-						<Input
-							{...register('longitude')}
-							className="w-52"
-							labelText="Longitude:"
-							type="text"
-							placeholder="ex: -6.175969197650049"
-							error={!!errors?.longitude}
-							helperText={errors?.longitude?.message}
-						/>
-					</div>
-
-					<div className="mb-6">
-						<Input
-							{...register('latitude')}
-							className="w-52"
-							labelText="Latitude:"
-							type="text"
-							placeholder="ex: 106.81494599676718"
-							error={!!errors?.latitude}
-							helperText={errors?.latitude?.message}
-						/>
-					</div>
-
+							<div className="mb-6">
+								<Input
+									{...register('latitude')}
+									className="w-52"
+									labelText="Latitude:"
+									type="text"
+									placeholder="ex: 106.81494599676718"
+									error={!!errors?.latitude}
+									helperText={errors?.latitude?.message}
+								/>
+							</div>
+						</>
+					)}
 					<Button
 						isLoading={isLoadingCreate || isLoadingUpload}
 						type="submit"

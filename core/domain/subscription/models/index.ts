@@ -15,5 +15,5 @@ export type FormSubscription = {
 	subscription_name: string;
 	period: number;
 	price: number;
-	description: string;
+	description: string | undefined;
 };

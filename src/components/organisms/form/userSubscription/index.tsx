@@ -1,7 +1,6 @@
 /**
  * Subscription Form Modal
  */
-import AtomDatePicker from '@/atoms/datepicker';
 import {TimetoUnix} from '@/constants/utils';
 import {Restaurant} from '@/domain/restaurant/models';
 import {GetFilterRestaurantInput} from '@/domain/restaurant/repositories/RestaurantRepository';
@@ -15,13 +14,13 @@ import {UserSubscriptionFormSchema} from '@/schemas/userSubscription';
 import {useGetRestaurantViewModal} from '@/view/restaurant/view-models/GetRestaurantViewModel';
 import {useGetSubscriptionViewModal} from '@/view/subscription/view-modals/GetSubscriptionViewModel';
 import {useCreateUserSubscriptionViewModal} from '@/view/user-subscription/view-modals/CreateUserSubscriptionViewModel';
+import {format} from 'date-fns';
 import dynamic from 'next/dynamic';
-import {Button, Select} from 'posy-fnb-core';
+import {Button, Input, Select} from 'posy-fnb-core';
 import React, {useEffect, useMemo, useState} from 'react';
 import {Controller} from 'react-hook-form';
 import {AiOutlineCheckSquare} from 'react-icons/ai';
 import {toast} from 'react-toastify';
-import {useAppSelector} from 'store/hooks';
 
 import {FormUserSubscriptionEntities} from './entities';
 
@@ -41,7 +40,6 @@ const MoleculesFormUserSubscription = ({
 	handleClose,
 	restaurant_uuid,
 }: MoleculesFormUserSubscriptionProps) => {
-	const restaurant = useAppSelector(state => state.restaurant);
 	const [searchRestaurantParams, setSearchRestaurantParams] = useState<
 		Array<Search<any>>
 	>([]);
@@ -52,6 +50,7 @@ const MoleculesFormUserSubscription = ({
 		reset,
 		setValue,
 		formState: {errors},
+		clearErrors,
 		watch,
 	} = useForm({
 		schema: UserSubscriptionFormSchema,
@@ -141,6 +140,11 @@ const MoleculesFormUserSubscription = ({
 	}, [RestaurantSelect]);
 
 	const titleText = 'Create New Subscription';
+	const today = format(new Date(), 'yyyy-MM-dd');
+
+	console.log(errors);
+
+	console.log(watch());
 
 	return (
 		<ModalForm
@@ -158,7 +162,10 @@ const MoleculesFormUserSubscription = ({
 								<Select
 									name={name}
 									value={value}
-									onChange={e => setValue('restaurant_uuid', e)}
+									onChange={e => {
+										setValue('restaurant_uuid', e);
+										clearErrors('restaurant_uuid');
+									}}
 									options={RestaurantSelect}
 									isLoading={isLoadingRestaurant}
 									disabled={!!restaurant_uuid}
@@ -166,7 +173,9 @@ const MoleculesFormUserSubscription = ({
 									placeholder="ex: Restaurant Name, etc"
 									className="flex items-center justify-center"
 									error={!!errors.restaurant_uuid}
-									helperText={errors?.restaurant_uuid?.message}
+									helperText={
+										errors?.restaurant_uuid && 'This field cannot be empty'
+									}
 								/>
 							)}
 						/>
@@ -179,14 +188,19 @@ const MoleculesFormUserSubscription = ({
 								<Select
 									name={name}
 									value={value}
-									onChange={e => setValue('subscription_uuid', e)}
+									onChange={e => {
+										setValue('subscription_uuid', e);
+										clearErrors('subscription_uuid');
+									}}
 									options={SubscriptionsSelect}
 									isLoading={isLoadingSubscription}
 									labelText="Subscription Plan"
 									placeholder="ex: Package, etc"
 									className="flex items-center justify-center"
 									error={!!errors.subscription_uuid}
-									helperText={errors?.subscription_uuid?.message}
+									helperText={
+										errors?.subscription_uuid && 'This field cannot be empty'
+									}
 								/>
 							)}
 						/>
@@ -196,15 +210,19 @@ const MoleculesFormUserSubscription = ({
 							name="start_date"
 							control={control}
 							render={({field: {name, value, onChange}}) => (
-								<AtomDatePicker
+								<Input
 									name={name}
-									label="Start Date"
-									type="single"
 									value={value}
 									onChange={onChange}
-									className="w-full p-2"
-									placeholder="Select Start Date"
-									format="DD MMMM YYYY"
+									className="w-52"
+									labelText="Start Date:"
+									min={today}
+									type="date"
+									placeholder="ex: 3 Maret 2023, etc"
+									error={!!errors?.start_date}
+									helperText={
+										errors?.start_date && 'This field cannot be empty'
+									}
 								/>
 							)}
 						/>

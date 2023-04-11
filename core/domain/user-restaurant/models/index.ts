@@ -2,8 +2,8 @@
  * This File is docomentation type which can be used to describe to the variables in view
  */
 
-import {GetRoleListDataResponse} from '@/data/role/types';
 import {RestaurantObject} from '@/data/user-restaurant/types';
+import {Role} from '@/domain/role/models';
 
 export type UserRestaurantBased = {
 	uuid: string;
@@ -11,7 +11,7 @@ export type UserRestaurantBased = {
 	email: string;
 	phone: string;
 	outlet: Array<RestaurantObject>;
-	role: Pick<GetRoleListDataResponse, 'accesses'>;
+	role: Role;
 	is_admin: string;
 	seconds: number;
 };
@@ -26,5 +26,5 @@ export type FormUserRestaurant = {
 	fullname: string;
 	phone: string;
 	role_uuid: string;
-	outlet_uuid: string;
+	outlet_uuid: Array<string>;
 };

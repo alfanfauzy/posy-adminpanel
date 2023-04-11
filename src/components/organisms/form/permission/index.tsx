@@ -48,7 +48,7 @@ const MoleculesFormPermission = ({
 	const handleCloseModal = () => {
 		reset();
 		handleClose();
-		queryClient.invalidateQueries('permission/list');
+		queryClient.invalidateQueries('access/list');
 	};
 
 	const {createAccess, isLoading: isLoadingCreate} = useCreateAccessViewModal({

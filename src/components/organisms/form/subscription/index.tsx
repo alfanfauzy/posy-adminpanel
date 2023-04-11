@@ -41,6 +41,7 @@ const MoleculesFormSubscription = ({
 		setValue,
 		formState: {errors},
 		watch,
+		clearErrors,
 	} = useForm({
 		schema: SubscriptionFormSchema,
 		mode: 'onChange',
@@ -138,14 +139,17 @@ const MoleculesFormSubscription = ({
 					<div className="mb-6">
 						<Select
 							name="period"
-							onChange={e => setValue('period', e)}
+							onChange={e => {
+								setValue('period', e);
+								clearErrors('period');
+							}}
 							value={watch('period')}
 							options={Subscription_Period}
 							labelText="Subscription Period"
 							placeholder="ex: 1 Month, etc"
 							className="flex items-center justify-center"
 							error={!!errors.period}
-							helperText={errors?.period?.message}
+							helperText={errors?.period && 'This field cannot be empty'}
 						/>
 					</div>
 					<div className="mb-6">
