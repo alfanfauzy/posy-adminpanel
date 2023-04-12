@@ -9,7 +9,7 @@ export const UserRestauranFormSchema = z
 		phone: z.string().min(10).max(13),
 		role_uuid: z.object({value: z.string(), label: z.string()}),
 		restaurant_uuid: z.object({value: z.string(), label: z.string()}),
-		outlet_uuid: z.object({value: z.string(), label: z.string()}).array(),
+		outlet_uuid: z.object({value: z.string(), label: z.string()}),
 		password: z
 			.string()
 			.regex(
@@ -37,7 +37,7 @@ export const EditUserRestauranFormSchema = z
 		phone: z.string().min(10).max(13),
 		role_uuid: z.object({value: z.string(), label: z.string()}),
 		restaurant_uuid: z.object({value: z.string(), label: z.string()}),
-		outlet_uuid: z.object({value: z.string(), label: z.string()}).array(),
+		outlet_uuid: z.object({value: z.string(), label: z.string()}),
 		password: z.string(),
 		confirmPassword: z.string(),
 	})

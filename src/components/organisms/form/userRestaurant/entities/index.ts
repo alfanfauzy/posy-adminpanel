@@ -4,7 +4,7 @@ export type FormUserRestaurantEntities = {
 	phone: string;
 	role_uuid: {label: string; value: string};
 	restaurant_uuid: {label: string; value: string};
-	outlet_uuid: Array<{label: string; value: string}>;
+	outlet_uuid: {label: string; value: string};
 	password: string;
 	confirmPassword: string;
 };

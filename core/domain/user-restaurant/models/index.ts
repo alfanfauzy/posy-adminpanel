@@ -26,5 +26,5 @@ export type FormUserRestaurant = {
 	fullname: string;
 	phone: string;
 	role_uuid: string;
-	outlet_uuid: Array<string>;
+	outlet_uuid: string;
 };

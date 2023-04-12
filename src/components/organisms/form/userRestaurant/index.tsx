@@ -169,7 +169,7 @@ const MoleculesFormUserRestaurant = ({
 			fullname: data.fullname,
 			password: data.password,
 			role_uuid: data.role_uuid.value,
-			outlet_uuid: data.outlet_uuid.map(outlet => outlet.value),
+			outlet_uuid: data.outlet_uuid.value,
 			phone: data.phone,
 		};
 
@@ -197,11 +197,10 @@ const MoleculesFormUserRestaurant = ({
 			setValue('role_uuid', setRole);
 
 			if (outlet[0]?.outlet_name && outlet[0]?.outlet_uuid) {
-				const outletMapper = outlet.map(data => ({
-					label: data.outlet_name,
-					value: data.outlet_uuid,
-				}));
-				setValue('outlet_uuid', outletMapper);
+				setValue('outlet_uuid', {
+					label: outlet[0].outlet_name,
+					value: outlet[0].outlet_uuid,
+				});
 			}
 
 			if (outlet[0]?.restaurant_name && outlet[0]?.restaurant_uuid) {
@@ -316,7 +315,6 @@ const MoleculesFormUserRestaurant = ({
 									helperText={
 										errors?.outlet_uuid && 'This field cannot be empty'
 									}
-									isMulti
 								/>
 							</div>
 						</div>
