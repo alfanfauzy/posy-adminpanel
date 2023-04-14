@@ -3,7 +3,6 @@ import {FormEditAdminEntities} from '@/organisms/form/admin/entities';
 import {Admin, Admins, FormAdmin} from 'core/domain/admin/models';
 import {Pagination} from 'core/domain/vo/BasePagination';
 import {
-	Datalist,
 	ResultMutation,
 	ResultQuery,
 	UpdateParams,

@@ -30,14 +30,26 @@ const App = ({Component, pageProps}: AppPropsWithLayout) => {
 	const router = useRouter();
 	const {asPath} = router;
 	const {loadingState} = useLoading();
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		if (asPath === '/') {
-			setLoading(true);
-
+		if (asPath === '/' || asPath === '/auth/login') {
 			if (isLoggedIn && authData) {
 				router.push('/dashboard');
+				setTimeout(() => {
+					setLoading(false);
+				}, 5000);
+				return;
+			}
+
+			router.push('/auth/login');
+			setTimeout(() => {
+				setLoading(false);
+			}, 500);
+			return;
+		} else {
+			if (isLoggedIn && authData) {
+				router.push(asPath);
 				setTimeout(() => {
 					setLoading(false);
 				}, 5000);

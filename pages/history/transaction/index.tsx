@@ -1,13 +1,9 @@
-import useAuthentication from '@/hooks/useAuthentication';
 import MoleculesMetaHeader from '@/molecules/meta-header';
 import HistoryTransactionLayout from '@/pages/history/transaction';
 import GeneralLayout from '@/templates/layouts';
 import React from 'react';
 
 const TransactionPage = () => {
-	// Handle Authentication
-	useAuthentication();
-
 	return (
 		<>
 			<MoleculesMetaHeader

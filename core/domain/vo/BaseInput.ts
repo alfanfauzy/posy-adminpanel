@@ -11,10 +11,10 @@ export type Search<TField = unknown> = {
 };
 
 export type FilterInputVariables<TSort = unknown, TSearch = unknown> = {
-	sort?: Sort<TSort>;
-	search?: Array<Search<TSearch>>;
-	limit?: number;
-	page?: number;
+	sort: Sort<TSort>;
+	search: Array<Search<TSearch>>;
+	limit: number;
+	page: number;
 };
 
 export type ParamsPayload = {

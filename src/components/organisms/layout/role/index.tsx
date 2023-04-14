@@ -22,7 +22,7 @@ const ModalConfirmation = dynamic(
 	() => import('@/molecules/modal/confirmation'),
 );
 
-const RoleLayout = ({type}: RoleLayoutProps) => {
+const RoleLayout = ({type, value}: RoleLayoutProps) => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 	const [searchParams, setSearchParams] = useState<Array<Search<any>>>([
@@ -45,7 +45,7 @@ const RoleLayout = ({type}: RoleLayoutProps) => {
 		refetch: handleRefetchTable,
 		isLoading,
 		pagination,
-	} = useGetRolesViewModal(hooksParams);
+	} = useGetRolesViewModal(hooksParams, {enabled: value === 1});
 
 	const [selectedData, setSelectedData] = useState<Role>({
 		name: '',

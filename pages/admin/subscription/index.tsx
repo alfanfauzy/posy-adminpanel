@@ -1,13 +1,9 @@
-import useAuthentication from '@/hooks/useAuthentication';
 import MoleculesMetaHeader from '@/molecules/meta-header';
 import SubscriptionLayout from '@/pages/admin/subscription';
 import GeneralLayout from '@/templates/layouts';
 import React from 'react';
 
 const SubscriptionPage = () => {
-	// Handle Authentication
-	useAuthentication();
-
 	return (
 		<>
 			<MoleculesMetaHeader

@@ -1,13 +1,9 @@
-import useAuthentication from '@/hooks/useAuthentication';
 import MoleculesMetaHeader from '@/molecules/meta-header';
 import RoleUserLayout from '@/pages/user/role';
 import GeneralLayout from '@/templates/layouts';
 import React from 'react';
 
 const RoleUserPage = () => {
-	// Handle Authentication
-	useAuthentication();
-
 	return (
 		<>
 			<MoleculesMetaHeader

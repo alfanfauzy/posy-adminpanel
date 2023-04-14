@@ -20,6 +20,13 @@ export type RoleAccess = {
 	accesses: Array<Access>;
 };
 
+export type UserInfo = {
+	user_uuid: string;
+	fullname: string;
+	email: string;
+	phone: string;
+};
+
 export type DataLogin = {
 	uuid: string;
 	token: string;
@@ -27,6 +34,7 @@ export type DataLogin = {
 	expired_at: BaseMetadata;
 	role_access: RoleAccess;
 	permission: Array<string>;
+	user_info: UserInfo;
 };
 
 export type PostLoginPayload = {

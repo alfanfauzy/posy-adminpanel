@@ -7,6 +7,7 @@ import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
 import {useDeleteAdminViewModal} from '@/view/admin/view-models/DeleteAdminViewModel';
 import {useGetAdminViewModal} from '@/view/admin/view-models/GetAdminViewModel';
+import {List} from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import dynamic from 'next/dynamic';
 import {Button} from 'posy-fnb-core';

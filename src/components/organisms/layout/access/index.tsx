@@ -47,7 +47,7 @@ const GroupingAccess = (DataAccesses: object): Array<AccessByGroup> => {
 	return mapAccessPermission;
 };
 
-const AccessSettingLayout = ({type}: AccessSettingLayoutProps) => {
+const AccessSettingLayout = ({type, value}: AccessSettingLayoutProps) => {
 	const [selectedRole, setSelectedRole] = useState({id: '0', name: ''});
 	const [tempAccess, setTempAccess] = useState<Array<TempAccess>>([]);
 
@@ -64,13 +64,13 @@ const AccessSettingLayout = ({type}: AccessSettingLayoutProps) => {
 		data: DataRoles,
 		isLoading: isLoadingRole,
 		refetch: refetchDataRole,
-	} = useGetRolesViewModal(hooksParams);
+	} = useGetRolesViewModal(hooksParams, {enabled: value === 0});
 
 	const {
 		data: DataAccesses,
 		isLoading: isLoadingAccess,
 		refetch: refetchDataAccess,
-	} = useGetAccessViewModal(hooksParams);
+	} = useGetAccessViewModal(hooksParams, {enabled: value === 0});
 
 	const {createRoleAccess, isLoading} = useCreateRoleAccessViewModal({
 		onSuccess() {

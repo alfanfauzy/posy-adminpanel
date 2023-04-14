@@ -27,6 +27,12 @@ const initialState: AuthState = {
 			accesses: [],
 		},
 		permission: [],
+		user_info: {
+			email: '',
+			fullname: '',
+			phone: '',
+			user_uuid: '',
+		},
 	},
 	permission: [],
 };
@@ -60,6 +66,12 @@ export const AuthSlice = createSlice({
 					accesses: [],
 				},
 				permission: [],
+				user_info: {
+					email: '',
+					fullname: '',
+					phone: '',
+					user_uuid: '',
+				},
 			};
 		},
 	},

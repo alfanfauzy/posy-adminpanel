@@ -23,7 +23,7 @@ const ModalConfirmation = dynamic(
 	() => import('@/molecules/modal/confirmation'),
 );
 
-const PermissionLayout = ({type}: PermissionLayoutProps) => {
+const PermissionLayout = ({type, value}: PermissionLayoutProps) => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 	const [searchParams, setSearchParams] = useState<Array<Search<any>>>([
@@ -53,7 +53,8 @@ const PermissionLayout = ({type}: PermissionLayoutProps) => {
 		refetch: handleRefetchTable,
 		isLoading,
 		pagination,
-	} = useGetAccessViewModal(hooksParams);
+	} = useGetAccessViewModal(hooksParams, {enabled: value === 2});
+
 	const [isEdit, setIsEdit] = useState(false);
 
 	const {value: openModal, toggle: handleOpenModal} = useToggle(false);

@@ -1,4 +1,3 @@
-import useAuthentication from '@/hooks/useAuthentication';
 import MoleculesMetaHeader from '@/molecules/meta-header';
 import GeneralLayout from '@/templates/layouts';
 import React from 'react';
@@ -17,9 +16,6 @@ import React from 'react';
 // }
 
 const DashboardPage = () => {
-	// Handle Authentication
-	useAuthentication();
-
 	return (
 		<>
 			<MoleculesMetaHeader

@@ -7,4 +7,5 @@ export type AccessByGroup = {
 
 export type AccessSettingLayoutProps = {
 	type: 'admin' | 'client';
+	value: number;
 };

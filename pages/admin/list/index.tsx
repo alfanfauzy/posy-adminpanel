@@ -1,13 +1,9 @@
-import useAuthentication from '@/hooks/useAuthentication';
 import MoleculesMetaHeader from '@/molecules/meta-header';
 import AdminListLayout from '@/pages/admin/list';
 import GeneralLayout from '@/templates/layouts';
 import React from 'react';
 
 const ListAdminPage = () => {
-	// Handle Authentication
-	useAuthentication();
-
 	return (
 		<>
 			<MoleculesMetaHeader

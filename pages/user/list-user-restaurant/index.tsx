@@ -1,13 +1,9 @@
-import useAuthentication from '@/hooks/useAuthentication';
 import MoleculesMetaHeader from '@/molecules/meta-header';
 import ListUserRestaurantLayout from '@/pages/user/listUserRestaurant';
 import GeneralLayout from '@/templates/layouts';
 import React from 'react';
 
 const ListUserRestaurantPage = () => {
-	// Handle Authentication
-	useAuthentication();
-
 	return (
 		<>
 			<MoleculesMetaHeader

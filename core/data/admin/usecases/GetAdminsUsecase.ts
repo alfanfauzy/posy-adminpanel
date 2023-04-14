@@ -2,14 +2,18 @@ import {
 	GetAdminsResult,
 	GetFilterAdminInput,
 } from '@/domain/admin/repositories/AdminRepository';
+import {Datalist, Response} from '@/domain/vo/BaseResponse';
+import {UseQueryOptions} from 'react-query';
 
 import {mapToAdminModel} from '../mappers/AdminMapper';
 import {useGetAdminQuery} from '../sources/GetAdminQuery';
+import {GetAdminListDataResponse} from '../types';
 
 export const useGetAdminUsecase = (
-	input?: GetFilterAdminInput,
+	input: GetFilterAdminInput,
+	options?: UseQueryOptions<Response<Datalist<GetAdminListDataResponse>>>,
 ): GetAdminsResult => {
-	const {data, ...rest} = useGetAdminQuery(input);
+	const {data, ...rest} = useGetAdminQuery(input, options);
 
 	if (data?.data.objs) {
 		const adminMapper = mapToAdminModel(data.data.objs);

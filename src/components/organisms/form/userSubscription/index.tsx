@@ -142,10 +142,6 @@ const MoleculesFormUserSubscription = ({
 	const titleText = 'Create New Subscription';
 	const today = format(new Date(), 'yyyy-MM-dd');
 
-	console.log(errors);
-
-	console.log(watch());
-
 	return (
 		<ModalForm
 			handleCloseModal={handleCloseModal}

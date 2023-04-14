@@ -1,13 +1,9 @@
-import useAuthentication from '@/hooks/useAuthentication';
 import MoleculesMetaHeader from '@/molecules/meta-header';
 import ManageOutletLayout from '@/pages/user/manageOutlet';
 import GeneralLayout from '@/templates/layouts';
 import React from 'react';
 
 const ManageOutletPage = () => {
-	// Handle Authentication
-	useAuthentication();
-
 	return (
 		<>
 			<MoleculesMetaHeader

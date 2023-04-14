@@ -31,9 +31,9 @@ const RolePermissionLayout = () => {
 				/>
 			</div>
 
-			{tabsVal === 0 && <AccessSettingLayout type="client" />}
-			{tabsVal === 1 && <RoleListLayout type="client" />}
-			{tabsVal === 2 && <PermissionLayout type="client" />}
+			{tabsVal === 0 && <AccessSettingLayout type="client" value={tabsVal} />}
+			{tabsVal === 1 && <RoleListLayout type="client" value={tabsVal} />}
+			{tabsVal === 2 && <PermissionLayout type="client" value={tabsVal} />}
 		</section>
 	);
 };

@@ -7,7 +7,7 @@ import {Datalist, Response} from '../../../domain/vo/BaseResponse';
 import {GetAdminListDataResponse} from '../types';
 
 export const GetAdmin = async (
-	input?: GetFilterAdminInput,
+	input: GetFilterAdminInput,
 ): Promise<Response<Datalist<GetAdminListDataResponse>>> => {
 	try {
 		const response = await Post({
@@ -23,7 +23,7 @@ export const GetAdmin = async (
 };
 
 export const useGetAdminQuery = (
-	input?: GetFilterAdminInput,
+	input: GetFilterAdminInput,
 	options?: UseQueryOptions<Response<Datalist<GetAdminListDataResponse>>>,
 ) =>
 	useQuery<Response<Datalist<GetAdminListDataResponse>>>(
