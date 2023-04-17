@@ -7,6 +7,7 @@ export type SingleMenuEntities = {
 		icon: React.ReactNode;
 		type: string;
 		path?: string;
+		show?: boolean;
 	};
 	goToPage: (path: string) => void;
 };
@@ -16,7 +17,9 @@ export type SubMenuEntities = {
 		icon: React.ReactNode;
 		type: string;
 		path?: string;
+		show?: boolean;
 		items?: Array<{
+			show?: boolean;
 			label: string;
 			path: string;
 		}>;
@@ -29,6 +32,7 @@ export type MenuSidebar = {
 		icon: React.ReactNode;
 		type: string;
 		path?: string;
+		show?: boolean;
 		items?: Array<{
 			label: string;
 			path: string;

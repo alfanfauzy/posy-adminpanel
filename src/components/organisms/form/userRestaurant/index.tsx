@@ -196,6 +196,13 @@ const MoleculesFormUserRestaurant = ({
 			setValue('phone', phone);
 			setValue('role_uuid', setRole);
 
+			if (role.uuid && role.name) {
+				setValue('role_uuid', {
+					label: role.name,
+					value: role.uuid,
+				});
+			}
+
 			if (outlet[0]?.outlet_name && outlet[0]?.outlet_uuid) {
 				setValue('outlet_uuid', {
 					label: outlet[0].outlet_name,

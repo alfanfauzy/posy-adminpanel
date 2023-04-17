@@ -3,6 +3,7 @@ import {timeStampConverter} from '@/constants/utils';
 import {RestaurantObject} from '@/data/user-restaurant/types';
 import {UserRestaurant} from '@/domain/user-restaurant/models';
 import {GetUserRestaurantFilterInput} from '@/domain/user-restaurant/repositories/UserRestaurantRepository';
+import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
 import {useDeleteUserRestaurantViewModal} from '@/view/user-restaurant/view-modals/DeleteUserRestaurantViewModel';
@@ -22,6 +23,7 @@ const ModalConfirmation = dynamic(
 );
 
 const ListUserRestaurantLayout: React.FC = () => {
+	const {hasAccess} = useAccessControl();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 
@@ -140,24 +142,33 @@ const ListUserRestaurantLayout: React.FC = () => {
 
 		{
 			title: 'Action',
+			className:
+				!hasAccess('user_restaurant:update') &&
+				!hasAccess('user_restaurant:delete')
+					? 'hidden'
+					: '',
 			render: dataValue => (
 				<span className="flex gap-1">
-					<Button
-						variant="secondary"
-						onClick={() => {
-							handleOpenFormModal();
-							setIsEdit(true);
-							setSelectedData(dataValue);
-						}}
-					>
-						<AiFillEdit />
-					</Button>
-					<Button
-						variant="red-accent"
-						onClick={() => handleShowConfirmationModal(dataValue)}
-					>
-						<AiFillDelete />
-					</Button>
+					{hasAccess('user_restaurant:update') && (
+						<Button
+							variant="secondary"
+							onClick={() => {
+								handleOpenFormModal();
+								setIsEdit(true);
+								setSelectedData(dataValue);
+							}}
+						>
+							<AiFillEdit />
+						</Button>
+					)}
+					{hasAccess('user_restaurant:delete') && (
+						<Button
+							variant="red-accent"
+							onClick={() => handleShowConfirmationModal(dataValue)}
+						>
+							<AiFillDelete />
+						</Button>
+					)}
 				</span>
 			),
 		},
@@ -165,11 +176,13 @@ const ListUserRestaurantLayout: React.FC = () => {
 
 	return (
 		<div>
-			<HeaderContent
-				onClick={handleOpenFormModal}
-				textButton="Add New User"
-				iconElement={<AiOutlinePlus />}
-			/>
+			{hasAccess('user_restaurant:create') && (
+				<HeaderContent
+					onClick={handleOpenFormModal}
+					textButton="Add New User"
+					iconElement={<AiOutlinePlus />}
+				/>
+			)}
 			<MoleculesFormUserRestaurant
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

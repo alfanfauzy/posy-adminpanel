@@ -3,15 +3,15 @@ import AtomTag from '@/atoms/tag';
 import {timeStampConverter} from '@/constants/utils';
 import {Admin} from '@/domain/admin/models';
 import {GetFilterAdminInput} from '@/domain/admin/repositories/AdminRepository';
+import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
 import {useDeleteAdminViewModal} from '@/view/admin/view-models/DeleteAdminViewModel';
 import {useGetAdminViewModal} from '@/view/admin/view-models/GetAdminViewModel';
-import {List} from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import dynamic from 'next/dynamic';
 import {Button} from 'posy-fnb-core';
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {AiFillDelete, AiFillEdit, AiOutlineUserAdd} from 'react-icons/ai';
 import {toast} from 'react-toastify';
 
@@ -23,6 +23,8 @@ const ModalConfirmation = dynamic(
 const AdminListLayout: React.FC = () => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
+
+	const {hasAccess} = useAccessControl();
 
 	const hooksParams: GetFilterAdminInput = useMemo(
 		() => ({
@@ -126,24 +128,32 @@ const AdminListLayout: React.FC = () => {
 		},
 		{
 			title: 'Action',
+			className:
+				!hasAccess('admin:update') && !hasAccess('admin:delete')
+					? 'hidden'
+					: '',
 			render: dataValue => (
 				<span className="flex gap-1">
-					<Button
-						variant="secondary"
-						onClick={() => {
-							handleOpenFormModal();
-							setIsEdit(true);
-							setSelectedData(dataValue);
-						}}
-					>
-						<AiFillEdit />
-					</Button>
-					<Button
-						variant="red-accent"
-						onClick={() => handleShowConfirmationModal(dataValue)}
-					>
-						<AiFillDelete />
-					</Button>
+					{hasAccess('admin:update') && (
+						<Button
+							variant="secondary"
+							onClick={() => {
+								handleOpenFormModal();
+								setIsEdit(true);
+								setSelectedData(dataValue);
+							}}
+						>
+							<AiFillEdit />
+						</Button>
+					)}
+					{hasAccess('admin:delete') && (
+						<Button
+							variant="red-accent"
+							onClick={() => handleShowConfirmationModal(dataValue)}
+						>
+							<AiFillDelete />
+						</Button>
+					)}
 				</span>
 			),
 		},
@@ -151,11 +161,13 @@ const AdminListLayout: React.FC = () => {
 
 	return (
 		<div>
-			<HeaderContent
-				onClick={handleOpenFormModal}
-				textButton="Create Admin"
-				iconElement={<AiOutlineUserAdd />}
-			/>
+			{hasAccess('admin:create') && (
+				<HeaderContent
+					onClick={handleOpenFormModal}
+					textButton="Create Admin"
+					iconElement={<AiOutlineUserAdd />}
+				/>
+			)}
 			<ModalFormAdmin
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

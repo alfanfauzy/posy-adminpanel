@@ -3,6 +3,7 @@ import {Subscription_Period} from '@/constants/index';
 import {FormatToRupiah, timeStampConverter} from '@/constants/utils';
 import {Subscription} from '@/domain/subscription/models';
 import {GetSubscriptionFilterInput} from '@/domain/subscription/repositories/SubscriptionRepository';
+import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import ModalConfirmation from '@/molecules/modal/confirmation';
 import HeaderContent from '@/templates/header/header-content';
@@ -23,6 +24,8 @@ const SubscriptionLayout: React.FC = () => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 	const [isEdit, setIsEdit] = useState(false);
+
+	const {hasAccess} = useAccessControl();
 
 	const hooksParams: GetSubscriptionFilterInput = useMemo(
 		() => ({
@@ -143,24 +146,32 @@ const SubscriptionLayout: React.FC = () => {
 		},
 		{
 			title: 'Action',
+			className:
+				!hasAccess('subscription:update') && !hasAccess('subscription:delete')
+					? 'hidden'
+					: '',
 			render: dataValue => (
 				<span className="flex gap-1">
-					<Button
-						variant="secondary"
-						onClick={() => {
-							handleOpenFormModal();
-							setIsEdit(true);
-							setSelectedData(dataValue);
-						}}
-					>
-						<AiFillEdit />
-					</Button>
-					<Button
-						variant="red-accent"
-						onClick={() => handleShowConfirmationModal(dataValue)}
-					>
-						<AiFillDelete />
-					</Button>
+					{hasAccess('subscription:update') && (
+						<Button
+							variant="secondary"
+							onClick={() => {
+								handleOpenFormModal();
+								setIsEdit(true);
+								setSelectedData(dataValue);
+							}}
+						>
+							<AiFillEdit />
+						</Button>
+					)}
+					{hasAccess('subscription:delete') && (
+						<Button
+							variant="red-accent"
+							onClick={() => handleShowConfirmationModal(dataValue)}
+						>
+							<AiFillDelete />
+						</Button>
+					)}
 				</span>
 			),
 		},
@@ -168,11 +179,13 @@ const SubscriptionLayout: React.FC = () => {
 
 	return (
 		<div>
-			<HeaderContent
-				onClick={handleOpenFormModal}
-				textButton="Create New Subscription Plan"
-				iconElement={<AiOutlinePlus />}
-			/>
+			{hasAccess('subscription:create') && (
+				<HeaderContent
+					onClick={handleOpenFormModal}
+					textButton="Create New Subscription Plan"
+					iconElement={<AiOutlinePlus />}
+				/>
+			)}
 			<ModalFormSubscription
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

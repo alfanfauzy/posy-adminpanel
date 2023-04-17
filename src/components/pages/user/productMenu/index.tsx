@@ -2,6 +2,7 @@ import AtomTable from '@/atoms/table';
 import {FormatToRupiah} from '@/constants/utils';
 import {Product} from '@/domain/product/models';
 import {GetFilterProductInput} from '@/domain/product/repositories/ProductRepository';
+import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
 import {useDeleteProductViewModal} from '@/view/product/view-models/DeleteProductViewModel';
@@ -25,6 +26,7 @@ type ListProductMenuLayoutProps = {
 const ListProductMenuLayout = ({
 	restaurant_uuid,
 }: ListProductMenuLayoutProps) => {
+	const {hasAccess} = useAccessControl();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 
@@ -118,24 +120,32 @@ const ListProductMenuLayout = ({
 		},
 		{
 			title: 'Action',
+			className:
+				!hasAccess('product:update') && !hasAccess('product:delete')
+					? 'hidden'
+					: '',
 			render: (dataValue, record, index) => (
 				<span className="flex gap-1">
-					<Button
-						variant="secondary"
-						onClick={() => {
-							handleOpenFormModal();
-							setIsEdit(true);
-							setSelectedData(dataValue);
-						}}
-					>
-						<AiFillEdit />
-					</Button>
-					<Button
-						variant="red-accent"
-						onClick={() => handleShowConfirmationModal(dataValue)}
-					>
-						<AiFillDelete />
-					</Button>
+					{hasAccess('product:update') && (
+						<Button
+							variant="secondary"
+							onClick={() => {
+								handleOpenFormModal();
+								setIsEdit(true);
+								setSelectedData(dataValue);
+							}}
+						>
+							<AiFillEdit />
+						</Button>
+					)}
+					{hasAccess('product:delete') && (
+						<Button
+							variant="red-accent"
+							onClick={() => handleShowConfirmationModal(dataValue)}
+						>
+							<AiFillDelete />
+						</Button>
+					)}
 				</span>
 			),
 		},
@@ -143,11 +153,13 @@ const ListProductMenuLayout = ({
 
 	return (
 		<div className="pt-5">
-			<HeaderContent
-				onClick={handleOpenFormModal}
-				textButton="Add Product"
-				iconElement={<AiOutlinePlus />}
-			/>
+			{hasAccess('product:create') && (
+				<HeaderContent
+					onClick={handleOpenFormModal}
+					textButton="Add Product"
+					iconElement={<AiOutlinePlus />}
+				/>
+			)}
 			<ModalFormProduct
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

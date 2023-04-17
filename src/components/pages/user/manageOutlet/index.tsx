@@ -3,6 +3,7 @@ import {timeStampConverter} from '@/constants/utils';
 import {Outlet} from '@/domain/outlet/models';
 import {GetFilterOutletInput} from '@/domain/outlet/repositories/OutletRepositories';
 import {Search} from '@/domain/vo/BaseInput';
+import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
 import {useDeleteOutletViewModal} from '@/view/outlet/view-models/DeleteOutletViewModel';
@@ -28,6 +29,7 @@ type ManageOutletLayoutProps = {
 const ManageOutletLayout = ({restaurant_uuid}: ManageOutletLayoutProps) => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
+	const {hasAccess} = useAccessControl();
 	const [searchParams, setSearchParams] = useState<Array<Search<any>>>([]);
 
 	const hooksParams: GetFilterOutletInput = useMemo(
@@ -137,24 +139,33 @@ const ManageOutletLayout = ({restaurant_uuid}: ManageOutletLayoutProps) => {
 
 		{
 			title: 'Action',
+			className:
+				!hasAccess('restaurant_outlet:update') &&
+				!hasAccess('restaurant_outlet:delete')
+					? 'hidden'
+					: '',
 			render: (dataValue, record, index) => (
 				<span className="flex gap-1">
-					<Button
-						variant="secondary"
-						onClick={() => {
-							handleOpenFormModal();
-							setIsEdit(true);
-							setSelectedData(dataValue);
-						}}
-					>
-						<AiFillEdit />
-					</Button>
-					<Button
-						variant="red-accent"
-						onClick={() => handleShowConfirmationModal(dataValue)}
-					>
-						<AiFillDelete />
-					</Button>
+					{hasAccess('restaurant_outlet:update') && (
+						<Button
+							variant="secondary"
+							onClick={() => {
+								handleOpenFormModal();
+								setIsEdit(true);
+								setSelectedData(dataValue);
+							}}
+						>
+							<AiFillEdit />
+						</Button>
+					)}
+					{hasAccess('restaurant_outlet:update') && (
+						<Button
+							variant="red-accent"
+							onClick={() => handleShowConfirmationModal(dataValue)}
+						>
+							<AiFillDelete />
+						</Button>
+					)}
 				</span>
 			),
 		},
@@ -171,11 +182,13 @@ const ManageOutletLayout = ({restaurant_uuid}: ManageOutletLayoutProps) => {
 
 	return (
 		<div className="pt-5">
-			<HeaderContent
-				onClick={handleOpenFormModal}
-				textButton="Add New Outlet"
-				iconElement={<AiOutlinePlus />}
-			/>
+			{hasAccess('restaurant_outlet:create') && (
+				<HeaderContent
+					onClick={handleOpenFormModal}
+					textButton="Add New Outlet"
+					iconElement={<AiOutlinePlus />}
+				/>
+			)}
 			<MoleculesFormManageOutlet
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

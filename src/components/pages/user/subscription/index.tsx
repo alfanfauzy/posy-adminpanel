@@ -3,6 +3,7 @@ import {timeStampConverter} from '@/constants/utils';
 import {UserSubscription} from '@/domain/user-subscription/models';
 import {GetUserSubscriptionFilterInput} from '@/domain/user-subscription/repositories/UserSubscriptionRepository';
 import {Search} from '@/domain/vo/BaseInput';
+import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
 import {useGetUserSubscriptionViewModal} from '@/view/user-subscription/view-modals/GetUserSubscriptionViewModel';
@@ -25,6 +26,7 @@ const UserSubscriptionLayout = ({
 }: UserSubscriptionLayoutProps) => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
+	const {hasAccess} = useAccessControl();
 	const [searchParams, setSearchParams] = useState<Array<Search<any>>>([]);
 
 	const hooksParams: GetUserSubscriptionFilterInput = useMemo(
@@ -114,11 +116,13 @@ const UserSubscriptionLayout = ({
 
 	return (
 		<div className="pt-5">
-			<HeaderContent
-				onClick={handleOpenFormModal}
-				textButton="Create New Subscription"
-				iconElement={<AiOutlinePlus />}
-			/>
+			{hasAccess('subscription:assign') && (
+				<HeaderContent
+					onClick={handleOpenFormModal}
+					textButton="Create New Subscription"
+					iconElement={<AiOutlinePlus />}
+				/>
+			)}
 			<MoleculesFormUserSubscription
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

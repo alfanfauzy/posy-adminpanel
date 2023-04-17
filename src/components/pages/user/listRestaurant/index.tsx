@@ -2,6 +2,7 @@ import AtomTable from '@/atoms/table';
 import {timeStampConverter} from '@/constants/utils';
 import {Restaurant} from '@/domain/restaurant/models';
 import {GetFilterRestaurantInput} from '@/domain/restaurant/repositories/RestaurantRepository';
+import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
 import {useDeleteRestaurantViewModal} from '@/view/restaurant/view-models/DeleteRestaurantViewModel';
@@ -31,6 +32,7 @@ const ModalConfirmation = dynamic(
 const ListRestaurantLayout: React.FC = () => {
 	const dispatch = useDispatchApp();
 	const router = useRouter();
+	const {hasAccess} = useAccessControl();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 
@@ -125,33 +127,46 @@ const ListRestaurantLayout: React.FC = () => {
 
 		{
 			title: 'Action',
+			className:
+				!hasAccess('restaurant:update') &&
+				!hasAccess('restaurant:delete') &&
+				!hasAccess('restaurant:read')
+					? 'hidden'
+					: '',
 			render: (dataValue, record) => (
 				<span className="flex gap-1">
-					<Button
-						variant="primary"
-						onClick={() => {
-							router.push(`/user/list-restaurant/${record.uuid}`);
-							dispatch(restaurantDetail(dataValue));
-						}}
-					>
-						<AiOutlineFolderOpen />
-					</Button>
-					<Button
-						variant="secondary"
-						onClick={() => {
-							handleOpenFormModal();
-							setIsEdit(true);
-							setSelectedData(dataValue);
-						}}
-					>
-						<AiFillEdit />
-					</Button>
-					<Button
-						variant="red-accent"
-						onClick={() => handleShowConfirmationModal(dataValue)}
-					>
-						<AiFillDelete />
-					</Button>
+					{hasAccess('restaurant:read') && (
+						<Button
+							variant="primary"
+							onClick={() => {
+								router.push(`/user/restaurant/${record.uuid}`);
+								dispatch(restaurantDetail(dataValue));
+							}}
+						>
+							<AiOutlineFolderOpen />
+						</Button>
+					)}
+					{hasAccess('restaurant:update') && (
+						<Button
+							variant="secondary"
+							onClick={() => {
+								handleOpenFormModal();
+								setIsEdit(true);
+								setSelectedData(dataValue);
+							}}
+						>
+							<AiFillEdit />
+						</Button>
+					)}
+
+					{hasAccess('restaurant:delete') && (
+						<Button
+							variant="red-accent"
+							onClick={() => handleShowConfirmationModal(dataValue)}
+						>
+							<AiFillDelete />
+						</Button>
+					)}
 				</span>
 			),
 		},
@@ -159,11 +174,13 @@ const ListRestaurantLayout: React.FC = () => {
 
 	return (
 		<div>
-			<HeaderContent
-				onClick={handleOpenFormModal}
-				textButton="Add New Restaurant"
-				iconElement={<AiOutlinePlus />}
-			/>
+			{hasAccess('restaurant:create') && (
+				<HeaderContent
+					onClick={handleOpenFormModal}
+					textButton="Add New Restaurant"
+					iconElement={<AiOutlinePlus />}
+				/>
+			)}
 			<ModalFormRestaurant
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

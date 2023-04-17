@@ -11,7 +11,6 @@ import {
 	SubMenu,
 	useProSidebar,
 } from 'react-pro-sidebar';
-import {store} from 'store/index';
 
 import {
 	MenuSidebar,
@@ -73,21 +72,25 @@ const SubMenuMenuContent = ({itemMenu, goToPage}: SubMenuEntities) => {
 			icon={icon}
 			defaultOpen={firstPath === label.toLocaleLowerCase()}
 		>
-			{items?.map(item => (
-				<MenuItem
-					key={generateUniqueId(5)}
-					onClick={() => goToPage(item.path ?? '')}
-					className={`transition-all duration-300 ease-in-out ${
-						// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-						asPath.indexOf(item.path!) !== -1
-							? 'bg-[#00ba9b] text-white'
-							: 'hover:bg-slate-100'
-					}`}
-				>
-					{' '}
-					{item.label}
-				</MenuItem>
-			))}
+			{items?.map(item => {
+				if (item.show) {
+					return (
+						<MenuItem
+							key={generateUniqueId(5)}
+							onClick={() => goToPage(item.path ?? '')}
+							className={`transition-all duration-300 ease-in-out ${
+								// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+								asPath === item.path
+									? 'bg-[#00ba9b] text-white'
+									: 'hover:bg-slate-100'
+							}`}
+						>
+							{' '}
+							{item.label}
+						</MenuItem>
+					);
+				}
+			})}
 		</SubMenu>
 	);
 };
@@ -116,7 +119,7 @@ const SidebarContent = ({listMenus}: MenuSidebar) => {
 			}}
 		>
 			{listMenus.map(menu => {
-				if (menu.type === 'single-menu') {
+				if (menu.type === 'single-menu' && menu.show) {
 					return (
 						<SingleMenuContent
 							key={generateUniqueId(5)}
@@ -126,13 +129,15 @@ const SidebarContent = ({listMenus}: MenuSidebar) => {
 					);
 				}
 
-				return (
-					<SubMenuMenuContent
-						key={generateUniqueId(5)}
-						itemMenu={menu}
-						goToPage={goToPage}
-					/>
-				);
+				if (menu.show) {
+					return (
+						<SubMenuMenuContent
+							key={generateUniqueId(5)}
+							itemMenu={menu}
+							goToPage={goToPage}
+						/>
+					);
+				}
 			})}
 		</Menu>
 	);
@@ -140,8 +145,6 @@ const SidebarContent = ({listMenus}: MenuSidebar) => {
 
 const OrganismSidebar = () => {
 	const {collapseSidebar} = useProSidebar();
-
-	const permissions = store.getState().auth.permission;
 
 	return (
 		<Sidebar

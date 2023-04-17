@@ -3,6 +3,7 @@ import VerticalTabs from '@/atoms/verticalTabs';
 import {GetAccessListDataResponse} from '@/data/access/types';
 import {TempAccess} from '@/domain/access/models';
 import {GetRolesInput} from '@/domain/role/repositories/RoleRepository';
+import {useAccessControl} from '@/hooks/useAccessControl';
 import {useGetAccessViewModal} from '@/view/access/view-modals/GetAccessViewModel';
 import {useGetRolesViewModal} from '@/view/role/view-modals/GetRolesViewModel';
 import {useCreateRoleAccessViewModal} from '@/view/roleaccess/view-modals/CreateRoleAccessViewModel';
@@ -50,6 +51,7 @@ const GroupingAccess = (DataAccesses: object): Array<AccessByGroup> => {
 const AccessSettingLayout = ({type, value}: AccessSettingLayoutProps) => {
 	const [selectedRole, setSelectedRole] = useState({id: '0', name: ''});
 	const [tempAccess, setTempAccess] = useState<Array<TempAccess>>([]);
+	const {hasAccess} = useAccessControl();
 
 	const hooksParams: GetRolesInput = {
 		search: [
@@ -151,15 +153,17 @@ const AccessSettingLayout = ({type, value}: AccessSettingLayoutProps) => {
 					setTempAccess={setTempAccess}
 				/>
 			)}
-			<section className="text-right">
-				<Button
-					type="submit"
-					onClick={() => handleSubmit()}
-					isLoading={isLoading}
-				>
-					Save Setting
-				</Button>
-			</section>
+			{hasAccess('role_admin:manage_access_setting') && (
+				<section className="text-right">
+					<Button
+						type="submit"
+						onClick={() => handleSubmit()}
+						isLoading={isLoading}
+					>
+						Save Setting
+					</Button>
+				</section>
+			)}
 		</main>
 	);
 };

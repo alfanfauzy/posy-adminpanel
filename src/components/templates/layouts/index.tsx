@@ -3,8 +3,11 @@ import MoleculesBreadcrumb from '@/molecules/breadcrumb';
 import TemplatesHeader from '@/templates/header';
 import OrganismSidebar from '@/templates/sidebar';
 import {motion} from 'framer-motion';
-import React from 'react';
+import {useRouter} from 'next/router';
+import React, {useEffect} from 'react';
 import {ProSidebarProvider} from 'react-pro-sidebar';
+import {toast} from 'react-toastify';
+import {useAppSelector} from 'store/hooks';
 
 export type GeneralLayoutProps = {
 	children: React.ReactNode;
@@ -13,7 +16,24 @@ export type GeneralLayoutProps = {
 };
 
 const GeneralLayout = ({children, menu, subMenu}: GeneralLayoutProps) => {
+	const router = useRouter();
+
+	const permissions = useAppSelector(state => state.auth.permission);
+
 	useAuthentication();
+
+	useEffect(() => {
+		const paramPathName = router.pathname.split('/')[2];
+
+		if (router.pathname === '/dashboard') {
+			return;
+		}
+
+		if (!permissions.includes(paramPathName)) {
+			router.push('/dashboard');
+			toast.error(`You don't have permission`);
+		}
+	}, [router.pathname]);
 
 	return (
 		<ProSidebarProvider>

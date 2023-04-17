@@ -1,6 +1,7 @@
 import AtomTable from '@/atoms/table';
 import FilterTable from '@/atoms/table/filter/input';
 import {findIndexArraySearch, timeStampConverter} from '@/constants/utils';
+import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
 import {useDeleteRolesViewModal} from '@/view/role/view-modals/DeleteRoleViewModel';
@@ -23,6 +24,7 @@ const ModalConfirmation = dynamic(
 );
 
 const RoleLayout = ({type, value}: RoleLayoutProps) => {
+	const {hasAccess} = useAccessControl();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 	const [searchParams, setSearchParams] = useState<Array<Search<any>>>([
@@ -179,6 +181,7 @@ const RoleLayout = ({type, value}: RoleLayoutProps) => {
 
 		{
 			title: 'Action',
+			className: !hasAccess('role_admin:manage_role') ? 'hidden' : '',
 			render: dataValue => (
 				<span className="flex gap-1">
 					<Button
@@ -204,11 +207,13 @@ const RoleLayout = ({type, value}: RoleLayoutProps) => {
 
 	return (
 		<main className="mt-4">
-			<HeaderContent
-				onClick={handleOpenFormModal}
-				textButton="Create Role"
-				iconElement={<AiOutlinePlus />}
-			/>
+			{hasAccess('role_admin:manage_role') && (
+				<HeaderContent
+					onClick={handleOpenFormModal}
+					textButton="Create Role"
+					iconElement={<AiOutlinePlus />}
+				/>
+			)}
 			<ModalFormRole
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

@@ -1,22 +1,32 @@
 import {MdOutlineGroup, MdGroups, MdAccountBalanceWallet} from 'react-icons/md';
+import {store} from 'store/index';
+
+const permissions = store.getState().auth.permission;
 
 export const MENU_LIST = [
 	{
 		label: 'Admin',
 		icon: <MdOutlineGroup />,
 		type: 'sub-menu',
+		show:
+			permissions.includes('admin') ||
+			permissions.includes('role_admin') ||
+			permissions.includes('subscription'),
 		items: [
 			{
 				label: 'List Admin',
-				path: '/admin/list',
+				path: '/admin/admin',
+				show: permissions.includes('admin'),
 			},
 			{
 				label: 'Role & Permission',
-				path: '/admin/role',
+				path: '/admin/role_admin',
+				show: permissions.includes('role_admin'),
 			},
 			{
 				label: 'Subscription Plan',
 				path: '/admin/subscription',
+				show: permissions.includes('subscription'),
 			},
 		],
 	},
@@ -24,26 +34,38 @@ export const MENU_LIST = [
 		label: 'User',
 		icon: <MdGroups />,
 		type: 'sub-menu',
+		show:
+			permissions.includes('restaurant') ||
+			permissions.includes('restaurant_outlet') ||
+			permissions.includes('product') ||
+			permissions.includes('role') ||
+			permissions.includes('access') ||
+			permissions.includes('product_outlet'),
 		items: [
 			{
 				label: 'List Restaurant',
-				path: '/user/list-restaurant',
+				path: '/user/restaurant',
+				show: permissions.includes('restaurant'),
 			},
 			{
 				label: 'Manage Outlet',
-				path: '/user/manage-outlet',
+				path: '/user/restaurant_outlet',
+				show: permissions.includes('restaurant_outlet'),
 			},
 			{
 				label: 'List User',
-				path: '/user/list-user-restaurant',
+				path: '/user/user_restaurant',
+				show: permissions.includes('user_restaurant'),
 			},
 			{
 				label: 'Role User',
-				path: '/user/role-user',
+				path: '/user/role',
+				show: permissions.includes('role') || permissions.includes('access'),
 			},
 			{
 				label: 'User Subscription',
 				path: '/user/subscription',
+				show: permissions.includes('subscription'),
 			},
 		],
 	},
