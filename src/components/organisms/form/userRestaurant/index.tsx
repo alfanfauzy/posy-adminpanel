@@ -258,25 +258,25 @@ const MoleculesFormUserRestaurant = ({
 						/>
 					</div>
 
+					<div className="mb-6">
+						<Select
+							name="role_uuid"
+							onChange={e => {
+								setValue('role_uuid', e);
+								clearErrors('role_uuid');
+							}}
+							isLoading={isLoadingRole}
+							options={RoleSelect}
+							labelText="Role"
+							placeholder="ex: Select Role"
+							className="flex items-center justify-center"
+							error={!!errors.role_uuid}
+							helperText={errors?.role_uuid && 'This field cannot be empty'}
+						/>
+					</div>
+
 					{!isEdit && (
 						<div>
-							<div className="mb-6">
-								<Select
-									name="role_uuid"
-									onChange={e => {
-										setValue('role_uuid', e);
-										clearErrors('role_uuid');
-									}}
-									isLoading={isLoadingRole}
-									options={RoleSelect}
-									labelText="Role"
-									placeholder="ex: Select Role"
-									className="flex items-center justify-center"
-									error={!!errors.role_uuid}
-									helperText={errors?.role_uuid && 'This field cannot be empty'}
-								/>
-							</div>
-
 							<div className="mb-6">
 								<Select
 									name="restaurant_uuid"
