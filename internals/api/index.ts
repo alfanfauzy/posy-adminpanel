@@ -1,33 +1,21 @@
 /* eslint-disable no-param-reassign */
+import {GroupingAccess} from '@/constants/utils';
 import {DataLogin} from '@/domain/auth/models';
 import {Response} from '@/domain/vo/BaseResponse';
-import axios, {AxiosResponse} from 'axios';
+import axios from 'axios';
 import {toast} from 'react-toastify';
 // eslint-disable-next-line import/no-cycle
-import {HandleRefreshTokenLogin} from 'services/login';
 import {store} from 'store/index';
 import {authSuccess} from 'store/slice/auth';
 
-let isRefreshing = false;
-const pendingRequest: Array<any> = [];
-
-function onTokenRefreshed(token: string) {
-	pendingRequest.filter((cb: any) => cb(token));
-}
-
-function addPendingRequest(callback: (token: string) => void) {
-	pendingRequest.push(callback);
-}
-
 const axiosApiInstance = axios.create();
+
 // Request interceptor for API calls
 axiosApiInstance.interceptors.request.use(
-	async (config: any) => {
+	(config: any) => {
 		const {token} = store.getState().auth.authData;
 		if (token) {
-			config.headers = {
-				token,
-			};
+			config.headers['token'] = token;
 		}
 
 		return config;
@@ -37,66 +25,53 @@ axiosApiInstance.interceptors.request.use(
 	},
 );
 
-// Create a new Axios instance with a response interceptor
-const axiosRefreshInstance = axios.create();
-axiosRefreshInstance.interceptors.response.use(
-	response => {
-		return response;
+axiosApiInstance.interceptors.response.use(
+	res => {
+		return res;
 	},
-	async error => {
-		const {config, response} = error;
+	async err => {
+		const {config, response} = err;
 		const originalRequest = config;
 		const statusCode = response.status;
 
+		// Access Token was expired
 		if (statusCode === 401 && !originalRequest._retry) {
-			if (isRefreshing) {
-				// If the refresh token is already being refreshed, add the request to a refresh queue
-				return new Promise(function (resolve) {
-					addPendingRequest(function (token: string) {
-						originalRequest.headers = {token};
-						resolve(axiosApiInstance(originalRequest));
-					});
-				});
+			originalRequest._retry = true;
+
+			const dataStore = store.getState().auth.authData;
+
+			try {
+				const responseRefreshToken: Response<DataLogin> = await axios.post(
+					'/api/fnb-user-service/refresh-token',
+					{
+						user_uuid: dataStore.user_info.user_uuid,
+						token: dataStore.token,
+						refresh_token: dataStore.refresh_token,
+					},
+				);
+
+				if (
+					responseRefreshToken.code === 0 &&
+					responseRefreshToken.message === 'OK'
+				) {
+					const permission = GroupingAccess(
+						responseRefreshToken.data.role_access.accesses,
+					);
+
+					const newPayload = {
+						...responseRefreshToken.data,
+						permission,
+					};
+
+					store.dispatch(authSuccess(newPayload));
+				}
+			} catch (_error) {
+				toast.error('Session time out. Please login again.');
+				return Promise.reject(_error);
 			}
-
-			isRefreshing = true;
-
-			// Use the refresh token to request a new access token
-			return new Promise((resolve, reject) => {
-				const dataStore = store.getState().auth.authData;
-
-				const payload = {
-					user_uuid: dataStore.user_info.user_uuid,
-					token: dataStore.token,
-					refresh_token: dataStore.refresh_token,
-				};
-
-				axiosRefreshInstance
-					.post('/api/fnb-user-service/refresh-token', {
-						payload,
-					})
-					.then((responseRefreshToken: AxiosResponse<Response<DataLogin>>) => {
-						if (
-							responseRefreshToken.data.code === 0 &&
-							responseRefreshToken.data.message === 'OK'
-						) {
-							isRefreshing = false;
-
-							store.dispatch(authSuccess(responseRefreshToken.data.data));
-
-							onTokenRefreshed(responseRefreshToken.data.data.token);
-							resolve(axiosApiInstance(originalRequest));
-						}
-					})
-					.catch(errorRefreshToken => {
-						reject(errorRefreshToken);
-					})
-					.finally(() => {
-						isRefreshing = false;
-					});
-			});
 		}
-		return Promise.reject(error);
+
+		return Promise.reject(err);
 	},
 );
 

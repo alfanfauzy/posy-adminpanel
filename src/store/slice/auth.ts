@@ -42,6 +42,7 @@ export const AuthSlice = createSlice({
 	initialState,
 	reducers: {
 		authSuccess: (state: AuthState, action: PayloadAction<DataLogin>) => {
+			console.log('action nih    ', action);
 			state.isLoggedIn = true;
 			state.authData = action.payload;
 			state.permission = action.payload.permission;

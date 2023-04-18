@@ -1,5 +1,6 @@
 import Footer from '@/atoms/footer';
 import IconEye from '@/atoms/icon/IconEye';
+import {GroupingAccess} from '@/constants/utils';
 import {GetAccessListDataResponse} from '@/data/access/types';
 import {useForm} from '@/hooks/useForm';
 import {loginSchema, ValidationLoginSchema} from '@/schemas/login';
@@ -31,13 +32,6 @@ const MoleculesLogin = () => {
 
 	const handleGoDashboard = () => {
 		router.push('/dashboard');
-	};
-
-	const GroupingAccess = (DataAccesses: object): Array<string> => {
-		const getKey = Object.assign(DataAccesses).map(
-			(data: GetAccessListDataResponse) => data.key.split(':')[0],
-		);
-		return Array.from(new Set(getKey));
 	};
 
 	const {loginPost, isLoading} = useLoginViewModal({

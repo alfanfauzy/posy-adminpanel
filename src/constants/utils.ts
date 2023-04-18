@@ -1,3 +1,4 @@
+import {GetAccessListDataResponse} from '@/data/access/types';
 import moment from 'moment';
 import {ParamsObject} from 'shared/baseResponse';
 
@@ -90,3 +91,10 @@ export const TimetoUnix = (valueDate: string | number | Date) => {
 
 export const formatCurrencyTextInput = (value: string) =>
 	value.replace(/\D/g, '').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+
+export const GroupingAccess = (DataAccesses: object): Array<string> => {
+	const getKey = Object.assign(DataAccesses).map(
+		(data: GetAccessListDataResponse) => data.key.split(':')[0],
+	);
+	return Array.from(new Set(getKey));
+};
