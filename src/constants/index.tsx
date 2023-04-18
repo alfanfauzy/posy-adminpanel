@@ -54,8 +54,8 @@ export const MENU_LIST = [
 			},
 			{
 				label: 'List User',
-				path: '/user/user_restaurant',
-				show: permissions.includes('user_restaurant'),
+				path: '/user/restaurant_user',
+				show: permissions.includes('restaurant_user'),
 			},
 			{
 				label: 'Role User',

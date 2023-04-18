@@ -143,13 +143,13 @@ const ListUserRestaurantLayout: React.FC = () => {
 		{
 			title: 'Action',
 			className:
-				!hasAccess('user_restaurant:update') &&
-				!hasAccess('user_restaurant:delete')
+				!hasAccess('restaurant_user:update') &&
+				!hasAccess('restaurant_user:delete')
 					? 'hidden'
 					: '',
 			render: dataValue => (
 				<span className="flex gap-1">
-					{hasAccess('user_restaurant:update') && (
+					{hasAccess('restaurant_user:update') && (
 						<Button
 							variant="secondary"
 							onClick={() => {
@@ -161,7 +161,7 @@ const ListUserRestaurantLayout: React.FC = () => {
 							<AiFillEdit />
 						</Button>
 					)}
-					{hasAccess('user_restaurant:delete') && (
+					{hasAccess('restaurant_user:delete') && (
 						<Button
 							variant="red-accent"
 							onClick={() => handleShowConfirmationModal(dataValue)}
@@ -176,7 +176,7 @@ const ListUserRestaurantLayout: React.FC = () => {
 
 	return (
 		<div>
-			{hasAccess('user_restaurant:create') && (
+			{hasAccess('restaurant_user:create') && (
 				<HeaderContent
 					onClick={handleOpenFormModal}
 					textButton="Add New User"
