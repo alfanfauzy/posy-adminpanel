@@ -228,7 +228,7 @@ const RoleLayout = ({type, value}: RoleLayoutProps) => {
 			/>
 			<ModalConfirmation
 				isOpenModal={openModalConfirmation}
-				title="Modal Confirmation"
+				title="Confirmation"
 				text="Are you sure want to remove ?"
 				onClose={handleCloseModalConfirmation}
 				onOk={handleDeleteRole}

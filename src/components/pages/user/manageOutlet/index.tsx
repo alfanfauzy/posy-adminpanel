@@ -198,7 +198,7 @@ const ManageOutletLayout = ({restaurant_uuid}: ManageOutletLayoutProps) => {
 			<ModalConfirmation
 				isLoadingRemove={isLoadingRemove}
 				isOpenModal={openModalConfirmation}
-				title="Modal Confirmation"
+				title="Confirmation"
 				text="Are you sure want to remove ?"
 				onClose={handleCloseModalConfirmation}
 				onOk={handleDeleteOutlet}

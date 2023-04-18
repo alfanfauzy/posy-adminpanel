@@ -194,7 +194,7 @@ const SubscriptionLayout: React.FC = () => {
 			/>
 			<ModalConfirmation
 				isOpenModal={openModalConfirmation}
-				title="Modal Confirmation"
+				title="Confirmation"
 				text="Are you sure want to remove ?"
 				onClose={handleCloseModalConfirmation}
 				onOk={handleDeleteSubscription}
