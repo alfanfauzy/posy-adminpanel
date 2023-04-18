@@ -60,7 +60,7 @@ export const MENU_LIST = [
 			{
 				label: 'Role User',
 				path: '/user/role',
-				show: permissions.includes('role') || permissions.includes('access'),
+				show: permissions.includes('role_user'),
 			},
 			{
 				label: 'User Subscription',

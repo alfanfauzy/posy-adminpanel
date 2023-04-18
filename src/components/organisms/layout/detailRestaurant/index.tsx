@@ -24,7 +24,7 @@ const OrganismDetailRestaurant = () => {
 					<h1 className="text-xl-semibold">{restaurant.name}</h1>
 					<button
 						type="button"
-						onClick={() => router.push('/user/list-restaurant')}
+						onClick={() => router.push('/user/restaurant')}
 						className="flex w-auto items-center gap-1 rounded-md border border-gray-200 !bg-[#00ba9a]  px-4 py-1 text-m-medium text-white shadow-md hover:!bg-[#219a86]"
 					>
 						<AiOutlineDoubleLeft />
