@@ -142,7 +142,11 @@ const PermissionLayout = ({type, value}: PermissionLayoutProps) => {
 
 		{
 			title: 'Action',
-			className: !hasAccess('role_admin:manage_permission') ? 'hidden' : '',
+			className:
+				!hasAccess('role_admin:manage_permission') ||
+				!hasAccess('role_user:manage_permission')
+					? 'hidden'
+					: '',
 			render: (dataValue, record, index) => (
 				<span className="flex gap-1">
 					<Button
@@ -168,13 +172,14 @@ const PermissionLayout = ({type, value}: PermissionLayoutProps) => {
 
 	return (
 		<main className="mt-4">
-			{hasAccess('role_admin:manage_permission') && (
-				<HeaderContent
-					onClick={handleOpenFormModal}
-					textButton="Create New Permission"
-					iconElement={<AiOutlinePlus />}
-				/>
-			)}
+			{hasAccess('role_admin:manage_permission') ||
+				(hasAccess('role_user:manage_permission') && (
+					<HeaderContent
+						onClick={handleOpenFormModal}
+						textButton="Create New Permission"
+						iconElement={<AiOutlinePlus />}
+					/>
+				))}
 			<MoleculesFormPermission
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

@@ -181,7 +181,11 @@ const RoleLayout = ({type, value}: RoleLayoutProps) => {
 
 		{
 			title: 'Action',
-			className: !hasAccess('role_admin:manage_role') ? 'hidden' : '',
+			className:
+				!hasAccess('role_admin:manage_role') ||
+				!hasAccess('role_user:manage_role')
+					? 'hidden'
+					: '',
 			render: dataValue => (
 				<span className="flex gap-1">
 					<Button
@@ -207,13 +211,14 @@ const RoleLayout = ({type, value}: RoleLayoutProps) => {
 
 	return (
 		<main className="mt-4">
-			{hasAccess('role_admin:manage_role') && (
-				<HeaderContent
-					onClick={handleOpenFormModal}
-					textButton="Create Role"
-					iconElement={<AiOutlinePlus />}
-				/>
-			)}
+			{hasAccess('role_admin:manage_role') ||
+				(hasAccess('role_user:manage_role') && (
+					<HeaderContent
+						onClick={handleOpenFormModal}
+						textButton="Create Role"
+						iconElement={<AiOutlinePlus />}
+					/>
+				))}
 			<ModalFormRole
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

@@ -1,3 +1,4 @@
+import {useAccessControl} from '@/hooks/useAccessControl';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import React from 'react';
@@ -5,6 +6,7 @@ import {AiOutlineDoubleLeft} from 'react-icons/ai';
 import {useAppSelector} from 'store/hooks';
 
 const OrganismDetailRestaurant = () => {
+	const {hasAccess} = useAccessControl();
 	const router = useRouter();
 	const restaurant = useAppSelector(state => state.restaurant);
 
@@ -54,30 +56,34 @@ const OrganismDetailRestaurant = () => {
 							<p className="text-l-reguler">{restaurant.pic_phone}</p>
 						</div>
 					</div>
-					<div className="flex flex-col gap-3">
-						<div>
-							<h3 className="text-s-regular text-gray-400">NPWP</h3>
-							<Image
-								src={restaurant.npwp}
-								width={150}
-								height={150}
-								className="rounded-lg border border-gray-300 object-contain"
-								alt="npwp"
-							/>
+					{hasAccess('restaurant:read_npwp') && (
+						<div className="flex flex-col gap-3">
+							<div>
+								<h3 className="text-s-regular text-gray-400">NPWP</h3>
+								<Image
+									src={restaurant.npwp}
+									width={150}
+									height={150}
+									className="rounded-lg border border-gray-300 object-contain"
+									alt="npwp"
+								/>
+							</div>
 						</div>
-					</div>
-					<div className="flex flex-col gap-3">
-						<div>
-							<h3 className="text-s-regular text-gray-400">NIB</h3>
-							<Image
-								src={restaurant.nib}
-								width={150}
-								height={150}
-								className="rounded-lg border border-gray-300 object-contain"
-								alt="nib"
-							/>
+					)}
+					{hasAccess('restaurant:read_nib') && (
+						<div className="flex flex-col gap-3">
+							<div>
+								<h3 className="text-s-regular text-gray-400">NIB</h3>
+								<Image
+									src={restaurant.nib}
+									width={150}
+									height={150}
+									className="rounded-lg border border-gray-300 object-contain"
+									alt="nib"
+								/>
+							</div>
 						</div>
-					</div>
+					)}
 				</div>
 			</div>
 		</section>

@@ -8,14 +8,10 @@ export function useAccessControl() {
 		state => state.auth.authData.role_access.accesses,
 	);
 
-	console.log(access);
-
 	const toNewObjectAccess = useMemo(
 		() => Object.fromEntries(access.map(item => [item.key, item.key])),
 		[access],
 	);
-
-	console.log(toNewObjectAccess);
 
 	type DynamicKeys = keyof typeof toNewObjectAccess;
 
