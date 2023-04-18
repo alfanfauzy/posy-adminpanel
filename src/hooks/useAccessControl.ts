@@ -13,6 +13,8 @@ export function useAccessControl() {
 		[access],
 	);
 
+	console.log(toNewObjectAccess);
+
 	type DynamicKeys = keyof typeof toNewObjectAccess;
 
 	useEffect(() => {

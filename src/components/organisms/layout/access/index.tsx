@@ -153,18 +153,17 @@ const AccessSettingLayout = ({type, value}: AccessSettingLayoutProps) => {
 					setTempAccess={setTempAccess}
 				/>
 			)}
-			{hasAccess('role_admin:manage_access_setting') ||
-				(hasAccess('role_user:manage_access_setting') && (
-					<section className="text-right">
-						<Button
-							type="submit"
-							onClick={() => handleSubmit()}
-							isLoading={isLoading}
-						>
-							Save Setting
-						</Button>
-					</section>
-				))}
+			{hasAccess('role_admin:manage_access_setting') && (
+				<section className="text-right">
+					<Button
+						type="submit"
+						onClick={() => handleSubmit()}
+						isLoading={isLoading}
+					>
+						Save Setting
+					</Button>
+				</section>
+			)}
 		</main>
 	);
 };

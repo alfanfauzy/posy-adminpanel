@@ -1,6 +1,7 @@
 import AtomTable from '@/atoms/table';
 import {Category} from '@/domain/category/models';
 import {GetFilterCategoryInput} from '@/domain/category/repositories/CategoryRepository';
+import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import MoleculesSwitchStatusCategory from '@/molecules/moleculesSwitch';
 import HeaderContent from '@/templates/header/header-content';
@@ -17,6 +18,7 @@ type CategoryLayoutProps = {
 };
 
 const CategoryLayout = ({restaurant_uuid}: CategoryLayoutProps) => {
+	const {hasAccess} = useAccessControl();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 
@@ -68,18 +70,24 @@ const CategoryLayout = ({restaurant_uuid}: CategoryLayoutProps) => {
 			key: 'is_active',
 			dataIndex: 'is_active',
 			render: (data, item) => (
-				<MoleculesSwitchStatusCategory item={item} data={data} />
+				<MoleculesSwitchStatusCategory
+					item={item}
+					data={data}
+					disabled={hasAccess('product_category:updategi')}
+				/>
 			),
 		},
 	];
 
 	return (
 		<div className="pt-5">
-			<HeaderContent
-				onClick={handleOpenFormModal}
-				textButton="Add New Category"
-				iconElement={<AiOutlinePlus />}
-			/>
+			{hasAccess('product_category:create') && (
+				<HeaderContent
+					onClick={handleOpenFormModal}
+					textButton="Add New Category"
+					iconElement={<AiOutlinePlus />}
+				/>
+			)}
 			<ModalFormCategory
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

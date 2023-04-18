@@ -9,9 +9,14 @@ import {toast} from 'react-toastify';
 type MoleculesSwitchProps = {
 	data: boolean;
 	item: Category;
+	disabled: boolean;
 };
 
-const MoleculesSwitchStatusCategory = ({data, item}: MoleculesSwitchProps) => {
+const MoleculesSwitchStatusCategory = ({
+	data,
+	item,
+	disabled,
+}: MoleculesSwitchProps) => {
 	const {value: statusValue, toggle} = useToggle(data);
 
 	const {updateCategory} = useUpdateCategoryViewModal({
@@ -34,6 +39,7 @@ const MoleculesSwitchStatusCategory = ({data, item}: MoleculesSwitchProps) => {
 
 	return (
 		<AtomSwitch
+			disabled={disabled}
 			value={statusValue}
 			name="is_active"
 			text={statusValue ? 'Active' : 'Inactive'}
