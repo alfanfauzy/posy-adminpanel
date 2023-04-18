@@ -15,7 +15,7 @@ import React, {useEffect} from 'react';
 import {AiOutlineCheckSquare} from 'react-icons/ai';
 import {toast} from 'react-toastify';
 
-import {FormSubscriptionEntities} from './entities';
+import {FormSubscriptionEntities, OptionObject} from './entities';
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
 	ssr: false,
@@ -97,6 +97,10 @@ const MoleculesFormSubscription = ({
 		}
 	};
 
+	const filterOption = (option: OptionObject, inputValue: string) => {
+		return option.label.toLowerCase().includes(inputValue.toLowerCase());
+	};
+
 	useEffect(() => {
 		if (isEdit) {
 			const {name, price, period, description} = selectedData;
@@ -149,6 +153,7 @@ const MoleculesFormSubscription = ({
 							placeholder="ex: 1 Month, etc"
 							className="flex items-center justify-center"
 							error={!!errors.period}
+							filterOption={filterOption}
 							helperText={errors?.period && 'This field cannot be empty'}
 						/>
 					</div>
