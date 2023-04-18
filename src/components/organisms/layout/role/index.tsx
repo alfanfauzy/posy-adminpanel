@@ -152,7 +152,7 @@ const RoleLayout = ({type, value}: RoleLayoutProps) => {
 			dataIndex: '',
 			filterMode: 'tree',
 			filterSearch: true,
-			render: (datavalue, record, index) => (page - 1) * 10 + index + 1,
+			render: (datavalue, record, index) => (page - 1) * limit + index + 1,
 		},
 		{
 			title: 'Role Name',

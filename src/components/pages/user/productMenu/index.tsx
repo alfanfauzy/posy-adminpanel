@@ -105,7 +105,7 @@ const ListProductMenuLayout = ({
 			dataIndex: '',
 			filterMode: 'tree',
 			filterSearch: true,
-			render: (value, item, index) => (page - 1) * 10 + index + 1,
+			render: (value, item, index) => (page - 1) * limit + index + 1,
 		},
 		{
 			title: 'Product Name',
