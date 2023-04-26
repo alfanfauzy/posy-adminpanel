@@ -24,6 +24,7 @@ import {useGetProvinceViewModal} from '@/view/region/view-models/GetProvinceView
 import {useGetSubDistrictViewModal} from '@/view/region/view-models/GetSubDistrictViewModel';
 import {useGetRestaurantViewModal} from '@/view/restaurant/view-models/GetRestaurantViewModel';
 import dynamic from 'next/dynamic';
+import {useRouter} from 'next/router';
 import {Button, Input, Select} from 'posy-fnb-core';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {AiOutlineCheckSquare} from 'react-icons/ai';
@@ -48,6 +49,9 @@ const MoleculesFormManageOutlet = ({
 	handleClose,
 	selectedData,
 }: MoleculesFormManageOutletProps) => {
+	const {asPath} = useRouter();
+	const restaurantId = asPath.split('/')[3];
+
 	const refSelectCity: React.MutableRefObject<any> = useRef();
 	const refSelectDistrict: React.MutableRefObject<any> = useRef();
 	const refSelectSubDistrict: React.MutableRefObject<any> = useRef();
@@ -305,6 +309,16 @@ const MoleculesFormManageOutlet = ({
 		}
 	}, [selectedData, isEdit, setValue]);
 
+	useEffect(() => {
+		const selectedRestaurant = RestaurantSelect.filter(
+			data => data.value === restaurantId,
+		);
+
+		if (restaurantId) {
+			setValue('restaurant_uuid', selectedRestaurant[0]);
+		}
+	}, [restaurantId, isOpenModal]);
+
 	const titleText = isEdit ? 'Edit Outlet' : 'Create New Outlet';
 
 	return (
@@ -323,6 +337,7 @@ const MoleculesFormManageOutlet = ({
 									setValue('restaurant_uuid', e);
 									clearErrors('restaurant_uuid');
 								}}
+								value={watch('restaurant_uuid')}
 								options={RestaurantSelect}
 								labelText="Restaurant"
 								placeholder="ex: Select Restaurant"
@@ -331,6 +346,7 @@ const MoleculesFormManageOutlet = ({
 								helperText={
 									errors?.restaurant_uuid && 'This field cannot be empty'
 								}
+								disabled={!!restaurantId}
 								isLoading={isLoadingRestaurant}
 							/>
 						)}

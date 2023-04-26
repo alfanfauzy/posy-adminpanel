@@ -59,7 +59,7 @@ export const MENU_LIST = [
 			},
 			{
 				label: 'Role User',
-				path: '/user/role',
+				path: '/user/role_user',
 				show: permissions.includes('role_user'),
 			},
 			{
