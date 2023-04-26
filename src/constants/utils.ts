@@ -89,6 +89,13 @@ export const TimetoUnix = (valueDate: string | number | Date) => {
 	return Math.floor(date.getTime() / 1000);
 };
 
+export const GenerateAvatar = (value: string) => {
+	return value
+		.split(' ')
+		.map(str => str[0])
+		.join('');
+};
+
 export const formatCurrencyTextInput = (value: string) =>
 	value.replace(/\D/g, '').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
 

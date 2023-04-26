@@ -4,7 +4,7 @@ export type LoginBased = {
 	uuid: string;
 	name: string;
 	is_internal: boolean;
-	accesses: any;
+	accesses: Array<Access> | null;
 };
 
 export type Access = {
@@ -40,4 +40,9 @@ export type DataLogin = {
 export type PostLoginPayload = {
 	email: string;
 	password: string;
+};
+
+export type LogoutPayload = {
+	user_uuid: string;
+	token: string;
 };
