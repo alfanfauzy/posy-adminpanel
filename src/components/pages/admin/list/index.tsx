@@ -81,7 +81,7 @@ const AdminListLayout: React.FC = () => {
 	const {deleteAdmin, isLoading: isLoadingRemove} = useDeleteAdminViewModal({
 		onSuccess() {
 			handleCloseModalConfirmation();
-			toast.success('Sucessfully delete Role');
+			toast.success('Sucessfully delete Admin');
 		},
 	});
 

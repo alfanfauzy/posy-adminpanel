@@ -81,7 +81,7 @@ const SubscriptionLayout: React.FC = () => {
 		useDeleteSubscriptionViewModal({
 			onSuccess() {
 				handleCloseModalConfirmation();
-				toast.success('Sucessfully delete Role');
+				toast.success('Successfully delete subscription plan');
 			},
 		});
 
