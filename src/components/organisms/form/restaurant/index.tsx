@@ -43,6 +43,7 @@ const MoleculesFormRestaurant = ({
 	handleClose,
 	selectedData,
 }: MoleculesFormRestaurantProps) => {
+	const [isError, setIsError] = useState(false);
 	const [imageLogo, setImageLogo] = useState('');
 	const [imageNPWP, setImageNPWP] = useState('');
 	const [imageNIB, setImageNIB] = useState('');
@@ -140,8 +141,12 @@ const MoleculesFormRestaurant = ({
 	const {createRestaurant, isLoading: isLoadingCreate} =
 		useCreateRestaurantViewModal({
 			onSuccess() {
+				setIsError(false);
 				handleCloseModal();
 				toast.success('Sucessfully added new Restaurant');
+			},
+			onError() {
+				setIsError(true);
 			},
 		});
 
@@ -154,16 +159,6 @@ const MoleculesFormRestaurant = ({
 		});
 
 	const handleSubmitForm = (data: FormRestaurantEntities) => {
-		const isEmptyFile =
-			data.restaurant_logo_url?.length === 0 ||
-			data.nib_url?.length === 0 ||
-			data.npwp_url?.length === 0;
-
-		if (isEmptyFile) {
-			toast.error('Please select a valid file');
-			return;
-		}
-
 		const newPayload: FormBodyPayload = {
 			...data,
 			subscription_uuid: data.subscription_uuid.value,
@@ -291,6 +286,11 @@ const MoleculesFormRestaurant = ({
 									error={!!errors?.restaurant_name}
 									helperText={errors?.restaurant_name?.message}
 								/>
+								{isError && (
+									<p className="mt-1 block text-m-regular text-red-caution">
+										Restaurant Name already exist
+									</p>
+								)}
 							</div>
 							<div className="mb-6">
 								<Input

@@ -5,9 +5,14 @@ export const RestaurantFormSchema = z.object({
 	restaurant_name: z
 		.string()
 		.min(3, {message: 'Restaurant Name must contain at least 3 character(s)'}),
-	restaurant_description: z.string().min(3, {
-		message: 'Restaurant Description must contain at least 3 character(s)',
-	}),
+	restaurant_description: z
+		.string()
+		.min(3, {
+			message: 'Restaurant Description must contain at least 3 character(s)',
+		})
+		.max(100, {
+			message: 'Restaurant Description must contain at least 100 character(s)',
+		}),
 	restaurant_logo_url: z.string().optional(),
 	nib_url: z.string().optional(),
 	npwp_url: z.string().optional(),
@@ -29,9 +34,14 @@ export const EditRestaurantFormSchema = z.object({
 	restaurant_name: z
 		.string()
 		.min(3, {message: 'Restaurant Name must contain at least 3 character(s)'}),
-	restaurant_description: z.string().min(3, {
-		message: 'Restaurant Description must contain at least 3 character(s)',
-	}),
+	restaurant_description: z
+		.string()
+		.min(3, {
+			message: 'Restaurant Description must contain at least 3 character(s)',
+		})
+		.max(100, {
+			message: 'Restaurant Description must contain at least 100 character(s)',
+		}),
 	restaurant_logo_url: z.string().optional(),
 	nib_url: z.string().optional(),
 	npwp_url: z.string().optional(),
