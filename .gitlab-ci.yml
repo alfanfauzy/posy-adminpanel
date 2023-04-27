@@ -76,15 +76,18 @@ build_image:
   tags: ['pvg']
   only:
     - master
+    - development
   variables:
     <<: *build_variables
   before_script:
     - apk add --update nodejs npm
     - npm install -g yarn
   script:
+    - export NEXT_PUBLIC_API=$NEXT_PUBLIC_API_ENDPOINT_PROD
     - |
       if [ "$CI_COMMIT_BRANCH" != master ]; then
         export IMAGE_TAG=dev-$CI_COMMIT_SHORT_SHA
+        export NEXT_PUBLIC_API=$NEXT_PUBLIC_API_ENDPOINT
       fi
     - |
       docker build --progress=plain \
@@ -92,8 +95,8 @@ build_image:
         --build-arg GIT_COMMIT="$IMAGE_TAG" \
         --build-arg GIT_DATE="$CI_COMMIT_TIMESTAMP" \
         --build-arg IMG_NAME="$DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME" \
-        --build-arg APP_NAME="$APP_NAME" \
-        --build-arg NEXT_PUBLIC_API_ENDPOINT="$NEXT_PUBLIC_API_ENDPOINT" \
+        --build-arg NEXT_APP_NAME="$NEXT_APP_NAME" \
+        --build-arg NEXT_PUBLIC_API="$NEXT_PUBLIC_API" \
         $DOCKER_BUILD_OPTS \
         -t $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:$IMAGE_TAG \
         -t $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:latest \
@@ -125,23 +128,25 @@ build_image_tagged:
     - apk add --update nodejs npm
     - npm install -g yarn
   script:
-    - |
-      if [ "$CI_COMMIT_BRANCH" != master ]; then
-        export IMAGE_TAG=dev-$CI_COMMIT_SHORT_SHA
-      fi
+    - export NEXT_PUBLIC_API=$NEXT_PUBLIC_API_PROD
     - |
       docker build --progress=plain \
         --build-arg GIT_REPO="$CI_PROJECT_URL" \
         --build-arg GIT_COMMIT="$IMAGE_TAG" \
         --build-arg GIT_DATE="$CI_COMMIT_TIMESTAMP" \
         --build-arg IMG_NAME="$DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME" \
-        --build-arg APP_NAME="$APP_NAME" \
-        --build-arg NEXT_PUBLIC_API_ENDPOINT="$NEXT_PUBLIC_API_ENDPOINT" \
+        --build-arg NEXT_APP_NAME="$NEXT_APP_NAME" \
+        --build-arg NEXT_PUBLIC_API="$NEXT_PUBLIC_API" \
         $DOCKER_BUILD_OPTS \
         -t $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:$IMAGE_TAG \
         -t $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:latest \
         -f ./$DOCKER_FILE $DOCKER_BUILD_CONTEXT
+    - |
+      docker image tag $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:latest \
+      $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:$CI_COMMIT_TAG
+    - docker push $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:$IMAGE_TAG
     - docker push $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:latest
-    - docker push $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:$CI_COMMIT_TAG
+    - |
+      docker push $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:$CI_COMMIT_TAG
     - |
       echo -e "\e[1;93mDocker image: " $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:$CI_COMMIT_TAG
