@@ -286,6 +286,7 @@ const MoleculesFormUserRestaurant = ({
 								setValue('role_uuid', e);
 								clearErrors('role_uuid');
 							}}
+							value={watch('role_uuid')}
 							isLoading={isLoadingRole}
 							options={RoleSelect}
 							labelText="Role"

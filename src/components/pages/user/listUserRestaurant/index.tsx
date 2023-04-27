@@ -89,7 +89,7 @@ const ListUserRestaurantLayout = ({
 		useDeleteUserRestaurantViewModal({
 			onSuccess() {
 				handleCloseModalConfirmation();
-				toast.success('Sucessfully delete USer Restaurant');
+				toast.success('Successfully delete User Restaurant');
 			},
 		});
 
