@@ -18,7 +18,7 @@ const AccessForm = ({
 		if (!isChecked) {
 			setTempAccess(prevState => [...prevState, item]);
 		} else {
-			setTempAccess(prevState => prevState.filter(a => a.uuid !== item.uuid));
+			setTempAccess(prevState => prevState?.filter(a => a.uuid !== item.uuid));
 		}
 	};
 

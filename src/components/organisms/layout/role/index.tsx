@@ -212,13 +212,13 @@ const RoleLayout = ({type, value}: RoleLayoutProps) => {
 	return (
 		<main className="mt-4">
 			{hasAccess('role_admin:manage_role') ||
-				(hasAccess('role_user:manage_role') && (
-					<HeaderContent
-						onClick={handleOpenFormModal}
-						textButton="Create Role"
-						iconElement={<AiOutlinePlus />}
-					/>
-				))}
+			hasAccess('role_user:manage_role') ? (
+				<HeaderContent
+					onClick={handleOpenFormModal}
+					textButton="Create Role"
+					iconElement={<AiOutlinePlus />}
+				/>
+			) : null}
 			<ModalFormRole
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

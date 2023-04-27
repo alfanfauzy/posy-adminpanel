@@ -173,13 +173,13 @@ const PermissionLayout = ({type, value}: PermissionLayoutProps) => {
 	return (
 		<main className="mt-4">
 			{hasAccess('role_admin:manage_permission') ||
-				(hasAccess('role_user:manage_permission') && (
-					<HeaderContent
-						onClick={handleOpenFormModal}
-						textButton="Create New Permission"
-						iconElement={<AiOutlinePlus />}
-					/>
-				))}
+			hasAccess('role_user:manage_permission') ? (
+				<HeaderContent
+					onClick={handleOpenFormModal}
+					textButton="Create New Permission"
+					iconElement={<AiOutlinePlus />}
+				/>
+			) : null}
 			<MoleculesFormPermission
 				isOpenModal={openModal}
 				handleClose={handleOpenFormModal}

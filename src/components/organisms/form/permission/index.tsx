@@ -121,9 +121,10 @@ const MoleculesFormPermission = ({
 						<Input
 							{...register('key')}
 							labelText="Permission Key:"
+							type="text"
 							placeholder="Permission key, ex: report:transaction"
 							className="flex items-center justify-center"
-							error={!isEdit && !!errors.key}
+							error={!!errors.key}
 							helperText={errors?.key?.message}
 						/>
 					</div>
@@ -134,7 +135,7 @@ const MoleculesFormPermission = ({
 							labelText="Permission Description: "
 							placeholder="Description of Permission"
 							className="flex items-center justify-center"
-							error={!isEdit && !!errors.description}
+							error={!!errors.description}
 							helperText={errors?.description?.message}
 						/>
 					</div>
