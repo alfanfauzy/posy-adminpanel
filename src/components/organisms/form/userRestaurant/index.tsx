@@ -309,7 +309,7 @@ const MoleculesFormUserRestaurant = ({
 										refSelectOutlet.current.clearValue();
 									}}
 									value={watch('restaurant_uuid')}
-									disabled={!!restaurant_uuid}
+									disabled={!!restaurantId}
 									options={RestaurantSelect}
 									isLoading={isLoadingRestaurant}
 									labelText="Restaurant:"
