@@ -57,7 +57,7 @@ const MoleculesFormSubscription = ({
 		useCreateSubscriptionViewModal({
 			onSuccess() {
 				handleCloseModal();
-				toast.success('Sucessfully added new Subscription Plan');
+				toast.success('Successfully added new Subscription Plan');
 			},
 		});
 
@@ -65,7 +65,7 @@ const MoleculesFormSubscription = ({
 		useUpdateSubscriptionViewModal({
 			onSuccess() {
 				handleCloseModal();
-				toast.success('Sucessfully added new Subscription Plan');
+				toast.success('Successfully edit Subscription Plan');
 			},
 		});
 
