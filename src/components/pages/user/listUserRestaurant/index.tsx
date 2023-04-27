@@ -22,13 +22,22 @@ const ModalConfirmation = dynamic(
 	() => import('@/molecules/modal/confirmation'),
 );
 
-const ListUserRestaurantLayout: React.FC = () => {
+type ListUserRestaurantLayout = {
+	restaurant_uuid?: string;
+};
+
+const ListUserRestaurantLayout = ({
+	restaurant_uuid,
+}: ListUserRestaurantLayout) => {
 	const {hasAccess} = useAccessControl();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
 
 	const hooksParams: GetUserRestaurantFilterInput = {
-		search: [{field: 'is_admin', value: 'false'}],
+		search: [
+			{field: 'is_admin', value: 'false'},
+			{field: 'restaurant_uuid', value: restaurant_uuid},
+		],
 		sort: {field: 'created_at', value: 'desc'},
 		page,
 		limit,
@@ -175,7 +184,7 @@ const ListUserRestaurantLayout: React.FC = () => {
 	];
 
 	return (
-		<div>
+		<div className="pt-5">
 			{hasAccess('restaurant_user:create') && (
 				<HeaderContent
 					onClick={handleOpenFormModal}

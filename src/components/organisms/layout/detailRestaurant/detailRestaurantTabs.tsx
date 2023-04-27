@@ -1,4 +1,5 @@
 import ListCategoryMenuLayout from '@/pages/user/categoryMenu';
+import ListUserRestaurantLayout from '@/pages/user/listUserRestaurant';
 import ManageOutletLayout from '@/pages/user/manageOutlet';
 import ListProductMenuLayout from '@/pages/user/productMenu';
 import UserSubscriptionLayout from '@/pages/user/subscription';
@@ -10,6 +11,7 @@ const Item = [
 	{label: 'Outlet'},
 	{label: 'Category'},
 	{label: 'Product'},
+	{label: 'User'},
 	{label: 'Subscription History'},
 ];
 
@@ -25,7 +27,8 @@ const OrganismDetailRestaurantTabs = () => {
 			{tabsVal === 0 && <ManageOutletLayout restaurant_uuid={uuid} />}
 			{tabsVal === 1 && <ListCategoryMenuLayout restaurant_uuid={uuid} />}
 			{tabsVal === 2 && <ListProductMenuLayout restaurant_uuid={uuid} />}
-			{tabsVal === 3 && <UserSubscriptionLayout restaurant_uuid={uuid} />}
+			{tabsVal === 3 && <ListUserRestaurantLayout restaurant_uuid={uuid} />}
+			{tabsVal === 4 && <UserSubscriptionLayout restaurant_uuid={uuid} />}
 		</section>
 	);
 };

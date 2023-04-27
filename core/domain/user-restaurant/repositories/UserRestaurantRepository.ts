@@ -1,7 +1,7 @@
+import {RestaurantObject} from '@/data/user-restaurant/types';
 import {FilterInputVariables} from 'core/domain/vo/BaseInput';
 import {Pagination} from 'core/domain/vo/BasePagination';
 import {
-	Datalist,
 	ResultQuery,
 	ResultMutation,
 	UpdateParams,
@@ -14,7 +14,8 @@ import {FormUserRestaurant, UserRestaurant, UserRestaurants} from '../models';
  */
 export type GetUserRestaurantFilterInput = FilterInputVariables<
 	'created_at',
-	keyof Pick<UserRestaurant, 'name' | 'is_admin'>
+	| keyof Pick<UserRestaurant, 'name' | 'is_admin'>
+	| keyof Pick<RestaurantObject, 'restaurant_uuid'>
 >;
 
 export type GetUserRestaurantsResult = ResultQuery<

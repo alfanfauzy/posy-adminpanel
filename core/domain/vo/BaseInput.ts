@@ -7,7 +7,7 @@ export type Sort<TField = unknown> = {
 
 export type Search<TField = unknown> = {
 	field: TField;
-	value: string;
+	value: string | undefined;
 };
 
 export type FilterInputVariables<TSort = unknown, TSearch = unknown> = {

@@ -26,6 +26,7 @@ import {useGetRolesViewModal} from '@/view/role/view-modals/GetRolesViewModel';
 import {useCreateUserRestaurantViewModal} from '@/view/user-restaurant/view-modals/CreateUserRestaurantViewModel';
 import {useUpdateUserRestaurantViewModal} from '@/view/user-restaurant/view-modals/UpdateUserRestaurantViewModel';
 import dynamic from 'next/dynamic';
+import {useRouter} from 'next/router';
 import {Button, Input, Select} from 'posy-fnb-core';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {AiOutlineCheckSquare} from 'react-icons/ai';
@@ -51,6 +52,8 @@ const MoleculesFormUserRestaurant = ({
 	handleClose,
 	selectedData,
 }: MoleculesFormUserRestaurantProps) => {
+	const {asPath} = useRouter();
+	const restaurantId = asPath.split('/')[3];
 	const refSelectOutlet: React.MutableRefObject<any> = useRef();
 
 	const [restaurant_uuid, setRestaurant_uuid] = useState<
@@ -72,7 +75,7 @@ const MoleculesFormUserRestaurant = ({
 	};
 
 	const hooksOutletRestaurant: GetFilterOutletInput = useMemo(() => {
-		const getId = restaurant_uuid?.value?.toString() || '0';
+		const getId = restaurant_uuid?.value?.toString() || restaurantId;
 		return {
 			search: [{field: 'restaurant_uuid', value: getId}],
 			sort: {field: 'created_at', value: 'desc'},
@@ -91,7 +94,7 @@ const MoleculesFormUserRestaurant = ({
 
 	const {data: ListDataOutlet, isLoading: isLoadingOutlet} =
 		useGetOutletViewModal(hooksOutletRestaurant, {
-			enabled: !!restaurant_uuid && !!restaurant_uuid.value,
+			enabled: (!!restaurant_uuid && !!restaurant_uuid.value) || !!restaurantId,
 		});
 
 	const RoleSelect = useMemo(() => {
@@ -136,6 +139,7 @@ const MoleculesFormUserRestaurant = ({
 		setValue,
 		formState: {errors},
 		clearErrors,
+		watch,
 	} = useForm({
 		schema: UserFormSchema,
 		mode: 'onChange',
@@ -219,6 +223,16 @@ const MoleculesFormUserRestaurant = ({
 		}
 	}, [selectedData, isEdit, setValue]);
 
+	useEffect(() => {
+		const selectedRestaurant = RestaurantSelect.filter(
+			data => data.value === restaurantId,
+		);
+
+		if (restaurantId) {
+			setValue('restaurant_uuid', selectedRestaurant[0]);
+		}
+	}, [restaurantId, isOpenModal]);
+
 	const titleText = isEdit ? 'Edit User' : 'Add New User';
 
 	return (
@@ -293,6 +307,8 @@ const MoleculesFormUserRestaurant = ({
 										clearErrors('restaurant_uuid');
 										refSelectOutlet.current.clearValue();
 									}}
+									value={watch('restaurant_uuid')}
+									disabled={!!restaurant_uuid}
 									options={RestaurantSelect}
 									isLoading={isLoadingRestaurant}
 									labelText="Restaurant:"

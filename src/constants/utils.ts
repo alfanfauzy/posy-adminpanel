@@ -1,4 +1,5 @@
 import {GetAccessListDataResponse} from '@/data/access/types';
+import {Search} from '@/domain/vo/BaseInput';
 import moment from 'moment';
 import {ParamsObject} from 'shared/baseResponse';
 
@@ -49,7 +50,7 @@ export const timeStampConverter = (
  *
  */
 export const findIndexArraySearch = (
-	dataArray: Array<ParamsObject>,
+	dataArray: Array<Search>,
 	field: string,
 ) => {
 	const index = dataArray.findIndex(array => array.field === field);
