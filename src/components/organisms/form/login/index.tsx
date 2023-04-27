@@ -36,6 +36,14 @@ const MoleculesLogin = () => {
 
 	const {loginPost, isLoading} = useLoginViewModal({
 		onSuccess(data) {
+			/** Handle If user doesn't have any access to page */
+			if (!data.data.role_access.accesses) {
+				toast.error(
+					'Unauthorized Access : You are unauthorized to access this feature!',
+				);
+				return;
+			}
+
 			const permission = GroupingAccess(data.data.role_access.accesses);
 
 			const newPayload = {...data.data, permission};
