@@ -21,20 +21,20 @@ const TemplatesHeader = () => {
 		token,
 	};
 
-	// const logout = () => {
-	// 	dispatch(onLogout());
-	// 	router.push('/auth/login');
-	// };
+	const logout = () => {
+		dispatch(onLogout());
+		router.push('/auth/login');
+	};
 
-	const {logout} = useLogoutViewModal({
-		onSuccess: data => {
-			if (data.code === 0) {
-				dispatch(onLogout());
-				router.push('/auth/login');
-				toast.success('Success Logout');
-			}
-		},
-	});
+	// const {logout} = useLogoutViewModal({
+	// 	onSuccess: data => {
+	// 		if (data.code === 0) {
+	// 			dispatch(onLogout());
+	// 			router.push('/auth/login');
+	// 			toast.success('Success Logout');
+	// 		}
+	// 	},
+	// });
 
 	return (
 		<header className="flex w-full items-center justify-end gap-2 bg-white p-2 drop-shadow-lg">
@@ -48,8 +48,8 @@ const TemplatesHeader = () => {
 				tabIndex={0}
 				role="button"
 				className="flex items-center justify-center gap-1 rounded-lg border border-gray-200 bg-red-400 p-2 text-xs text-white hover:border-red-200 hover:bg-red-300 hover:text-white"
-				onClick={() => logout(payloadLogout)}
-				onKeyDown={() => logout(payloadLogout)}
+				onClick={() => logout()}
+				onKeyDown={() => logout()}
 			>
 				<AiOutlineLogout /> Logout
 			</span>
