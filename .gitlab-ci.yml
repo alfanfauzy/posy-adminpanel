@@ -119,7 +119,7 @@ deploy_to_stage:
     - tags
   variables:
     DOCKER_HOST: posy-fnb01.int.stage.pvg.im
-    APP_IMAGE_TAG: latest
+    APP_IMAGE_TAG: $CI_COMMIT_SHORT_SHA
     APP_PORT: 3000
     HOST_PORT: 3002
 
@@ -135,7 +135,7 @@ build_image_tagged:
     - apk add --update nodejs npm
     - npm install -g yarn
   script:
-    - export NEXT_PUBLIC_API_ENDPOINT=$NEXT_PUBLIC_API_ENDPOINT
+    - export NEXT_PUBLIC_API_ENDPOINT=$NEXT_PUBLIC_API_ENDPOINT_PROD
     - |
       docker build --progress=plain \
         --build-arg GIT_REPO="$CI_PROJECT_URL" \
