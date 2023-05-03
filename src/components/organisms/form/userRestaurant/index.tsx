@@ -269,7 +269,10 @@ const MoleculesFormUserRestaurant = ({
 
 					<div className="mb-6">
 						<Input
-							{...register('phone')}
+							{...register('phone', {
+								setValueAs: v => v.replace(/\D/, ''),
+							})}
+							value={watch('phone')}
 							className="w-52"
 							labelText="Phone Number:"
 							type="text"
