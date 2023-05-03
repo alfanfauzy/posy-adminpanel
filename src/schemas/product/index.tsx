@@ -27,7 +27,7 @@ export const ProductSchema = z.object({
 	),
 	addons: z
 		.object({
-			addon_name: z.string().nonempty(),
+			addon_name: z.string().min(3).nonempty(),
 			is_optional: z.boolean(),
 			can_choose_multiple: z.boolean(),
 			max_variant: z.string().optional(),
