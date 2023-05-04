@@ -17,7 +17,6 @@ export const UpdateRestaurantService = async (
 		const response = await Post({
 			endpoint: `/api/fnb-user-service/internal/restaurant/update/${id}`,
 			payload,
-			headers: {'Content-Type': 'multipart/form-data'},
 		});
 
 		return response;

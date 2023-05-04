@@ -3,7 +3,7 @@ import {z} from 'zod';
 export const ProductSchema = z.object({
 	restaurant_uuid: z.string(),
 	product_name: z.string().min(3),
-	product_description: z.string().optional(),
+	product_description: z.string().max(2000).optional(),
 	product_image_url: z.string().optional(),
 	is_favourite: z.boolean(),
 	is_show: z.boolean(),
@@ -34,7 +34,7 @@ export const ProductSchema = z.object({
 			addon_priority: z.string().optional(),
 			variants: z
 				.object({
-					variant_name: z.string().nonempty(),
+					variant_name: z.string().min(3).nonempty(),
 					variant_price: z.string().nonempty(),
 					variant_priority: z.number(),
 				})

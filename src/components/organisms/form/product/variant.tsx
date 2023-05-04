@@ -8,15 +8,11 @@ import {AiFillDelete} from 'react-icons/ai';
 
 type VariantTempProps = {
 	addonIdx: number;
+	errors: any;
 };
 
-const Variant = ({addonIdx}: VariantTempProps) => {
-	const {
-		control,
-		register,
-		formState: {errors},
-		watch,
-	} = useFormContext();
+const Variant = ({addonIdx, errors}: VariantTempProps) => {
+	const {control, register, watch} = useFormContext();
 
 	const {fields, append, remove} = useFieldArray({
 		control,
@@ -39,14 +35,14 @@ const Variant = ({addonIdx}: VariantTempProps) => {
 							{...register(
 								`addons.${addonIdx}.variants.${variantIdx}.variant_name`,
 							)}
-							// error={
-							// 	!!errors?.addons[addonIdx]?.variants[variantIdx]?.variant_name
-							// }
-							// helperText={
-							// 	errors?.addons &&
-							// 	errors?.addons[addonIdx]?.variants[variantIdx]?.variant_name
-							// 		?.message
-							// }
+							error={
+								!!errors?.addons[addonIdx]?.variants[variantIdx]?.variant_name
+							}
+							helperText={
+								errors?.addons &&
+								errors?.addons[addonIdx]?.variants[variantIdx]?.variant_name
+									?.message
+							}
 						/>
 					</div>
 					<div className="w-1/2">
@@ -62,16 +58,16 @@ const Variant = ({addonIdx}: VariantTempProps) => {
 							value={watch(
 								`addons.${addonIdx}.variants.${variantIdx}.variant_price`,
 							)}
-							// error={
-							// 	errors?.addons?.length > 0 &&
-							// 	errors?.addons[addonIdx]?.variants?.length > 0 &&
-							// 	!!errors?.addons[addonIdx]?.variants[variantIdx]?.variant_price
-							// }
-							// helperText={
-							// 	errors?.addons &&
-							// 	errors?.addons[addonIdx]?.variants[variantIdx]?.variant_price
-							// 		?.message
-							// }
+							error={
+								errors?.addons?.length > 0 &&
+								errors?.addons[addonIdx]?.variants?.length > 0 &&
+								!!errors?.addons[addonIdx]?.variants[variantIdx]?.variant_price
+							}
+							helperText={
+								errors?.addons &&
+								errors?.addons[addonIdx]?.variants[variantIdx]?.variant_price
+									?.message
+							}
 						/>
 					</div>
 					<div className="pt-5">
