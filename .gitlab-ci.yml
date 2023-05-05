@@ -7,7 +7,7 @@ stages:
 
 include:
   - project: 'devops/gitlab-ci-templates'
-    file: 'k8s-docker-runner.yml'
+    file: 'k8s-docker-runner.yml' 
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -81,7 +81,6 @@ build_image:
   extends: .k8s_docker_runner
   tags: ['pvg']
   only:
-    - master
     - development
   variables:
     <<: *build_variables
@@ -117,6 +116,8 @@ deploy_to_stage:
   tags: ['pvg']
   except:
     - tags
+  only:
+    - development
   variables:
     DOCKER_HOST: posy-fnb01.int.stage.pvg.im
     APP_IMAGE_TAG: $CI_COMMIT_SHORT_SHA
