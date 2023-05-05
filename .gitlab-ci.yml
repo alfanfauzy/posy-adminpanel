@@ -7,7 +7,7 @@ stages:
 
 include:
   - project: 'devops/gitlab-ci-templates'
-    file: 'k8s-docker-runner.yml'
+    file: 'k8s-docker-runner.yml' 
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
