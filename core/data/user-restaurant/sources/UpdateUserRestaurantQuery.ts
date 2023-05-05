@@ -33,7 +33,16 @@ export const useUpdateUserRestaurantMutation = (
 		mutationFn: (params: UpdateUserRestaurantParams) =>
 			UpdateUserRestaurantService(params),
 		onError(error: ErrorType) {
-			toast.error(error.message);
+			if (typeof error.message === 'object') {
+				const keys = Object.keys(error.message);
+				if (keys.includes('password')) {
+					toast.error(
+						'Password must be at least 8 Characters, 1 Uppercase and 1 Lowercase',
+					);
+				}
+			} else {
+				toast.error(error.message);
+			}
 		},
 		...options,
 	});

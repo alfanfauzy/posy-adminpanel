@@ -16,7 +16,6 @@ export const CreateUserRestaurantService = async (
 		const response = await Post({
 			endpoint: `/api/fnb-user-service/internal/restaurant/user/create`,
 			payload,
-			headers: {'Content-Type': 'multipart/form-data'},
 		});
 
 		return response;
@@ -33,7 +32,7 @@ export const useCreateUserRestaurantMutation = (
 		mutationFn: (payload: FormUserRestaurant) =>
 			CreateUserRestaurantService(payload),
 		onError(error: ErrorType) {
-			toast.error(error.message);
+			toast.error(error.more_info);
 		},
 		...options,
 	});
