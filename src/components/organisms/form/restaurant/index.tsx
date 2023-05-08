@@ -237,10 +237,12 @@ const MoleculesFormRestaurant = ({
 				>
 					<div className="flex gap-2">
 						<div className="w-1/3 border-r-2 pr-2">
-							<p className="mb-1 block text-m-regular">Restaurant Logo</p>
+							<p className="mb-1 block text-m-regular">
+								Restaurant Logo (Optional)
+							</p>
 							{imageLogo ? (
 								<div className="flex h-56 w-56 items-center justify-center rounded-lg transition-all ease-in-out">
-									<Image
+									<img
 										width={224}
 										height={224}
 										src={imageLogo}
@@ -269,7 +271,7 @@ const MoleculesFormRestaurant = ({
 								<Input
 									{...register('restaurant_code')}
 									className="w-full"
-									labelText="Restaurant Code:"
+									labelText="Restaurant Code (Optional):"
 									type="text"
 									placeholder="ex: KFC, etx"
 									error={!!errors?.restaurant_code}
@@ -347,10 +349,10 @@ const MoleculesFormRestaurant = ({
 						<div className="flex gap-2">
 							<div className="h-full w-1/2">
 								<div className="flex flex-col justify-center gap-2">
-									<p className="mb-1 block text-m-regular">NPWP</p>
+									<p className="mb-1 block text-m-regular">NPWP (Optional)</p>
 									{imageNPWP ? (
 										<div className="flex h-56 w-56 items-center justify-center rounded-lg transition-all ease-in-out">
-											<Image
+											<img
 												width={224}
 												height={224}
 												src={imageNPWP}
@@ -375,10 +377,10 @@ const MoleculesFormRestaurant = ({
 							</div>
 							<div className="h-full w-1/2">
 								<div className="flex flex-col justify-center gap-2">
-									<p className="mb-1 block text-m-regular">NIB</p>
+									<p className="mb-1 block text-m-regular">NIB (Optional)</p>
 									{imageNIB ? (
 										<div className="flex h-56 w-56 items-center justify-center rounded-lg transition-all ease-in-out">
-											<Image
+											<img
 												width={224}
 												height={224}
 												src={imageNIB}

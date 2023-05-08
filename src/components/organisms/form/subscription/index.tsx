@@ -2,7 +2,7 @@
  * Subscription Form Modal
  */
 import {Subscription_Period} from '@/constants/index';
-import {formatCurrencyTextInput} from '@/constants/utils';
+import {FilterOption, formatCurrencyTextInput} from '@/constants/utils';
 import {Subscription} from '@/domain/subscription/models';
 import {queryClient} from '@/hooks/react-query';
 import {useForm} from '@/hooks/useForm';
@@ -97,10 +97,6 @@ const MoleculesFormSubscription = ({
 		}
 	};
 
-	const filterOption = (option: OptionObject, inputValue: string) => {
-		return option.label.toLowerCase().includes(inputValue.toLowerCase());
-	};
-
 	useEffect(() => {
 		if (isEdit) {
 			const {name, price, period, description} = selectedData;
@@ -153,7 +149,7 @@ const MoleculesFormSubscription = ({
 							placeholder="ex: 1 Month, etc"
 							className="flex items-center justify-center"
 							error={!!errors.period}
-							filterOption={filterOption}
+							filterOption={FilterOption}
 							helperText={errors?.period && 'This field cannot be empty'}
 						/>
 					</div>

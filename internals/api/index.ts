@@ -6,7 +6,7 @@ import axios from 'axios';
 import {toast} from 'react-toastify';
 // eslint-disable-next-line import/no-cycle
 import {store} from 'store/index';
-import {authSuccess} from 'store/slice/auth';
+import {authSuccess, onChangeToken} from 'store/slice/auth';
 
 const axiosApiInstance = axios.create();
 
@@ -41,7 +41,7 @@ axiosApiInstance.interceptors.response.use(
 			const dataStore = store.getState().auth.authData;
 
 			try {
-				const responseRefreshToken: Response<DataLogin> = await axios.post(
+				const responseRefreshToken = await axios.post(
 					'/api/fnb-user-service/refresh-token',
 					{
 						user_uuid: dataStore.user_info.user_uuid,
@@ -50,20 +50,11 @@ axiosApiInstance.interceptors.response.use(
 					},
 				);
 
-				if (
-					responseRefreshToken.code === 0 &&
-					responseRefreshToken.message === 'OK'
-				) {
-					const permission = GroupingAccess(
-						responseRefreshToken.data.role_access.accesses,
-					);
-
+				if (responseRefreshToken.status === 200) {
 					const newPayload = {
 						...responseRefreshToken.data,
-						permission,
 					};
-
-					store.dispatch(authSuccess(newPayload));
+					store.dispatch(onChangeToken(newPayload));
 				}
 			} catch (_error) {
 				toast.error('Session time out. Please login again.');
