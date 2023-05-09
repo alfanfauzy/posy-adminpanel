@@ -73,10 +73,12 @@ export const MENU_LIST = [
 		label: 'History',
 		icon: <MdAccountBalanceWallet />,
 		type: 'sub-menu',
+		show: permissions.includes('report'),
 		items: [
 			{
 				label: 'Transaction',
-				path: '/history/transaction',
+				path: '/history/report',
+				show: permissions.includes('report'),
 			},
 		],
 	},
@@ -114,3 +116,18 @@ export const VALID_IMAGES_TYPES = [
 ];
 
 export const MAX_FILE_SIZE = 500000;
+
+export const TRANSACTION_CATEGORY = {
+	DINE_IN: 'Dine In',
+	TAKE_AWAY: 'Take Away',
+};
+
+export const TRANSACTION_STATUS = {
+	WAITING_ORDER: {label: 'Waiting Order', color: '#003BD4'},
+	WAITING_FOOD: {label: 'Waiting Food', color: '#003BD4'},
+	FOOD_SERVED: {label: 'Food Served', color: '#003BD4'},
+	WAITING_PAYMENT: {label: 'Waiting Payment', color: '#003BD4'},
+	PAID: {label: 'Paid', color: '#37B175'},
+	CANCELLED: {label: 'Cancel', color: '#f1c40f'},
+	REFUND: {label: 'Refund', color: '#CB3A31'},
+};
