@@ -90,6 +90,11 @@ const MoleculesFormSubscription = ({
 			},
 		};
 
+		if (data.price === '0') {
+			toast.error(`Price can't fill with 0`);
+			return;
+		}
+
 		if (isEdit) {
 			updateSubscription(newUpdatePayload);
 		} else {
