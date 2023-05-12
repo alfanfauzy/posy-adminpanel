@@ -56,6 +56,23 @@ const MoleculesFormUserRestaurant = ({
 	const restaurantId = asPath.split('/')[3];
 	const refSelectOutlet: React.MutableRefObject<any> = useRef();
 
+	const UserFormSchema = isEdit
+		? EditUserRestauranFormSchema
+		: UserRestauranFormSchema;
+
+	const {
+		handleSubmit,
+		register,
+		reset,
+		setValue,
+		formState: {errors},
+		clearErrors,
+		watch,
+	} = useForm({
+		schema: UserFormSchema,
+		mode: 'onChange',
+	});
+
 	const [restaurant_uuid, setRestaurant_uuid] = useState<
 		ObjectSelect | Record<string, never>
 	>({});
@@ -90,7 +107,16 @@ const MoleculesFormUserRestaurant = ({
 	);
 
 	const {data: ListDataRestaurant, isLoading: isLoadingRestaurant} =
-		useGetRestaurantViewModal(hooksRoleRestaurant, {enabled: isOpenModal});
+		useGetRestaurantViewModal(hooksRoleRestaurant, {
+			enabled: isOpenModal,
+			onSuccess: datas => {
+				const restaurantSelect = datas.data.objs
+					.filter(data => data.uuid === restaurantId)
+					.map(data => ({label: data.restaurant_name, value: data.uuid}));
+
+				setValue('restaurant_uuid', restaurantSelect[0]);
+			},
+		});
 
 	const {data: ListDataOutlet, isLoading: isLoadingOutlet} =
 		useGetOutletViewModal(hooksOutletRestaurant, {
@@ -127,23 +153,6 @@ const MoleculesFormUserRestaurant = ({
 	const {value: showPassword, toggle: handleShowPassword} = useToggle(true);
 	const {value: showConfirmPassword, toggle: handleShowConfirmPassword} =
 		useToggle(true);
-
-	const UserFormSchema = isEdit
-		? EditUserRestauranFormSchema
-		: UserRestauranFormSchema;
-
-	const {
-		handleSubmit,
-		register,
-		reset,
-		setValue,
-		formState: {errors},
-		clearErrors,
-		watch,
-	} = useForm({
-		schema: UserFormSchema,
-		mode: 'onChange',
-	});
 
 	const handleCloseModal = () => {
 		reset();
@@ -222,16 +231,6 @@ const MoleculesFormUserRestaurant = ({
 			}
 		}
 	}, [selectedData, isEdit, setValue]);
-
-	useEffect(() => {
-		const selectedRestaurant = RestaurantSelect.filter(
-			data => data.value === restaurantId,
-		);
-
-		if (restaurantId) {
-			setValue('restaurant_uuid', selectedRestaurant[0]);
-		}
-	}, [restaurantId, isOpenModal]);
 
 	const titleText = isEdit ? 'Edit User' : 'Add New User';
 
