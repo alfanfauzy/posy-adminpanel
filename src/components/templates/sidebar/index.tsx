@@ -1,6 +1,6 @@
 import Footer from '@/atoms/footer';
-import {MENU_LIST} from '@/constants/index';
 import {generateUniqueId} from '@/constants/utils';
+import useMenu from '@/hooks/useMenu';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import React from 'react';
@@ -145,6 +145,7 @@ const SidebarContent = ({listMenus}: MenuSidebar) => {
 
 const OrganismSidebar = () => {
 	const {collapseSidebar} = useProSidebar();
+	const menuList = useMenu();
 
 	return (
 		<Sidebar
@@ -156,7 +157,7 @@ const OrganismSidebar = () => {
 			<SidebarTop onClick={collapseSidebar} />
 			<div className="flex w-full flex-col">
 				<div className="mb-8 h-full flex-1">
-					<SidebarContent listMenus={MENU_LIST} />
+					<SidebarContent listMenus={menuList} />
 				</div>
 			</div>
 			<Footer isFixed />
