@@ -7,7 +7,7 @@ stages:
 
 include:
   - project: 'devops/gitlab-ci-templates'
-    file: 'k8s-docker-runner.yml'
+    file: 'k8s-docker-runner.yml' 
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -81,7 +81,6 @@ build_image:
   extends: .k8s_docker_runner
   tags: ['pvg']
   only:
-    - master
     - development
   variables:
     <<: *build_variables
@@ -117,9 +116,11 @@ deploy_to_stage:
   tags: ['pvg']
   except:
     - tags
+  only:
+    - development
   variables:
     DOCKER_HOST: posy-fnb01.int.stage.pvg.im
-    APP_IMAGE_TAG: latest
+    APP_IMAGE_TAG: dev-$CI_COMMIT_SHORT_SHA
     APP_PORT: 3000
     HOST_PORT: 3002
 
@@ -135,7 +136,7 @@ build_image_tagged:
     - apk add --update nodejs npm
     - npm install -g yarn
   script:
-    - export NEXT_PUBLIC_API_ENDPOINT=$NEXT_PUBLIC_API_PROD
+    - export NEXT_PUBLIC_API_ENDPOINT=$NEXT_PUBLIC_API_ENDPOINT_PROD
     - |
       docker build --progress=plain \
         --build-arg GIT_REPO="$CI_PROJECT_URL" \
@@ -151,7 +152,6 @@ build_image_tagged:
     - |
       docker image tag $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:latest \
       $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:$CI_COMMIT_TAG
-    - docker push $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:$IMAGE_TAG
     - docker push $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:latest
     - |
       docker push $DOCKER_REGISTRY/$NAMESPACE/$PROJECT_NAME:$CI_COMMIT_TAG

@@ -363,7 +363,13 @@ const OrganismFormProduct = ({
 														isMulti
 														onChange={e => {
 															setValue('restaurant_outlet_uuids', e);
+															clearErrors('restaurant_outlet_uuids');
 														}}
+														error={!!errors?.restaurant_outlet_uuids}
+														helperText={
+															errors?.restaurant_outlet_uuids &&
+															'This field cannot be empty'
+														}
 													/>
 												)}
 											/>
@@ -544,7 +550,11 @@ const OrganismFormProduct = ({
 													placeholder="ex: 1, 2, etc"
 													{...methodsForm.register(
 														`addons.${addonIdx}.addon_priority`,
+														{
+															setValueAs: v => v.replace(/\D/, ''),
+														},
 													)}
+													value={watch(`addons.${addonIdx}.addon_priority`)}
 													error={
 														methodsForm.formState.errors?.addons &&
 														!!methodsForm.formState.errors?.addons[addonIdx]
@@ -619,7 +629,7 @@ const OrganismFormProduct = ({
 											)}
 										</aside>
 
-										<Variant addonIdx={addonIdx} />
+										<Variant addonIdx={addonIdx} errors={errors} />
 									</aside>
 								))}
 
