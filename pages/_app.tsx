@@ -38,7 +38,7 @@ const App = ({Component, pageProps}: AppPropsWithLayout) => {
 				router.push('/dashboard');
 				setTimeout(() => {
 					setLoading(false);
-				}, 5000);
+				}, 500);
 				return;
 			}
 
@@ -52,7 +52,7 @@ const App = ({Component, pageProps}: AppPropsWithLayout) => {
 				router.push(asPath);
 				setTimeout(() => {
 					setLoading(false);
-				}, 5000);
+				}, 500);
 				return;
 			}
 
