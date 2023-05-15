@@ -1,3 +1,4 @@
+import AtomImages from '@/atoms/images';
 import {useAccessControl} from '@/hooks/useAccessControl';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
@@ -12,12 +13,11 @@ const OrganismDetailRestaurant = () => {
 
 	return (
 		<section className="flex h-auto w-auto gap-5 rounded-md border border-gray-200 bg-white p-7 shadow-md">
-			<Image
-				src={restaurant.logo}
+			<AtomImages
+				url={restaurant.logo}
 				width={200}
 				height={200}
-				className="rounded-lg border border-gray-300 object-contain"
-				alt="logo"
+				alt="restaurant-logo"
 			/>
 
 			<div className="flex w-full flex-col gap-5">
@@ -60,11 +60,10 @@ const OrganismDetailRestaurant = () => {
 						<div className="flex flex-col gap-3">
 							<div>
 								<h3 className="text-s-regular text-gray-400">NPWP</h3>
-								<Image
-									src={restaurant.npwp}
+								<AtomImages
+									url={restaurant.nib}
 									width={150}
 									height={150}
-									className="rounded-lg border border-gray-300 object-contain"
 									alt="npwp"
 								/>
 							</div>
@@ -74,11 +73,10 @@ const OrganismDetailRestaurant = () => {
 						<div className="flex flex-col gap-3">
 							<div>
 								<h3 className="text-s-regular text-gray-400">NIB</h3>
-								<Image
-									src={restaurant.nib}
+								<AtomImages
+									url={restaurant.nib}
 									width={150}
 									height={150}
-									className="rounded-lg border border-gray-300 object-contain"
 									alt="nib"
 								/>
 							</div>

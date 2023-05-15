@@ -160,7 +160,7 @@ const MoleculesFormAdmin = ({
 						<Input
 							{...register('email')}
 							className="w-52"
-							labelText="Username (Email)"
+							labelText={`Username (Email)`}
 							type="text"
 							placeholder="ex: user@pvg.co.id"
 							disabled={isEdit}

@@ -46,6 +46,11 @@ export const AuthSlice = createSlice({
 			state.authData = action.payload;
 			state.permission = action.payload.permission;
 		},
+		onChangeToken: (state: AuthState, action: PayloadAction<DataLogin>) => {
+			console.log(state);
+			console.log(action);
+			state.authData = action.payload;
+		},
 		onLogout: (state: AuthState) => {
 			state.isLoggedIn = false;
 			state.authData = {
@@ -77,5 +82,5 @@ export const AuthSlice = createSlice({
 	},
 });
 
-export const {authSuccess, onLogout} = AuthSlice.actions;
+export const {authSuccess, onChangeToken, onLogout} = AuthSlice.actions;
 export default AuthSlice.reducer;

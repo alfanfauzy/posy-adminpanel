@@ -3,9 +3,10 @@
  * Modal Form Product
  */
 import HRLine from '@/atoms/horizontalLine';
+import AtomImages from '@/atoms/images';
 import {Loading} from '@/atoms/loading';
 import AtomSwitch from '@/atoms/switch';
-import {formatCurrencyTextInput} from '@/constants/utils';
+import {FilterOption, formatCurrencyTextInput} from '@/constants/utils';
 import {mapToDetailProductModel} from '@/data/product/mappers/ProductMapper';
 import {Category} from '@/domain/category/models';
 import {GetFilterCategoryInput} from '@/domain/category/repositories/CategoryRepository';
@@ -23,11 +24,11 @@ import {useCreateProductViewModal} from '@/view/product/view-models/CreateProduc
 import {useGetDetailProductViewModal} from '@/view/product/view-models/GetDetailProductViewModel';
 import {useUpdateProductViewModal} from '@/view/product/view-models/UpdateProductViewModel';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
-import {Button, Input, Select, Textarea} from 'posy-fnb-core';
+import {Button, Input, Textarea} from 'posy-fnb-core';
 import React, {useMemo, useState} from 'react';
 import {Controller, FormProvider, useFieldArray} from 'react-hook-form';
 import {AiFillDelete, AiOutlineCheckSquare} from 'react-icons/ai';
+import Select from 'react-select';
 import {toast} from 'react-toastify';
 import {useAppSelector} from 'store/hooks';
 
@@ -192,7 +193,7 @@ const OrganismFormProduct = ({
 		{
 			onSuccess() {
 				handleCloseModal();
-				toast.success('Sucessfully added new product');
+				toast.success('Successfully added new product');
 			},
 		},
 	);
@@ -201,7 +202,7 @@ const OrganismFormProduct = ({
 		{
 			onSuccess() {
 				handleCloseModal();
-				toast.success('Sucessfully added new product');
+				toast.success('Successfully edit product');
 			},
 		},
 	);
@@ -299,15 +300,16 @@ const OrganismFormProduct = ({
 							<div className="px-6 py-4">
 								<aside className="flex gap-6">
 									<div>
-										<p className="mb-1 block text-m-regular">Product Image</p>
+										<p className="mb-3 block text-m-regular">
+											Product Image (Optional)
+										</p>
 										{imageProduct ? (
-											<div className="flex h-56 w-56 items-center justify-center rounded-lg transition-all ease-in-out">
-												<Image
-													width={224}
-													height={224}
-													src={imageProduct}
-													alt="profile-img"
-													className="rounded-lg border border-gray-300 object-contain"
+											<div className="flex h-auto w-auto items-center justify-center rounded-lg transition-all ease-in-out">
+												<AtomImages
+													url={imageProduct}
+													width={200}
+													height={200}
+													alt="product-image"
 												/>
 											</div>
 										) : null}
@@ -333,7 +335,7 @@ const OrganismFormProduct = ({
 										)}
 									</div>
 
-									<div className="flex-1">
+									<div className="flex flex-1 flex-col gap-4">
 										<div>
 											<Input
 												{...methodsForm.register('restaurant_uuid')}
@@ -348,33 +350,48 @@ const OrganismFormProduct = ({
 												helperText={errors?.product_name?.message}
 											/>
 										</div>
-										<div className="mt-4 mb-4">
+										<div>
+											<label className="mb-1 block text-m-regular">
+												Outlet
+											</label>
 											<Controller
 												name="restaurant_outlet_uuids"
 												control={control}
 												render={({field: {name, value}}) => (
 													<Select
 														name={name}
-														labelText="Outlet"
 														isLoading={isLoadingOutlet}
 														options={OptionsOutlet}
 														placeholder={'Choose Outlet'}
 														value={value}
+														filterOption={FilterOption}
 														isMulti
 														onChange={e => {
-															setValue('restaurant_outlet_uuids', e);
+															setValue(
+																'restaurant_outlet_uuids',
+																e as Array<{label: string; value: string}>,
+															);
+															if (
+																watch('restaurant_outlet_uuids').length === 0
+															) {
+																reset({restaurant_outlet_uuids: undefined});
+															}
 															clearErrors('restaurant_outlet_uuids');
 														}}
-														error={!!errors?.restaurant_outlet_uuids}
-														helperText={
-															errors?.restaurant_outlet_uuids &&
-															'This field cannot be empty'
-														}
 													/>
 												)}
 											/>
+											{errors && errors?.restaurant_outlet_uuids && (
+												<small className="mt-1 block text-m-regular text-red-caution">
+													{errors?.restaurant_outlet_uuids &&
+														'This field cannot be empty'}
+												</small>
+											)}
 										</div>
-										<div className="mt-6 mb-6">
+										<div>
+											<label className="mb-1 block text-m-regular">
+												Category
+											</label>
 											<Controller
 												name="category_uuids"
 												control={control}
@@ -382,27 +399,35 @@ const OrganismFormProduct = ({
 													<Select
 														name={name}
 														value={value}
-														labelText="Category"
 														isLoading={isLoadingCategory}
 														options={OptionsCategory}
 														placeholder={'Choose Category'}
 														isMulti
 														onChange={e => {
-															setValue('category_uuids', e);
+															setValue(
+																'category_uuids',
+																e as Array<{label: string; value: string}>,
+															);
+															if (watch('category_uuids').length === 0) {
+																reset({category_uuids: undefined});
+															}
 															clearErrors('category_uuids');
 														}}
-														error={!!errors?.category_uuids}
-														helperText={
-															errors?.category_uuids &&
-															'This field cannot be empty'
-														}
+														filterOption={FilterOption}
 													/>
 												)}
 											/>
+											{errors && errors?.category_uuids && (
+												<small className="mt-1 block text-m-regular text-red-caution">
+													{errors?.category_uuids &&
+														'This field cannot be empty'}
+												</small>
+											)}
 										</div>
-										<div className="mb-6">
+
+										<div>
 											<Input
-												labelText="Cooking Duration"
+												labelText="Cooking Duration (Optional)"
 												placeholder="ex: 15, 20, 45"
 												{...methodsForm.register('cooking_duration', {
 													setValueAs: v => v.replace(/\D/, ''),
@@ -418,7 +443,7 @@ const OrganismFormProduct = ({
 								<aside className="mb-6">
 									<Textarea
 										{...methodsForm.register('product_description')}
-										labelText="Description"
+										labelText="Description (Optional)"
 										error={!!errors.product_description}
 										helperText={errors?.product_description?.message}
 									/>
@@ -441,7 +466,7 @@ const OrganismFormProduct = ({
 									</div>
 									<div className="w-1/3">
 										<Input
-											labelText="Discount (%)"
+											labelText="Discount (%) (Optional)"
 											placeholder="ex: 2%"
 											{...methodsForm.register('price_discount_percentage', {
 												setValueAs: v => v.replace(/\D/, ''),

@@ -356,7 +356,7 @@ const MoleculesFormManageOutlet = ({
 						<div className={`mb-6 ${isEdit ? 'w-1/2' : 'w-1/3'}`}>
 							<Input
 								{...register('outlet_code')}
-								labelText="Outlet Code:"
+								labelText="Outlet Code (Optional):"
 								type="text"
 								placeholder="ex: KFC-1"
 								error={!!errors?.outlet_code}
@@ -381,6 +381,7 @@ const MoleculesFormManageOutlet = ({
 									{...register('qty_table', {
 										setValueAs: v => v.replace(/\D/, ''),
 									})}
+									value={watch('qty_table')}
 									disabled={isEdit}
 									labelText="Total Table:"
 									type="text"
@@ -537,7 +538,7 @@ const MoleculesFormManageOutlet = ({
 								<Input
 									{...register('longitude')}
 									className="w-52"
-									labelText="Longitude:"
+									labelText="Longitude (Optional):"
 									type="text"
 									placeholder="ex: -6.175969197650049"
 									error={!!errors?.longitude}
@@ -549,7 +550,7 @@ const MoleculesFormManageOutlet = ({
 								<Input
 									{...register('latitude')}
 									className="w-52"
-									labelText="Latitude:"
+									labelText="Latitude (Optional):"
 									type="text"
 									placeholder="ex: 106.81494599676718"
 									error={!!errors?.latitude}
