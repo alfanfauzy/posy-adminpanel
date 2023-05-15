@@ -35,14 +35,14 @@ const Variant = ({addonIdx, errors}: VariantTempProps) => {
 							{...register(
 								`addons.${addonIdx}.variants.${variantIdx}.variant_name`,
 							)}
-							error={
-								!!errors?.addons[addonIdx]?.variants[variantIdx]?.variant_name
-							}
-							helperText={
-								errors?.addons &&
-								errors?.addons[addonIdx]?.variants[variantIdx]?.variant_name
-									?.message
-							}
+							// error={
+							// 	!!errors?.addons[addonIdx]?.variants[variantIdx]?.variant_name
+							// }
+							// helperText={
+							// 	errors?.addons &&
+							// 	errors?.addons[addonIdx]?.variants[variantIdx]?.variant_name
+							// 		?.message
+							// }
 						/>
 					</div>
 					<div className="w-1/2">
@@ -58,16 +58,16 @@ const Variant = ({addonIdx, errors}: VariantTempProps) => {
 							value={watch(
 								`addons.${addonIdx}.variants.${variantIdx}.variant_price`,
 							)}
-							error={
-								errors?.addons?.length > 0 &&
-								errors?.addons[addonIdx]?.variants?.length > 0 &&
-								!!errors?.addons[addonIdx]?.variants[variantIdx]?.variant_price
-							}
-							helperText={
-								errors?.addons &&
-								errors?.addons[addonIdx]?.variants[variantIdx]?.variant_price
-									?.message
-							}
+							// error={
+							// 	errors?.addons?.length > 0 &&
+							// 	errors?.addons[addonIdx]?.variants?.length > 0 &&
+							// 	!!errors?.addons[addonIdx]?.variants[variantIdx]?.variant_price
+							// }
+							// helperText={
+							// 	errors?.addons &&
+							// 	errors?.addons[addonIdx]?.variants[variantIdx]?.variant_price
+							// 		?.message
+							// }
 						/>
 					</div>
 					<div className="pt-5">

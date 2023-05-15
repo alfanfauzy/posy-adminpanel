@@ -11,7 +11,7 @@ export const ManageOutletFormSchema = z.object({
 	address: z
 		.string()
 		.min(3, {message: 'Address must contain at least 3 character(s)'}),
-	phone: z.string().min(10),
+	phone: z.string().min(7).max(13),
 	latitude: z.string().optional(),
 	longitude: z.string().optional(),
 	qty_table: z.string().nonempty(),

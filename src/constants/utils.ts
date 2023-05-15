@@ -1,5 +1,6 @@
 import {GetAccessListDataResponse} from '@/data/access/types';
 import {Search} from '@/domain/vo/BaseInput';
+import {OptionObject} from '@/organisms/form/subscription/entities';
 import moment from 'moment';
 import {ParamsObject} from 'shared/baseResponse';
 
@@ -105,4 +106,8 @@ export const GroupingAccess = (DataAccesses: object): Array<string> => {
 		(data: GetAccessListDataResponse) => data.key.split(':')[0],
 	);
 	return Array.from(new Set(getKey));
+};
+
+export const FilterOption = (option: OptionObject, inputValue: string) => {
+	return option.label.toLowerCase().includes(inputValue.toLowerCase());
 };

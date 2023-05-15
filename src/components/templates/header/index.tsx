@@ -14,6 +14,8 @@ const TemplatesHeader = () => {
 
 	const {user_info, token} = useAppSelector(state => state.auth.authData);
 
+	console.log(user_info);
+
 	const {email, fullname, user_uuid} = user_info;
 
 	const payloadLogout: LogoutPayload = {
