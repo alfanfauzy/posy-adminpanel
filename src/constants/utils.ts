@@ -2,7 +2,6 @@ import {GetAccessListDataResponse} from '@/data/access/types';
 import {Search} from '@/domain/vo/BaseInput';
 import {OptionObject} from '@/organisms/form/subscription/entities';
 import moment from 'moment';
-import {ParamsObject} from 'shared/baseResponse';
 
 /**
  * Function to generate unique id
@@ -73,7 +72,9 @@ export const FormatToRupiah = (ammount: number) =>
 		style: 'currency',
 		currency: 'IDR',
 		minimumFractionDigits: 0,
-	}).format(ammount);
+	})
+		.format(ammount)
+		.replace('Rp', 'Rp ');
 
 /**
  * Function to convert value date to unix timestamp
