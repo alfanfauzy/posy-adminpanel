@@ -132,7 +132,18 @@ const MoleculesFormManageOutlet = ({
 	}, [stateDistrict_id]);
 
 	const {data: ListRestaurant, isLoading: isLoadingRestaurant} =
-		useGetRestaurantViewModal(hooksParamsRestaurant, {enabled: isOpenModal});
+		useGetRestaurantViewModal(hooksParamsRestaurant, {
+			enabled: isOpenModal,
+			onSuccess(datas) {
+				if (restaurantId && isOpenModal) {
+					const restaurantSelect = datas.data.objs
+						.filter(datas => datas.uuid === restaurantId)
+						.map(data => ({label: data.restaurant_name, value: data.uuid}));
+
+					setValue('restaurant_uuid', restaurantSelect[0]);
+				}
+			},
+		});
 
 	const {data: ListProvince, isLoading: isLoadingProvince} =
 		useGetProvinceViewModal(hooksParamsProvince, {enabled: isOpenModal});
@@ -308,16 +319,6 @@ const MoleculesFormManageOutlet = ({
 			setValue('qty_table', qty_table);
 		}
 	}, [selectedData, isEdit, setValue]);
-
-	useEffect(() => {
-		const selectedRestaurant = RestaurantSelect.filter(
-			data => data.value === restaurantId,
-		);
-
-		if (restaurantId) {
-			setValue('restaurant_uuid', selectedRestaurant[0]);
-		}
-	}, [restaurantId, isOpenModal]);
 
 	const titleText = isEdit ? 'Edit Outlet' : 'Create New Outlet';
 

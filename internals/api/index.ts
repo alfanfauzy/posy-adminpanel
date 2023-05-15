@@ -1,12 +1,9 @@
 /* eslint-disable no-param-reassign */
-import {GroupingAccess} from '@/constants/utils';
-import {DataLogin} from '@/domain/auth/models';
-import {Response} from '@/domain/vo/BaseResponse';
 import axios from 'axios';
 import {toast} from 'react-toastify';
 // eslint-disable-next-line import/no-cycle
 import {store} from 'store/index';
-import {authSuccess, onChangeToken} from 'store/slice/auth';
+import {onChangeToken} from 'store/slice/auth';
 
 const axiosApiInstance = axios.create();
 
@@ -52,7 +49,7 @@ axiosApiInstance.interceptors.response.use(
 
 				if (responseRefreshToken.status === 200) {
 					const newPayload = {
-						...responseRefreshToken.data,
+						...responseRefreshToken.data.data,
 					};
 					store.dispatch(onChangeToken(newPayload));
 				}
