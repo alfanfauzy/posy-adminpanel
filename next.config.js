@@ -28,6 +28,12 @@ const nextConfig = {
 				pathname: '/**',
 			},
 			{
+				protocol: 'https',
+				hostname: 'fnbapi.stage.pvg.im',
+				port: '',
+				pathname: '/**',
+			},
+			{
 				protocol: 'http',
 				hostname: 'localhost',
 				port: '12004',
