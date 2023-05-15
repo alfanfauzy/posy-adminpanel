@@ -56,6 +56,23 @@ const MoleculesFormUserRestaurant = ({
 	const restaurantId = asPath.split('/')[3];
 	const refSelectOutlet: React.MutableRefObject<any> = useRef();
 
+	const UserFormSchema = isEdit
+		? EditUserRestauranFormSchema
+		: UserRestauranFormSchema;
+
+	const {
+		handleSubmit,
+		register,
+		reset,
+		setValue,
+		formState: {errors},
+		clearErrors,
+		watch,
+	} = useForm({
+		schema: UserFormSchema,
+		mode: 'onChange',
+	});
+
 	const [restaurant_uuid, setRestaurant_uuid] = useState<
 		ObjectSelect | Record<string, never>
 	>({});
@@ -90,7 +107,17 @@ const MoleculesFormUserRestaurant = ({
 	);
 
 	const {data: ListDataRestaurant, isLoading: isLoadingRestaurant} =
-		useGetRestaurantViewModal(hooksRoleRestaurant, {enabled: isOpenModal});
+		useGetRestaurantViewModal(hooksRoleRestaurant, {
+			enabled: isOpenModal,
+			onSuccess: datas => {
+				if (restaurantId) {
+					const restaurantSelect = datas.data.objs
+						.filter(data => data.uuid === restaurantId)
+						.map(data => ({label: data.restaurant_name, value: data.uuid}));
+					setValue('restaurant_uuid', restaurantSelect[0]);
+				}
+			},
+		});
 
 	const {data: ListDataOutlet, isLoading: isLoadingOutlet} =
 		useGetOutletViewModal(hooksOutletRestaurant, {
@@ -127,23 +154,6 @@ const MoleculesFormUserRestaurant = ({
 	const {value: showPassword, toggle: handleShowPassword} = useToggle(true);
 	const {value: showConfirmPassword, toggle: handleShowConfirmPassword} =
 		useToggle(true);
-
-	const UserFormSchema = isEdit
-		? EditUserRestauranFormSchema
-		: UserRestauranFormSchema;
-
-	const {
-		handleSubmit,
-		register,
-		reset,
-		setValue,
-		formState: {errors},
-		clearErrors,
-		watch,
-	} = useForm({
-		schema: UserFormSchema,
-		mode: 'onChange',
-	});
 
 	const handleCloseModal = () => {
 		reset();
@@ -194,44 +204,23 @@ const MoleculesFormUserRestaurant = ({
 			const {name, email, phone, outlet, role} = selectedData;
 
 			const setRole = {value: role.uuid, label: role.name};
+			const setRestaurant = {
+				value: outlet[0].restaurant_uuid,
+				label: outlet[0].restaurant_name,
+			};
+			const setOutlet = {
+				value: outlet[0].outlet_uuid,
+				label: outlet[0].outlet_name,
+			};
 
 			setValue('fullname', name);
 			setValue('email', email);
 			setValue('phone', phone);
 			setValue('role_uuid', setRole);
-
-			if (role.uuid && role.name) {
-				setValue('role_uuid', {
-					label: role.name,
-					value: role.uuid,
-				});
-			}
-
-			if (outlet[0]?.outlet_name && outlet[0]?.outlet_uuid) {
-				setValue('outlet_uuid', {
-					label: outlet[0].outlet_name,
-					value: outlet[0].outlet_uuid,
-				});
-			}
-
-			if (outlet[0]?.restaurant_name && outlet[0]?.restaurant_uuid) {
-				setValue('restaurant_uuid', {
-					label: outlet[0].restaurant_name,
-					value: outlet[0].restaurant_uuid,
-				});
-			}
+			setValue('restaurant_uuid', setRestaurant);
+			setValue('outlet_uuid', setOutlet);
 		}
 	}, [selectedData, isEdit, setValue]);
-
-	useEffect(() => {
-		const selectedRestaurant = RestaurantSelect.filter(
-			data => data.value === restaurantId,
-		);
-
-		if (restaurantId) {
-			setValue('restaurant_uuid', selectedRestaurant[0]);
-		}
-	}, [restaurantId, isOpenModal]);
 
 	const titleText = isEdit ? 'Edit User' : 'Add New User';
 
@@ -333,6 +322,7 @@ const MoleculesFormUserRestaurant = ({
 										setValue('outlet_uuid', e);
 										clearErrors('outlet_uuid');
 									}}
+									value={watch('outlet_uuid')}
 									isLoading={isLoadingOutlet}
 									options={OutletSelect}
 									labelText="Outlet:"

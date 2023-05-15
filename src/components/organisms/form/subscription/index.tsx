@@ -15,7 +15,7 @@ import React, {useEffect} from 'react';
 import {AiOutlineCheckSquare} from 'react-icons/ai';
 import {toast} from 'react-toastify';
 
-import {FormSubscriptionEntities, OptionObject} from './entities';
+import {FormSubscriptionEntities} from './entities';
 
 const ModalForm = dynamic(() => import('@/molecules/modal/form'), {
 	ssr: false,
@@ -89,6 +89,11 @@ const MoleculesFormSubscription = ({
 				period: period.value,
 			},
 		};
+
+		if (data.price === '0') {
+			toast.error(`Price can't fill with 0`);
+			return;
+		}
 
 		if (isEdit) {
 			updateSubscription(newUpdatePayload);

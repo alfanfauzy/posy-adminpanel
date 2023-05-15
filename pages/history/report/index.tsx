@@ -1,5 +1,5 @@
 import MoleculesMetaHeader from '@/molecules/meta-header';
-import HistoryTransactionLayout from '@/pages/history/transaction';
+import HistoryTransactionLayout from '@/pages/history/report';
 import GeneralLayout from '@/templates/layouts';
 import React from 'react';
 
