@@ -1,7 +1,4 @@
-import Image from 'next/image';
 import React from 'react';
-
-const NoImage = require('public/no-image.png');
 
 type AtomImagesProps = {
 	width: number;
@@ -13,8 +10,8 @@ type AtomImagesProps = {
 const AtomImages = ({width, height, url, alt}: AtomImagesProps) => {
 	if (url === '' || url.includes('localhost:12004')) {
 		return (
-			<Image
-				src={NoImage}
+			<img
+				src="/no-image.png"
 				width={width}
 				height={height}
 				className={`rounded-lg border border-gray-300 object-cover h-[${height}px] w-[${width}px]`}
@@ -23,7 +20,7 @@ const AtomImages = ({width, height, url, alt}: AtomImagesProps) => {
 		);
 	}
 	return (
-		<Image
+		<img
 			src={url}
 			width={width}
 			height={height}
