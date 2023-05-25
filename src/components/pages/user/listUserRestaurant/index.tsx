@@ -3,6 +3,7 @@ import {timeStampConverter} from '@/constants/utils';
 import {RestaurantObject} from '@/data/user-restaurant/types';
 import {UserRestaurant} from '@/domain/user-restaurant/models';
 import {GetUserRestaurantFilterInput} from '@/domain/user-restaurant/repositories/UserRestaurantRepository';
+import {Search} from '@/domain/vo/BaseInput';
 import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import HeaderContent from '@/templates/header/header-content';
@@ -11,7 +12,7 @@ import {useGetUserRestaurantViewModal} from '@/view/user-restaurant/view-modals/
 import type {ColumnsType} from 'antd/es/table';
 import dynamic from 'next/dynamic';
 import {Button} from 'posy-fnb-core';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {AiFillDelete, AiFillEdit, AiOutlinePlus} from 'react-icons/ai';
 import {toast} from 'react-toastify';
 
@@ -32,12 +33,12 @@ const ListUserRestaurantLayout = ({
 	const {hasAccess} = useAccessControl();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
+	const [searchParams, setSearchParams] = useState<
+		Array<Search<'restaurant_uuid' | 'is_admin' | 'name'>>
+	>([{field: 'is_admin', value: 'false'}]);
 
 	const hooksParams: GetUserRestaurantFilterInput = {
-		search: [
-			{field: 'is_admin', value: 'false'},
-			{field: 'restaurant_uuid', value: restaurant_uuid},
-		],
+		search: searchParams,
 		sort: {field: 'created_at', value: 'desc'},
 		page,
 		limit,
@@ -97,6 +98,15 @@ const ListUserRestaurantLayout = ({
 		const {uuid} = selectedData;
 		deleteUserRestaurant(uuid);
 	};
+
+	useEffect(() => {
+		if (restaurant_uuid) {
+			setSearchParams([
+				...searchParams,
+				{field: 'restaurant_uuid', value: restaurant_uuid},
+			]);
+		}
+	}, [restaurant_uuid]);
 
 	const columns: ColumnsType<UserRestaurant> = [
 		{
