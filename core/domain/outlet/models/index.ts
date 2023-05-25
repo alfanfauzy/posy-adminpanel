@@ -34,5 +34,5 @@ export type FormOutlet = {
 	longitude?: string | undefined;
 	phone: string;
 	email: string;
-	qty_table: number;
+	qty_table?: number;
 };

@@ -243,6 +243,7 @@ const MoleculesFormManageOutlet = ({
 		};
 
 		if (isEdit) {
+			delete newPayload.qty_table;
 			const newUpdatePayload = {
 				id: selectedData.uuid,
 				payload: newPayload,
@@ -273,7 +274,6 @@ const MoleculesFormManageOutlet = ({
 				district_name,
 				subdistrict_id,
 				subdistrict_name,
-				qty_table,
 			} = selectedData;
 
 			setValue('restaurant_uuid', {
@@ -316,7 +316,7 @@ const MoleculesFormManageOutlet = ({
 			setValue('latitude', latitude);
 			setValue('longitude', longitude);
 			setValue('email', email);
-			setValue('qty_table', qty_table);
+			setValue('qty_table', '0');
 		}
 	}, [selectedData, isEdit, setValue]);
 
