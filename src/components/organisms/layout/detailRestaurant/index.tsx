@@ -61,7 +61,7 @@ const OrganismDetailRestaurant = () => {
 							<div>
 								<h3 className="text-s-regular text-gray-400">NPWP</h3>
 								<AtomImages
-									url={restaurant.nib}
+									url={restaurant.npwp}
 									width={150}
 									height={150}
 									alt="npwp"
