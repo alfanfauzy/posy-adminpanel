@@ -1,6 +1,5 @@
+import {GetOutletListDataResponse} from '@/data/outlet/type';
 import {Outlets} from '@/domain/outlet/models';
-
-import {GetOutletListDataResponse} from '../type';
 
 export const mapToOutletModel = (
 	datas: Array<GetOutletListDataResponse>,
@@ -26,4 +25,12 @@ export const mapToOutletModel = (
 		district_name: data.region.district_name,
 		subdistrict_id: data.region.subdistrict_id,
 		subdistrict_name: data.region.subdistrict_name,
+	}));
+
+export const mapToOutletSelectObject = (
+	ListDataOutlet: Outlets,
+): Array<{label: string; value: string}> =>
+	ListDataOutlet.map(outlet => ({
+		label: outlet.outlet_name,
+		value: outlet.uuid,
 	}));

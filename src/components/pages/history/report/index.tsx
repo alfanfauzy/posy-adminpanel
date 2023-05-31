@@ -4,8 +4,11 @@ import {FormatToRupiah, timeStampConverter} from '@/constants/utils';
 import {ReportTransaction} from '@/domain/report-transaction/models';
 import {GetFilterReportTransaction} from '@/domain/report-transaction/repositories/ReportTransactionRepository';
 import {useAccessControl} from '@/hooks/useAccessControl';
+import FilterTableReport from '@/organisms/filter/filterTableReport';
+import {ObjectSelect} from '@/organisms/form/outlet/entities';
 import HeaderContent from '@/templates/header/header-content';
 import {useGetReportTransactionViewModal} from '@/view/report-transaction/view-models/GetReportTransactionViewModel';
+import {Empty} from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useMemo, useState} from 'react';
 import {AiOutlineDownload} from 'react-icons/ai';
@@ -19,21 +22,40 @@ const HistoryTransactionLayout: React.FC = () => {
 
 	const {hasAccess} = useAccessControl();
 
-	const hooksParams: GetFilterReportTransaction = useMemo(
+	const [restaurant_uuid, setRestaurant_uuid] = useState<
+		ObjectSelect | Record<string, never>
+	>({});
+
+	const [searchParams, setSearchParams] = useState([
+		{
+			field: 'status',
+			value: 'PAID|CANCELLED',
+		},
+		{
+			field: 'transaction_category',
+			value: 'DINE_IN|TAKE_AWAY',
+		},
+	]);
+
+	const hooksParams = useMemo(
 		() => ({
-			search: [],
+			restaurant_uuid: restaurant_uuid.value,
+			search: searchParams,
 			sort: {field: 'created_at', value: 'desc'},
 			page,
 			limit,
 		}),
-		[page, limit],
+		[page, limit, searchParams, restaurant_uuid],
 	);
 
 	const {
 		data: ListReportTransaction,
 		isLoading,
 		pagination,
-	} = useGetReportTransactionViewModal(hooksParams);
+	} = useGetReportTransactionViewModal(
+		hooksParams as GetFilterReportTransaction,
+		{enabled: !!restaurant_uuid && !!restaurant_uuid.value},
+	);
 
 	/** Modal Confirmation Action */
 
@@ -42,7 +64,6 @@ const HistoryTransactionLayout: React.FC = () => {
 			title: 'Transaction ID',
 			key: 'transaction_id',
 			dataIndex: 'transaction_id',
-			fixed: 'left',
 			width: 230,
 		},
 		{
@@ -130,21 +151,34 @@ const HistoryTransactionLayout: React.FC = () => {
 					iconElement={<AiOutlineDownload />}
 				/>
 			)}
-			<AtomTable
-				isLoading={isLoading}
-				columns={columns}
-				onChangePaginationItem={(e: {value: number}) => setLimit(e.value)}
-				limitSize={limit}
-				pagination={{
-					current: page,
-					pageSize: limit,
-					total: pagination?.total_objs,
-					onChange: setPage,
-				}}
-				bordered
-				dataSource={ListReportTransaction}
-				scroll={{x: 1780}}
+			<FilterTableReport
+				searchParams={searchParams}
+				setSearchParams={setSearchParams}
+				restaurant_uuid={restaurant_uuid}
+				setRestaurant_uuid={setRestaurant_uuid}
 			/>
+
+			{ListReportTransaction ? (
+				<AtomTable
+					isLoading={isLoading}
+					columns={columns}
+					onChangePaginationItem={(e: {value: number}) => setLimit(e.value)}
+					limitSize={limit}
+					pagination={{
+						current: page,
+						pageSize: limit,
+						total: pagination?.total_objs,
+						onChange: setPage,
+					}}
+					bordered
+					dataSource={ListReportTransaction}
+					scroll={{x: 1780}}
+				/>
+			) : (
+				<div className="mt-3 h-auto w-auto rounded-md border border-gray-200 bg-white p-5 shadow-md">
+					<Empty description={<p>Please Select Restaurant to Get Report</p>} />
+				</div>
+			)}
 		</div>
 	);
 };

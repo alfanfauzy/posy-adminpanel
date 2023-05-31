@@ -1,9 +1,8 @@
-import {Restaurant, Restaurants} from '@/domain/restaurant/models';
-
 import {
 	GetRestaurantDetailResponse,
 	GetRestaurantListDataResponse,
-} from '../types';
+} from '@/data/restaurant/types';
+import {Restaurant, Restaurants} from '@/domain/restaurant/models';
 
 export const mapToRestaurantModel = (
 	datas: Array<GetRestaurantListDataResponse>,
@@ -45,3 +44,11 @@ export const mapToDetailRestaurantModel = (
 	subscription_uuid: datas.restaurant.subscription_uuid,
 	subscription_name: datas.restaurant.subscription_name,
 });
+
+export const mapToRestaurantSelectObject = (
+	ListDataRestaurant: Restaurants,
+): Array<{label: string; value: string}> =>
+	ListDataRestaurant.map(restaurant => ({
+		label: restaurant.name,
+		value: restaurant.uuid,
+	}));

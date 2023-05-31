@@ -1,17 +1,16 @@
+import {GetReportTransactionResponse} from '@/data/report-transaction/types';
 import {GetFilterReportTransaction} from '@/domain/report-transaction/repositories/ReportTransactionRepository';
+import {Datalist, Response} from '@/domain/vo/BaseResponse';
 import Post from 'api/post';
 import {AxiosError} from 'axios';
 import {useQuery, UseQueryOptions} from 'react-query';
-
-import {Datalist, Response} from '../../../domain/vo/BaseResponse';
-import {GetReportTransactionResponse} from '../types';
 
 export const GetReportTransaction = async (
 	input?: GetFilterReportTransaction,
 ): Promise<Response<Datalist<GetReportTransactionResponse>>> => {
 	try {
 		const response = await Post({
-			endpoint: `/api/fnb-order-service/internal/report/transaction/list`,
+			endpoint: `/api/fnb-order-service/internal/report/transaction/list/${input?.restaurant_uuid}`,
 			payload: input,
 		});
 
