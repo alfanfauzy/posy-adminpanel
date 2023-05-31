@@ -29,10 +29,15 @@ const GeneralLayout = ({children, menu, subMenu}: GeneralLayoutProps) => {
 			return;
 		}
 
-		if (!permissions.includes(paramPathName)) {
-			router.push('/dashboard');
-			toast.error(`You don't have permission`);
+		if (router.pathname === 'payment') {
+			router.push('/payment');
+			return;
 		}
+
+		// if (!permissions.includes(paramPathName)) {
+		// 	router.push('/dashboard');
+		// 	toast.error(`You don't have permission`);
+		// }
 	}, [router.pathname]);
 
 	return (

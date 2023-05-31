@@ -50,7 +50,7 @@ const SingleMenuContent = ({itemMenu, goToPage}: SingleMenuEntities) => {
 			onClick={() => goToPage(path)}
 			className={`py-1 transition-all duration-300 ease-in-out ${
 				asPath.indexOf(path) !== -1
-					? 'rounded-lg bg-[#00ba9b] text-white'
+					? 'bg-[#00ba9b] text-white'
 					: 'hover:rounded-lg hover:bg-slate-100'
 			}`}
 			active={asPath.indexOf(path) !== -1}
@@ -95,7 +95,11 @@ const SubMenuMenuContent = ({itemMenu, goToPage}: SubMenuEntities) => {
 	);
 };
 
-const SidebarContent = ({listMenus}: MenuSidebar) => {
+type SidebarContentProps = {
+	listMenus: MenuSidebar;
+};
+
+const SidebarContent = ({listMenus}: SidebarContentProps) => {
 	const router = useRouter();
 
 	const goToPage = (path: string) => {
@@ -109,11 +113,8 @@ const SidebarContent = ({listMenus}: MenuSidebar) => {
 				[`.ps-submenu-content`]: {
 					overflow: 'hidden !important',
 				},
-				[`.ps-menu-icon`]: {
-					color: '#01B89D',
-				},
 				[`.ps-active`]: {
-					backgroundColor: '#eeeee4',
+					backgroundColor: '#01B89D',
 					fontWeight: '600',
 				},
 			}}
@@ -145,7 +146,7 @@ const SidebarContent = ({listMenus}: MenuSidebar) => {
 
 const OrganismSidebar = () => {
 	const {collapseSidebar} = useProSidebar();
-	const menuList = useMenu();
+	const menuList: MenuSidebar = useMenu();
 
 	return (
 		<Sidebar

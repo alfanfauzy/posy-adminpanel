@@ -1,16 +1,22 @@
+import {MenuSidebar, typeMenu} from '@/templates/sidebar/entities';
 import React, {useMemo} from 'react';
-import {MdAccountBalanceWallet, MdGroups, MdOutlineGroup} from 'react-icons/md';
+import {
+	MdAccountBalanceWallet,
+	MdGroups,
+	MdOutlineGroup,
+	MdOutlineHistoryToggleOff,
+} from 'react-icons/md';
 import {useAppSelector} from 'store/hooks';
 
 const useMenu = () => {
 	const permissions = useAppSelector(state => state.auth.permission);
 
-	const Menu = useMemo(
+	const Menu: MenuSidebar = useMemo(
 		() => [
 			{
 				label: 'Admin',
 				icon: <MdOutlineGroup />,
-				type: 'sub-menu',
+				type: typeMenu.subMenu,
 				show:
 					permissions.includes('admin') ||
 					permissions.includes('role_admin') ||
@@ -36,7 +42,7 @@ const useMenu = () => {
 			{
 				label: 'User',
 				icon: <MdGroups />,
-				type: 'sub-menu',
+				type: typeMenu.subMenu,
 				show:
 					permissions.includes('restaurant') ||
 					permissions.includes('restaurant_outlet') ||
@@ -73,9 +79,16 @@ const useMenu = () => {
 				],
 			},
 			{
-				label: 'History',
+				label: 'Payment',
 				icon: <MdAccountBalanceWallet />,
-				type: 'sub-menu',
+				show: permissions.includes('report'),
+				type: typeMenu.singleMenu,
+				path: '/payment/setting',
+			},
+			{
+				label: 'History',
+				icon: <MdOutlineHistoryToggleOff />,
+				type: typeMenu.subMenu,
 				show: permissions.includes('report'),
 				items: [
 					{
