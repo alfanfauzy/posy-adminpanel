@@ -29,13 +29,39 @@ type FilterTableReportProps = {
 	setRestaurant_uuid: React.Dispatch<
 		React.SetStateAction<ObjectSelect | Record<string, never>>
 	>;
+	setRestaurant_outlet_uuid: React.Dispatch<
+		React.SetStateAction<ObjectSelect | Record<string, never>>
+	>;
 };
+
+const OPTIONS_STATUS = [
+	{
+		label: 'Paid',
+		value: 'PAID',
+	},
+	{
+		label: 'Cancel',
+		value: 'CANCELLED',
+	},
+];
+
+const TYPE_OF_ORDER = [
+	{
+		label: 'Dine In',
+		value: 'DINE_IN',
+	},
+	{
+		label: 'Take Away',
+		value: 'TAKE_AWAY',
+	},
+];
 
 const FilterTableReport = ({
 	searchParams,
 	setSearchParams,
 	restaurant_uuid,
 	setRestaurant_uuid,
+	setRestaurant_outlet_uuid,
 }: FilterTableReportProps) => {
 	const hooksRoleRestaurant: GetFilterRestaurantInput = {
 		search: [],
@@ -143,6 +169,26 @@ const FilterTableReport = ({
 	const handleChangeSearch = (valueSearch: ObjectSelect, field: string) => {
 		if (valueSearch === null) {
 			const removeSearch = deleteFieldParams(field);
+
+			switch (field) {
+				case 'status':
+					setSearchParams([
+						...removeSearch,
+						{field: 'status', value: 'PAID|CANCELLED'},
+					]);
+					return;
+
+				case 'transaction_category':
+					setSearchParams([
+						...removeSearch,
+						{field: 'transaction_category', value: 'DINE_IN|TAKE_AWAY'},
+					]);
+					return;
+
+				default:
+					break;
+			}
+
 			setSearchParams(removeSearch);
 			return;
 		}
@@ -150,8 +196,9 @@ const FilterTableReport = ({
 		const fieldIndex = checkAvailableField(field);
 
 		if (fieldIndex !== -1) {
-			if (valueSearch?.value || valueSearch === null) {
+			if (valueSearch?.value === '' || valueSearch === null) {
 				const removeSearch = deleteFieldParams(field);
+
 				setSearchParams(removeSearch);
 				return;
 			}
@@ -177,7 +224,7 @@ const FilterTableReport = ({
 
 	return (
 		<div className="mb-2 grid grid-cols-3 gap-3">
-			<div className="mb-6">
+			<div>
 				<Select
 					onChange={e => {
 						setRestaurant_uuid(e);
@@ -190,10 +237,11 @@ const FilterTableReport = ({
 					className="flex items-center justify-center"
 				/>
 			</div>
-			<div className="mb-6">
+			<div>
 				<Select
 					ref={refSelectOutlet}
 					onChange={e => {
+						setRestaurant_outlet_uuid(e);
 						handleChangeSearch(e, 'restaurant_outlet_uuid');
 					}}
 					isLoading={isLoadingOutlet}
@@ -208,6 +256,30 @@ const FilterTableReport = ({
 				<RangePicker
 					onChange={(_, dateStrings) => handleChangeRangePicker(dateStrings)}
 					className="h-[42px] px-3"
+				/>
+			</div>
+			<div>
+				<Select
+					onChange={e => {
+						handleChangeSearch(e, 'status');
+					}}
+					isClearable
+					options={OPTIONS_STATUS}
+					labelText="Status:"
+					placeholder="ex: Select Status"
+					className="flex items-center justify-center"
+				/>
+			</div>
+			<div>
+				<Select
+					onChange={e => {
+						handleChangeSearch(e, 'transaction_category');
+					}}
+					isClearable
+					options={TYPE_OF_ORDER}
+					labelText="Type of Order,:"
+					placeholder="ex: Select Type of Order"
+					className="flex items-center justify-center"
 				/>
 			</div>
 		</div>

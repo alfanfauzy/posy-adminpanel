@@ -26,6 +26,10 @@ const HistoryTransactionLayout: React.FC = () => {
 		ObjectSelect | Record<string, never>
 	>({});
 
+	const [restaurant_outlet_uuid, setRestaurant_outlet_uuid] = useState<
+		ObjectSelect | Record<string, never>
+	>({});
+
 	const [searchParams, setSearchParams] = useState([
 		{
 			field: 'status',
@@ -54,7 +58,13 @@ const HistoryTransactionLayout: React.FC = () => {
 		pagination,
 	} = useGetReportTransactionViewModal(
 		hooksParams as GetFilterReportTransaction,
-		{enabled: !!restaurant_uuid && !!restaurant_uuid.value},
+		{
+			enabled:
+				!!restaurant_uuid &&
+				!!restaurant_uuid.value &&
+				!!restaurant_outlet_uuid &&
+				!!restaurant_outlet_uuid.value,
+		},
 	);
 
 	/** Modal Confirmation Action */
@@ -156,6 +166,7 @@ const HistoryTransactionLayout: React.FC = () => {
 				setSearchParams={setSearchParams}
 				restaurant_uuid={restaurant_uuid}
 				setRestaurant_uuid={setRestaurant_uuid}
+				setRestaurant_outlet_uuid={setRestaurant_outlet_uuid}
 			/>
 
 			{ListReportTransaction ? (
