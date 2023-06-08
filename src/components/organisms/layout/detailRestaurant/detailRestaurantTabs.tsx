@@ -1,6 +1,7 @@
 import ListCategoryMenuLayout from '@/pages/user/categoryMenu';
 import ListUserRestaurantLayout from '@/pages/user/listUserRestaurant';
 import ManageOutletLayout from '@/pages/user/manageOutlet';
+import PaymentSettingLayout from '@/pages/user/paymentSetting';
 import ListProductMenuLayout from '@/pages/user/productMenu';
 import UserSubscriptionLayout from '@/pages/user/subscription';
 import {Tabs} from 'posy-fnb-core';
@@ -13,6 +14,7 @@ const Item = [
 	{label: 'Product'},
 	{label: 'User'},
 	{label: 'Subscription History'},
+	{label: 'Payment Setting'},
 ];
 
 const OrganismDetailRestaurantTabs = () => {
@@ -29,6 +31,7 @@ const OrganismDetailRestaurantTabs = () => {
 			{tabsVal === 2 && <ListProductMenuLayout restaurant_uuid={uuid} />}
 			{tabsVal === 3 && <ListUserRestaurantLayout restaurant_uuid={uuid} />}
 			{tabsVal === 4 && <UserSubscriptionLayout restaurant_uuid={uuid} />}
+			{tabsVal === 5 && <PaymentSettingLayout tabsVal={tabsVal} />}
 		</section>
 	);
 };

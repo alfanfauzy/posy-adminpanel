@@ -16,3 +16,12 @@ export type UpdatePaymentMethodCategoryResponse = {
 	success: string;
 	metadata: Metadata;
 };
+
+export type GetPaymentAccountInfoResponse = {
+	restaurant_uuid: string;
+	account_id: string;
+	type: string;
+	email: string;
+	business_name: string;
+	status: string;
+};

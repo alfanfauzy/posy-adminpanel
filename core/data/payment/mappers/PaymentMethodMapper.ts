@@ -1,5 +1,11 @@
-import {GetPaymentMethodCategoryListResponse} from '@/data/payment/types';
-import {PaymentMethodCategorys} from '@/domain/payment/models';
+import {
+	GetPaymentAccountInfoResponse,
+	GetPaymentMethodCategoryListResponse,
+} from '@/data/payment/types';
+import {
+	PaymentAccountInfo,
+	PaymentMethodCategorys,
+} from '@/domain/payment/models';
 import {PaymentMethodCategoryPayload} from '@/domain/payment/models/index';
 
 export const mapToPaymentMethodCategoryModel = (
@@ -42,4 +48,11 @@ export const mapToPaymentMethodCategoryPayload = (
 			),
 		})),
 	],
+});
+
+export const mapToPayemntAccountInfo = (
+	data: GetPaymentAccountInfoResponse,
+): PaymentAccountInfo => ({
+	type: data.type,
+	status: data.status,
 });

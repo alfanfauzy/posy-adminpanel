@@ -1,0 +1,86 @@
+import {PaymentMethod} from '@/domain/payment/models';
+import {GetFilterPaymentMethodCategory} from '@/domain/payment/repositories/PaymentRepositories';
+import MoleculesSwitchStatusPaymentMethod from '@/molecules/moleculesSwitch/payment';
+import {useGetPaymentMethodCategoryViewModal} from '@/view/payment/view-models/GetPaymentMethodCategoryViewModel';
+import {Table} from 'antd';
+import {ColumnsType} from 'antd/es/table';
+import {useRouter} from 'next/router';
+import React, {useMemo} from 'react';
+
+const PaymentOptionForm = () => {
+	const {query} = useRouter();
+	const {restaurantID} = query;
+
+	const hooksParams: GetFilterPaymentMethodCategory = useMemo(
+		() => ({
+			restaurant_uuid: restaurantID as string,
+			search: [
+				{
+					field: 'with_payment_method',
+					value: 'true',
+				},
+				{field: 'is_integration', value: 'true'},
+			],
+			sort: {field: 'created_at', value: 'desc'},
+			page: 1,
+			limit: 10,
+		}),
+		[restaurantID],
+	);
+
+	const {data: PaymenetMethodCategoryByRestaurant, isLoading} =
+		useGetPaymentMethodCategoryViewModal(hooksParams);
+
+	const dataSourceMapper = PaymenetMethodCategoryByRestaurant?.map(data =>
+		data.payment_method.map(paymentMethod => ({
+			uuid: paymentMethod.uuid,
+			name: paymentMethod.name,
+			is_show: paymentMethod.is_show,
+			payment_method_category_uuid: paymentMethod.payment_method_category_uuid,
+			logo_url: paymentMethod.logo_url,
+			priority: paymentMethod.priority,
+			is_integration: paymentMethod.is_integration,
+			code: paymentMethod.code,
+		})),
+	)[0];
+
+	const columns: ColumnsType<PaymentMethod> = [
+		{
+			title: 'Payment Method',
+			key: 'name',
+			dataIndex: 'name',
+		},
+		{
+			title: 'MDR',
+			key: 'mdr',
+			dataIndex: 'mdr',
+		},
+		{
+			title: 'Settlement Date',
+			key: 'mdr',
+			dataIndex: 'mdr',
+		},
+		{
+			title: 'Show at Digital Menu',
+			key: 'is_show',
+			dataIndex: 'is_show',
+			render: (data, item) => {
+				return <MoleculesSwitchStatusPaymentMethod item={item} data={data} />;
+			},
+		},
+	];
+
+	return (
+		<div className="pt-5">
+			<h1 className="mb-4 text-l-bold">Payment Option</h1>
+			<Table
+				loading={isLoading}
+				columns={columns}
+				dataSource={dataSourceMapper}
+				pagination={false}
+			/>
+		</div>
+	);
+};
+
+export default PaymentOptionForm;

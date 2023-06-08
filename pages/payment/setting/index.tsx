@@ -1,5 +1,5 @@
 import MoleculesMetaHeader from '@/molecules/meta-header';
-import PaymentSettingLayout from '@/organisms/form/payment/setting';
+import PaymentSettingLayout from '@/organisms/form/payment/setting-general';
 import GeneralLayout from '@/templates/layouts';
 import React from 'react';
 
