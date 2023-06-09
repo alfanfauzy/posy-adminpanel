@@ -8,12 +8,16 @@ import PaymentSetting from '@/molecules/payment/setting';
 import {UpdateStatusPaymentMethodCategoryFormSchema} from '@/schemas/payment/setting-general';
 import {useGetPaymentMethodCategoryViewModal} from '@/view/payment/view-models/GetPaymentMethodCategoryViewModel';
 import {useUpdatePaymentMethodCategoryViewModal} from '@/view/payment/view-models/UpdatePaymentMethodCategoryViewModel';
-import {Button} from 'posy-fnb-core';
-import React, {useMemo} from 'react';
+import {Button, Tabs} from 'posy-fnb-core';
+import React, {useMemo, useState} from 'react';
 import {FormProvider} from 'react-hook-form';
 import {toast} from 'react-toastify';
 
+const Item = [{label: 'General Payment'}, {label: 'Integrated Payment'}];
+
 const PaymentSettingLayout = () => {
+	const [tabsVal, setTabsVal] = useState(0);
+
 	const methodsForm = useForm({
 		schema: UpdateStatusPaymentMethodCategoryFormSchema,
 	});
@@ -70,12 +74,26 @@ const PaymentSettingLayout = () => {
 		updatePaymentMethodCategory(mapPayload);
 	};
 
+	const GeneralPaymentMethodCategory = ListPaymentMethodCategory?.filter(
+		paymentMethodCategory => paymentMethodCategory.is_integration === false,
+	);
+
+	const IntegrationPaymentMethodCategory = ListPaymentMethodCategory?.filter(
+		paymentMethodCategory => paymentMethodCategory.is_integration === true,
+	);
+
+	console.log(GeneralPaymentMethodCategory);
+	console.log(IntegrationPaymentMethodCategory);
+
 	return (
 		<div>
+			<p className="mb-3 text-heading-s-regular">Payment Setting</p>
+
+			<Tabs items={Item} value={tabsVal} onChange={e => setTabsVal(e)} />
+
 			<FormProvider {...methodsForm}>
 				<form onSubmit={methodsForm.handleSubmit(updatePaymentSetting)}>
 					<div className="h-screen overflow-auto">
-						<p className="mb-3 text-heading-s-regular">Payment Setting</p>
 						<div className="mt-4 mb-4 border border-gray-200"></div>
 						{isLoading && (
 							<section className="mx-[50%]">
@@ -83,13 +101,27 @@ const PaymentSettingLayout = () => {
 							</section>
 						)}
 
-						{ListPaymentMethodCategory?.map((paymentMethodCategory, idx) => (
-							<PaymentSetting
-								data={paymentMethodCategory}
-								key={paymentMethodCategory.uuid}
-								idx={idx}
-							/>
-						))}
+						{tabsVal === 0 &&
+							GeneralPaymentMethodCategory?.map(
+								(paymentMethodCategory, idx) => (
+									<PaymentSetting
+										data={paymentMethodCategory}
+										key={paymentMethodCategory.uuid}
+										idx={idx}
+									/>
+								),
+							)}
+
+						{tabsVal === 1 &&
+							IntegrationPaymentMethodCategory?.map(
+								(paymentMethodCategory, idx) => (
+									<PaymentSetting
+										data={paymentMethodCategory}
+										key={paymentMethodCategory.uuid}
+										idx={idx}
+									/>
+								),
+							)}
 					</div>
 					<div className="mt-3 flex justify-end">
 						<Button isLoading={isLoadingUpdatePaymentMethodCategory}>
