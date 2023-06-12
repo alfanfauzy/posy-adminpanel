@@ -13,7 +13,6 @@ const PaymentOptionForm = () => {
 
 	const hooksParams: GetFilterPaymentMethod = useMemo(
 		() => ({
-			restaurant_uuid: restaurantID as string,
 			search: [
 				{field: 'restaurant_uuid', value: restaurantID as string},
 				{
