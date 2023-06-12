@@ -1,10 +1,12 @@
 import {
 	GetPaymentAccountInfoResponse,
 	GetPaymentMethodCategoryListResponse,
+	GetPaymentMethodListResponse,
 } from '@/data/payment/types';
 import {
 	PaymentAccountInfo,
 	PaymentMethodCategorys,
+	PaymentMethods,
 } from '@/domain/payment/models';
 import {PaymentMethodCategoryPayload} from '@/domain/payment/models/index';
 
@@ -28,6 +30,9 @@ export const mapToPaymentMethodCategoryModel = (
 			payment_method_category_uuid: el.payment_method_category_uuid,
 			priority: el.priority,
 			uuid: el.uuid,
+			integration_code: el.integration_code,
+			charge_fee: el.charge_fee,
+			settlement_info: el.settlement_info,
 		})),
 	}));
 
@@ -56,3 +61,20 @@ export const mapToPayemntAccountInfo = (
 	type: data.type,
 	status: data.status,
 });
+
+export const mapToPaymentMethod = (
+	datas: Array<GetPaymentMethodListResponse>,
+): PaymentMethods =>
+	datas.map(data => ({
+		code: data.code,
+		is_integration: data.is_integration,
+		is_show: data.is_show,
+		logo_url: data.logo_url,
+		name: data.name,
+		payment_method_category_uuid: data.payment_method_category_uuid,
+		priority: data.priority,
+		uuid: data.uuid,
+		integration_code: data.integration_code,
+		charge_fee: data.charge_fee,
+		settlement_info: data.settlement_info,
+	}));

@@ -1,7 +1,7 @@
 import {PaymentMethod} from '@/domain/payment/models';
-import {GetFilterPaymentMethodCategory} from '@/domain/payment/repositories/PaymentRepositories';
+import {GetFilterPaymentMethod} from '@/domain/payment/repositories/PaymentRepositories';
 import MoleculesSwitchStatusPaymentMethod from '@/molecules/moleculesSwitch/payment';
-import {useGetPaymentMethodCategoryViewModal} from '@/view/payment/view-models/GetPaymentMethodCategoryViewModel';
+import {useGetPaymentMethodViewModal} from '@/view/payment/view-models/GetPaymentMethodViewModel';
 import {Table} from 'antd';
 import {ColumnsType} from 'antd/es/table';
 import {useRouter} from 'next/router';
@@ -11,10 +11,10 @@ const PaymentOptionForm = () => {
 	const {query} = useRouter();
 	const {restaurantID} = query;
 
-	const hooksParams: GetFilterPaymentMethodCategory = useMemo(
+	const hooksParams: GetFilterPaymentMethod = useMemo(
 		() => ({
-			restaurant_uuid: restaurantID as string,
 			search: [
+				{field: 'restaurant_uuid', value: restaurantID as string},
 				{
 					field: 'with_payment_method',
 					value: 'true',
@@ -25,24 +25,11 @@ const PaymentOptionForm = () => {
 			page: 1,
 			limit: 10,
 		}),
-		[restaurantID],
+		gi[restaurantID],
 	);
 
-	const {data: PaymenetMethodCategoryByRestaurant, isLoading} =
-		useGetPaymentMethodCategoryViewModal(hooksParams);
-
-	const dataSourceMapper = PaymenetMethodCategoryByRestaurant?.map(data =>
-		data.payment_method.map(paymentMethod => ({
-			uuid: paymentMethod.uuid,
-			name: paymentMethod.name,
-			is_show: paymentMethod.is_show,
-			payment_method_category_uuid: paymentMethod.payment_method_category_uuid,
-			logo_url: paymentMethod.logo_url,
-			priority: paymentMethod.priority,
-			is_integration: paymentMethod.is_integration,
-			code: paymentMethod.code,
-		})),
-	)[0];
+	const {data: PaymenetMethod, isLoading} =
+		useGetPaymentMethodViewModal(hooksParams);
 
 	const columns: ColumnsType<PaymentMethod> = [
 		{
@@ -52,13 +39,13 @@ const PaymentOptionForm = () => {
 		},
 		{
 			title: 'MDR',
-			key: 'mdr',
-			dataIndex: 'mdr',
+			key: 'charge_fee',
+			dataIndex: 'charge_fee',
 		},
 		{
 			title: 'Settlement Date',
-			key: 'mdr',
-			dataIndex: 'mdr',
+			key: 'settlement_info',
+			dataIndex: 'settlement_info',
 		},
 		{
 			title: 'Show at Digital Menu',
@@ -76,7 +63,7 @@ const PaymentOptionForm = () => {
 			<Table
 				loading={isLoading}
 				columns={columns}
-				dataSource={dataSourceMapper}
+				dataSource={PaymenetMethod}
 				pagination={false}
 			/>
 		</div>

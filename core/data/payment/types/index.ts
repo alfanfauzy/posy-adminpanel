@@ -25,3 +25,18 @@ export type GetPaymentAccountInfoResponse = {
 	business_name: string;
 	status: string;
 };
+
+export type GetPaymentMethodListResponse = {
+	uuid: string;
+	payment_method_category_uuid: string;
+	code: string;
+	name: string;
+	logo_url: string;
+	priority: number;
+	is_show: boolean;
+	is_integration: boolean;
+	integration_code: string;
+	charge_fee: string;
+	settlement_info: string;
+	metadata: Metadata;
+};

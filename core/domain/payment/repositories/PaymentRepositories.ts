@@ -1,9 +1,11 @@
 import {UpdatePaymentMethodCategoryResponse} from '@/data/payment/types';
 import {
 	PaymentAccountInfo,
+	PaymentMethod,
 	PaymentMethodCategory,
 	PaymentMethodCategoryPayload,
 	PaymentMethodCategorys,
+	PaymentMethods,
 } from '@/domain/payment/models';
 import {FilterInputVariables} from '@/domain/vo/BaseInput';
 import {Pagination} from '@/domain/vo/BasePagination';
@@ -46,3 +48,22 @@ export type UpdatePaymentMethodCategoryRepository = {
 export type GetPaymentAccountInfoResult = ResultQuery<
 	PaymentAccountInfo | undefined
 >;
+
+/**
+ * Get Payment Method
+ */
+
+export type GetFilterPaymentMethod = FilterInputVariables<
+	'created_at',
+	| keyof Pick<PaymentMethod, 'is_integration' | 'is_show'>
+	| 'with_payment_method'
+	| 'restaurant_uuid'
+>;
+
+export type GetPaymentMethodsResult = ResultQuery<
+	PaymentMethods | undefined
+> & {
+	pagination: Pagination | undefined;
+};
+
+export type GetPaymentMethodResult = ResultQuery<PaymentMethod>;

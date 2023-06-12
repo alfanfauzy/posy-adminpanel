@@ -1,12 +1,15 @@
 export type PaymentMethodBased = {
 	uuid: string;
-	name: string;
 	payment_method_category_uuid: string;
+	code: string;
+	name: string;
 	logo_url: string;
 	priority: number;
 	is_show: boolean;
 	is_integration: boolean;
-	code: string;
+	integration_code: string;
+	charge_fee: string;
+	settlement_info: string;
 };
 
 export type PaymentMethodCategoryBased = {
