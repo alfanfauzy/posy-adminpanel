@@ -26,7 +26,7 @@ const MoleculesSwitchStatusPaymentMethod = ({
 			onSuccess() {
 				toggle();
 				toast.success('Sucessfully update payment method');
-				queryClient.invalidateQueries('payment-method-category/list');
+				queryClient.invalidateQueries('payment-method/list');
 			},
 		});
 
