@@ -13,9 +13,9 @@ type AtomTableProps = {
 	pagination?: any;
 	scroll?: any;
 	bordered?: boolean;
-	onChangePaginationItem: (e: {value: number}) => void;
+	onChangePaginationItem?: (e: {value: number}) => void;
 	isLoading: boolean;
-	limitSize: number;
+	limitSize?: number;
 };
 
 const paginationDefaultProps = {

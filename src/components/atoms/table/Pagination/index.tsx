@@ -1,14 +1,14 @@
 import {Select} from 'posy-fnb-core';
 
 type PaginationProps = {
-	onChangePagination: (e: {value: number}) => void;
+	onChangePagination?: (e: {value: number}) => void;
 	total: number;
-	limitSize: number;
+	limitSize?: number;
 };
 
 type PaginationSelectProps = {
-	onChangePagination: (e: {value: number}) => void;
-	limitSize: number;
+	onChangePagination?: (e: {value: number}) => void;
+	limitSize?: number;
 };
 
 const PaginationSelect = ({
@@ -25,7 +25,10 @@ const PaginationSelect = ({
 	return (
 		<Select
 			size="m"
-			value={{label: limitSize.toString(), value: limitSize}}
+			value={{
+				label: limitSize?.toString() as string,
+				value: limitSize as number,
+			}}
 			onChange={onChangePagination}
 			style={{width: 'auto'}}
 			options={options}

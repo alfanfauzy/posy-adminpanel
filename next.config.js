@@ -21,6 +21,10 @@ const nextConfig = {
 				source: '/api/fnb-order-service/:path*',
 				destination: `${process.env.NEXT_PUBLIC_API_ENDPOINT}/fnb-order-service/:path*`,
 			},
+			{
+				source: '/api/fnb-payment-service/:path*',
+				destination: `${process.env.NEXT_PUBLIC_API_ENDPOINT}/fnb-payment-service/:path*`,
+			},
 		];
 	},
 	images: {

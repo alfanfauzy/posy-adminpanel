@@ -14,6 +14,12 @@ module.exports = {
 			width: {
 				'big-500': '500px',
 			},
+			colors: {
+				primary: '#00ba9b',
+			},
+			borderColor: {
+				'border-primary': '#00ba9b',
+			},
 		},
 	},
 	plugins: [],

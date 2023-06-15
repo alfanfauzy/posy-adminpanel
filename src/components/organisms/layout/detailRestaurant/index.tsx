@@ -1,6 +1,5 @@
 import AtomImages from '@/atoms/images';
 import {useAccessControl} from '@/hooks/useAccessControl';
-import Image from 'next/image';
 import {useRouter} from 'next/router';
 import React from 'react';
 import {AiOutlineDoubleLeft} from 'react-icons/ai';
