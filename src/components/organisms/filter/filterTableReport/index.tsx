@@ -1,14 +1,17 @@
 import {TimetoUnix} from '@/constants/utils';
 import {mapToOutletSelectObject} from '@/data/outlet/mappers/OutletMapper';
+import {mapToPaymentMethodCategorySelectObject} from '@/data/payment/mappers/PaymentMethodMapper';
 import {mapToRestaurantSelectObject} from '@/data/restaurant/mappers/RestaurantMapper';
 import {GetFilterOutletInput} from '@/domain/outlet/repositories/OutletRepositories';
+import {GetFilterPaymentMethodCategory} from '@/domain/payment/repositories/PaymentRepositories';
 import {GetFilterRestaurantInput} from '@/domain/restaurant/repositories/RestaurantRepository';
 import {ObjectSelect} from '@/organisms/form/outlet/entities';
 import {useGetOutletViewModal} from '@/view/outlet/view-models/GetOutletViewModel';
+import {useGetPaymentMethodCategoryViewModal} from '@/view/payment/view-models/GetPaymentMethodCategoryViewModel';
 import {useGetRestaurantViewModal} from '@/view/restaurant/view-models/GetRestaurantViewModel';
-import {DatePicker} from 'antd';
+import {DatePicker, TreeSelect} from 'antd';
 import {Select} from 'posy-fnb-core';
-import React, {useMemo, useRef} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 
 const {RangePicker} = DatePicker;
 
@@ -63,11 +66,32 @@ const FilterTableReport = ({
 	setRestaurant_uuid,
 	setRestaurant_outlet_uuid,
 }: FilterTableReportProps) => {
+	const [selectedTreeValue, setSelectedTreeValue] = useState<string>();
+	const [objectPaymentMethod, setObjectPaymentMethod] = useState<
+		Array<{
+			value: string;
+			title: string;
+			is_integration: boolean;
+			children: Array<{value: string; title: string}>;
+		}>
+	>([]);
 	const hooksRoleRestaurant: GetFilterRestaurantInput = {
 		search: [],
 		sort: {field: 'created_at', value: 'desc'},
 		page: 1,
 		limit: 0,
+	};
+
+	const paramsPaymentMethodCategpory: GetFilterPaymentMethodCategory = {
+		search: [
+			{
+				field: 'with_payment_method',
+				value: 'true',
+			},
+		],
+		sort: {field: 'created_at', value: 'desc'},
+		page: 1,
+		limit: 10,
 	};
 
 	const {data: ListDataRestaurant, isLoading: isLoadingRestaurant} =
@@ -103,6 +127,17 @@ const FilterTableReport = ({
 
 		return mapToOutletSelect;
 	}, [ListDataOutlet]);
+
+	const {isLoading: isLoadingPaymentMethod} =
+		useGetPaymentMethodCategoryViewModal(paramsPaymentMethodCategpory, {
+			onSuccess(data) {
+				const paymentMethodObject = mapToPaymentMethodCategorySelectObject(
+					data.data.objs,
+				);
+
+				setObjectPaymentMethod(paymentMethodObject);
+			},
+		});
 
 	const refSelectOutlet: React.MutableRefObject<any> = useRef();
 
@@ -146,6 +181,7 @@ const FilterTableReport = ({
 			if (dateStrings[0] === '' && dateStrings[1] === '') {
 				const removeSearch = deleteFieldParams('created_at');
 				setSearchParams(removeSearch);
+				return;
 			}
 
 			const updateSearch = updateValueParam(
@@ -166,7 +202,7 @@ const FilterTableReport = ({
 		}
 	};
 
-	const handleChangeSearch = (valueSearch: ObjectSelect, field: string) => {
+	const handleChangeSelect = (valueSearch: ObjectSelect, field: string) => {
 		if (valueSearch === null) {
 			const removeSearch = deleteFieldParams(field);
 
@@ -218,12 +254,53 @@ const FilterTableReport = ({
 		}
 	};
 
+	const handleChangePaymentMethod = (valueSelected: any) => {
+		const field = 'payment_method_uuid';
+		if (valueSelected.length === 0) {
+			const removeSearch = deleteFieldParams(field);
+			setSearchParams(removeSearch);
+			return;
+		}
+
+		const fieldIndex = checkAvailableField(field);
+
+		if (fieldIndex !== -1) {
+			if (valueSelected.length === 0) {
+				const removeSearch = deleteFieldParams(field);
+
+				setSearchParams(removeSearch);
+				return;
+			}
+
+			const updateSearch = updateValueParam(field, valueSelected.join('|'));
+
+			setSearchParams(updateSearch);
+		} else {
+			// 'created_at' field does not exist, add a new data object
+			setSearchParams(prevState => [
+				...prevState,
+				{
+					field: field,
+					value: valueSelected.join('|'),
+				},
+			]);
+		}
+	};
+
 	const onClear = () => {
 		refSelectOutlet.current.clearValue();
 	};
 
+	const integrationOptions = objectPaymentMethod.filter(
+		node => node.is_integration,
+	);
+
+	const nonIntegrationOptions = objectPaymentMethod.filter(
+		node => !node.is_integration,
+	);
+
 	return (
-		<div className="mb-2 grid grid-cols-3 gap-3">
+		<div className="mb-2 grid grid-cols-3 gap-3 pb-3">
 			<div>
 				<Select
 					onChange={e => {
@@ -242,7 +319,7 @@ const FilterTableReport = ({
 					ref={refSelectOutlet}
 					onChange={e => {
 						setRestaurant_outlet_uuid(e);
-						handleChangeSearch(e, 'restaurant_outlet_uuid');
+						handleChangeSelect(e, 'restaurant_outlet_uuid');
 					}}
 					isLoading={isLoadingOutlet}
 					options={OutletSelectOptions}
@@ -261,7 +338,7 @@ const FilterTableReport = ({
 			<div>
 				<Select
 					onChange={e => {
-						handleChangeSearch(e, 'status');
+						handleChangeSelect(e, 'status');
 					}}
 					isClearable
 					options={OPTIONS_STATUS}
@@ -273,13 +350,74 @@ const FilterTableReport = ({
 			<div>
 				<Select
 					onChange={e => {
-						handleChangeSearch(e, 'transaction_category');
+						handleChangeSelect(e, 'transaction_category');
 					}}
 					isClearable
 					options={TYPE_OF_ORDER}
-					labelText="Type of Order,:"
+					labelText="Type of Order:"
 					placeholder="ex: Select Type of Order"
 					className="flex items-center justify-center"
+				/>
+			</div>
+			<div>
+				<label className="mb-1 block text-m-regular">Payment Method:</label>
+				<TreeSelect
+					loading={isLoadingPaymentMethod}
+					showSearch
+					className="h-8 text-m-regular"
+					style={{width: '100%'}}
+					value={selectedTreeValue}
+					dropdownStyle={{
+						maxHeight: 400,
+						overflow: 'auto',
+						paddingBottom: 10,
+					}}
+					placeholder="Please select"
+					allowClear
+					multiple
+					treeDefaultExpandAll
+					onChange={e => {
+						setSelectedTreeValue(e);
+						handleChangePaymentMethod(e);
+					}}
+					maxTagCount={2}
+					maxTagPlaceholder={omittedValues =>
+						`+ ${omittedValues.length} Payment Selected ...`
+					}
+					treeData={[
+						{
+							title: (
+								<p className="w-[300px] pb-4 text-xl-semibold text-black">
+									Payment Method:
+								</p>
+							),
+							disabled: true,
+							checkable: false,
+						},
+						{
+							title: (
+								<p className="w-[300px] border-t pt-2 text-l-semibold text-black">
+									Payment Integration
+								</p>
+							),
+							disabled: true,
+							checkable: false,
+						},
+						...integrationOptions,
+						{
+							title: (
+								<p className="w-[300px] border-t pt-4 text-l-semibold text-black">
+									Manual Input
+								</p>
+							),
+							value: 'xxx',
+							disableCheckbox: true,
+							disabled: true,
+							checkable: false,
+						},
+						...nonIntegrationOptions,
+					]}
+					treeCheckable
 				/>
 			</div>
 		</div>

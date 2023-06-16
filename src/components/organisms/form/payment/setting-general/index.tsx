@@ -82,9 +82,6 @@ const PaymentSettingLayout = () => {
 		paymentMethodCategory => paymentMethodCategory.is_integration === true,
 	);
 
-	console.log(GeneralPaymentMethodCategory);
-	console.log(IntegrationPaymentMethodCategory);
-
 	return (
 		<div>
 			<p className="mb-3 text-heading-s-regular">Payment Setting</p>

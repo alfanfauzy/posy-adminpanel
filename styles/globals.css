@@ -106,3 +106,7 @@ body {
 .panel-content {
 	text-align: center;
 }
+
+.ant-select-selector {
+	min-height: 41px !important;
+}

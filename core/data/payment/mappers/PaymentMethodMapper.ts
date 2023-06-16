@@ -78,3 +78,22 @@ export const mapToPaymentMethod = (
 		charge_fee: data.charge_fee,
 		settlement_info: data.settlement_info,
 	}));
+
+export const mapToPaymentMethodCategorySelectObject = (
+	datas: Array<GetPaymentMethodCategoryListResponse>,
+) =>
+	datas.map(payment => ({
+		value: payment.uuid,
+		title:
+			payment.name === 'E-Wallet - Integration [TESTING PURPOSE]'
+				? 'E-Wallet'
+				: payment.name,
+		is_integration: payment.is_integration,
+		children:
+			payment.name !== 'Cash'
+				? payment.payment_method.map(paymentMethod => ({
+						value: paymentMethod.uuid,
+						title: paymentMethod.name,
+				  }))
+				: [],
+	}));

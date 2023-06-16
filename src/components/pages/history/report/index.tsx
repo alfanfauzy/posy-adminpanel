@@ -24,7 +24,7 @@ const HistoryTransactionLayout: React.FC = () => {
 
 	const [restaurant_uuid, setRestaurant_uuid] = useState<
 		ObjectSelect | Record<string, never>
-	>({});
+	>({label: 'All', value: 'all'});
 
 	const [restaurant_outlet_uuid, setRestaurant_outlet_uuid] = useState<
 		ObjectSelect | Record<string, never>
@@ -58,13 +58,6 @@ const HistoryTransactionLayout: React.FC = () => {
 		pagination,
 	} = useGetReportTransactionViewModal(
 		hooksParams as GetFilterReportTransaction,
-		{
-			enabled:
-				!!restaurant_uuid &&
-				!!restaurant_uuid.value &&
-				!!restaurant_outlet_uuid &&
-				!!restaurant_outlet_uuid.value,
-		},
 	);
 
 	/** Modal Confirmation Action */
