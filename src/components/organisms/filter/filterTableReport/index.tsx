@@ -11,7 +11,7 @@ import {useGetPaymentMethodCategoryViewModal} from '@/view/payment/view-models/G
 import {useGetRestaurantViewModal} from '@/view/restaurant/view-models/GetRestaurantViewModel';
 import {DatePicker, TreeSelect} from 'antd';
 import {Select} from 'posy-fnb-core';
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 
 const {RangePicker} = DatePicker;
 
@@ -20,6 +20,7 @@ type FilterTableReportProps = {
 		field: string;
 		value: string;
 	}>;
+	setRangeDate: React.Dispatch<React.SetStateAction<[string, string]>>;
 	setSearchParams: React.Dispatch<
 		React.SetStateAction<
 			Array<{
@@ -62,6 +63,7 @@ const TYPE_OF_ORDER = [
 const FilterTableReport = ({
 	searchParams,
 	setSearchParams,
+	setRangeDate,
 	restaurant_uuid,
 	setRestaurant_uuid,
 	setRestaurant_outlet_uuid,
@@ -139,8 +141,6 @@ const FilterTableReport = ({
 			},
 		});
 
-	const refSelectOutlet: React.MutableRefObject<any> = useRef();
-
 	const checkAvailableField = (fieldChecking: string) => {
 		let fieldIndex = -1;
 		searchParams.forEach((dataObject, index) => {
@@ -173,6 +173,7 @@ const FilterTableReport = ({
 	};
 
 	const handleChangeRangePicker = (dateStrings: [string, string]) => {
+		setRangeDate(dateStrings);
 		const startDate = TimetoUnix(dateStrings[0]);
 		const endDate = TimetoUnix(dateStrings[1]);
 		const fieldIndex = checkAvailableField('created_at');
@@ -287,10 +288,6 @@ const FilterTableReport = ({
 		}
 	};
 
-	const onClear = () => {
-		refSelectOutlet.current.clearValue();
-	};
-
 	const integrationOptions = objectPaymentMethod.filter(
 		node => node.is_integration,
 	);
@@ -305,7 +302,6 @@ const FilterTableReport = ({
 				<Select
 					onChange={e => {
 						setRestaurant_uuid(e);
-						onClear();
 					}}
 					options={RestaurantSelectOptions}
 					isLoading={isLoadingRestaurant}
@@ -316,7 +312,6 @@ const FilterTableReport = ({
 			</div>
 			<div>
 				<Select
-					ref={refSelectOutlet}
 					onChange={e => {
 						setRestaurant_outlet_uuid(e);
 						handleChangeSelect(e, 'restaurant_outlet_uuid');

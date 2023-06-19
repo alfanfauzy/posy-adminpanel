@@ -7,6 +7,8 @@ type HeaderContentProps = {
 	withIconButton?: boolean;
 	iconElement?: ReactNode | JSX.Element;
 	flexEnd?: boolean;
+	isLoading?: boolean;
+	disabledButton?: boolean;
 };
 
 const HeaderContent = ({
@@ -15,6 +17,8 @@ const HeaderContent = ({
 	withIconButton = true,
 	iconElement,
 	flexEnd = false,
+	isLoading = false,
+	disabledButton = false,
 }: HeaderContentProps) => (
 	<header className={`mb-5 flex ${flexEnd ? 'justify-end' : 'justify-start'}`}>
 		<Button
@@ -24,6 +28,8 @@ const HeaderContent = ({
 			className="justify flex items-center  
       gap-2 text-sm"
 			onClick={onClick}
+			isLoading={isLoading}
+			disabled={disabledButton}
 		>
 			{withIconButton && iconElement}
 			{textButton}

@@ -1,15 +1,26 @@
 import AtomTable from '@/atoms/table';
 import {TRANSACTION_CATEGORY, TRANSACTION_STATUS} from '@/constants/index';
-import {FormatToRupiah, timeStampConverter} from '@/constants/utils';
+import {
+	DownloadFile,
+	FormatToRupiah,
+	timeStampConverter,
+	TimetoUnix,
+} from '@/constants/utils';
 import {ReportTransaction} from '@/domain/report-transaction/models';
-import {GetFilterReportTransaction} from '@/domain/report-transaction/repositories/ReportTransactionRepository';
+import {
+	GetDownloadTransactionReportInput,
+	GetFilterReportTransaction,
+} from '@/domain/report-transaction/repositories/ReportTransactionRepository';
+import {Response} from '@/domain/vo/BaseResponse';
 import {useAccessControl} from '@/hooks/useAccessControl';
 import FilterTableReport from '@/organisms/filter/filterTableReport';
 import {ObjectSelect} from '@/organisms/form/outlet/entities';
 import HeaderContent from '@/templates/header/header-content';
+import {useDownloadTransactionReportsViewModel} from '@/view/report-transaction/view-models/GetDownloadTransactionReportsViewModel';
 import {useGetReportTransactionViewModal} from '@/view/report-transaction/view-models/GetReportTransactionViewModel';
 import {Empty} from 'antd';
 import type {ColumnsType} from 'antd/es/table';
+import {subDays} from 'date-fns';
 import React, {useMemo, useState} from 'react';
 import {AiOutlineDownload} from 'react-icons/ai';
 
@@ -19,6 +30,7 @@ type TransactionStatusType = keyof typeof TRANSACTION_STATUS;
 const HistoryTransactionLayout: React.FC = () => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
+	const [rangeDate, setRangeDate] = useState<[string, string]>(['', '']);
 
 	const {hasAccess} = useAccessControl();
 
@@ -39,6 +51,10 @@ const HistoryTransactionLayout: React.FC = () => {
 			field: 'transaction_category',
 			value: 'DINE_IN|TAKE_AWAY',
 		},
+		{
+			field: 'restaurant_outlet_uuid',
+			value: 'all',
+		},
 	]);
 
 	const hooksParams = useMemo(
@@ -52,6 +68,24 @@ const HistoryTransactionLayout: React.FC = () => {
 		[page, limit, searchParams, restaurant_uuid],
 	);
 
+	const today = new Date();
+	const dateBefore30Days = subDays(today, 30);
+
+	const paramsDownload = useMemo(() => {
+		return {
+			start_date:
+				rangeDate[0] === ''
+					? TimetoUnix(dateBefore30Days).toString()
+					: TimetoUnix(rangeDate[0]).toString(),
+			end_date:
+				rangeDate[1] === ''
+					? TimetoUnix(today).toString()
+					: TimetoUnix(rangeDate[1]).toString(),
+			restaurant_uuid: restaurant_uuid.value,
+			filter: searchParams,
+		};
+	}, [JSON.stringify(searchParams), restaurant_uuid]);
+
 	const {
 		data: ListReportTransaction,
 		isLoading,
@@ -59,6 +93,20 @@ const HistoryTransactionLayout: React.FC = () => {
 	} = useGetReportTransactionViewModal(
 		hooksParams as GetFilterReportTransaction,
 	);
+
+	const {downloadReport, isLoading: isLoadingDownloadReport} =
+		useDownloadTransactionReportsViewModel({
+			onSuccess(response) {
+				const {data: responseDownloadReport} = response as Response<string>;
+				DownloadFile(responseDownloadReport, `transaction-report`);
+			},
+		});
+
+	const handleDownloadReport = () => {
+		downloadReport(
+			paramsDownload as unknown as GetDownloadTransactionReportInput,
+		);
+	};
 
 	/** Modal Confirmation Action */
 
@@ -149,13 +197,15 @@ const HistoryTransactionLayout: React.FC = () => {
 			{hasAccess('report:transaction') && (
 				<HeaderContent
 					flexEnd
-					onClick={() => console.log('Download')}
+					onClick={handleDownloadReport}
 					textButton="Export"
 					iconElement={<AiOutlineDownload />}
+					isLoading={isLoadingDownloadReport}
 				/>
 			)}
 			<FilterTableReport
 				searchParams={searchParams}
+				setRangeDate={setRangeDate}
 				setSearchParams={setSearchParams}
 				restaurant_uuid={restaurant_uuid}
 				setRestaurant_uuid={setRestaurant_uuid}
