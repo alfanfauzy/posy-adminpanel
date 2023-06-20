@@ -95,8 +95,8 @@ const PaymentSetting = ({data, idx}: PaymentSettingProps) => {
 												watch(
 													`payment_method_category.${idx}.payment_method.${paymentMethodIdx}.is_show`,
 												)
-													? 'Enabeld'
-													: 'Disabeld'
+													? 'Enabled'
+													: 'Disabled'
 											}
 											onChange={e => {
 												setValue(
