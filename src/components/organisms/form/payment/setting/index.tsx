@@ -197,7 +197,18 @@ const FormPaymentSetting = ({
 		event: React.ChangeEvent<HTMLInputElement>,
 		prefix: string,
 	) => {
+		// Max size 2MB
+		const maxSize = 2 * 1024 * 1024;
+
 		if (event.target.files && event.target.files[0]) {
+			const fileSize = event.target.files[0].size;
+
+			// Check filesize, don't allow when file more than 2MB
+			if (fileSize > maxSize) {
+				toast.error(`File size cann't more than 2MB`);
+				return;
+			}
+
 			setBankProofURL(URL.createObjectURL(event.target.files[0]));
 
 			const formDataUploadImagePrivate = new FormData();
