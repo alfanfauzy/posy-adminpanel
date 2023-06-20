@@ -10,7 +10,7 @@ type PaymentSettingProps = {
 };
 
 const PaymentSetting = ({data, idx}: PaymentSettingProps) => {
-	const {control, setValue, getValues, watch} = useFormContext();
+	const {control, setValue, watch} = useFormContext();
 
 	return (
 		<div>
@@ -32,14 +32,13 @@ const PaymentSetting = ({data, idx}: PaymentSettingProps) => {
 							render={({field: {name}}) => (
 								<AtomSwitch
 									name={name}
-									value={getValues(`payment_method_category.${idx}.is_show`)}
+									value={watch(`payment_method_category.${idx}.is_show`)}
 									text={
-										getValues(`payment_method_category.${idx}.is_show`)
+										watch(`payment_method_category.${idx}.is_show`)
 											? 'Enabled'
 											: 'Disabled'
 									}
 									onChange={e => {
-										watch();
 										setValue(`payment_method_category.${idx}.is_show`, e);
 									}}
 								/>
@@ -55,8 +54,8 @@ const PaymentSetting = ({data, idx}: PaymentSettingProps) => {
 						>
 							<div
 								className={`h-auto w-full px-3 py-3 ${
-									getValues(`payment_method_category.${idx}.is_show`) &&
-									getValues(
+									watch(`payment_method_category.${idx}.is_show`) &&
+									watch(
 										`payment_method_category.${idx}.payment_method.${paymentMethodIdx}.is_show`,
 									)
 										? 'bg-primary text-white'
@@ -77,29 +76,29 @@ const PaymentSetting = ({data, idx}: PaymentSettingProps) => {
 								<Controller
 									name="is_show"
 									control={control}
+									defaultValue={paymentMethod.is_show}
 									render={({field: {name}}) => (
 										<AtomSwitch
 											name={name}
 											disabled={
-												getValues(`payment_method_category.${idx}.is_show`) ===
+												watch(`payment_method_category.${idx}.is_show`) ===
 												false
 											}
 											value={
-												!getValues(`payment_method_category.${idx}.is_show`)
+												!watch(`payment_method_category.${idx}.is_show`)
 													? false
-													: getValues(
+													: watch(
 															`payment_method_category.${idx}.payment_method.${paymentMethodIdx}.is_show`,
 													  )
 											}
 											text={
-												getValues(
+												watch(
 													`payment_method_category.${idx}.payment_method.${paymentMethodIdx}.is_show`,
 												)
 													? 'Enabeld'
 													: 'Disabeld'
 											}
 											onChange={e => {
-												watch();
 												setValue(
 													`payment_method_category.${idx}.payment_method.${paymentMethodIdx}.is_show`,
 													e,
