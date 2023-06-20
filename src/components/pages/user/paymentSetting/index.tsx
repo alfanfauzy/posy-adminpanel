@@ -1,4 +1,5 @@
 import {Loading} from '@/atoms/loading';
+import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import PaymentInformationMolecules from '@/molecules/payment/information';
 import PaymentOptionForm from '@/organisms/form/payment/options';
@@ -15,6 +16,7 @@ type PaymentSettingLayoutProps = {
 
 const PaymentSettingLayout = ({tabsVal}: PaymentSettingLayoutProps) => {
 	const {query} = useRouter();
+	const {hasAccess} = useAccessControl();
 	const {restaurantID} = query;
 
 	const {value: isEdit, toggle: handleIsEdit} = useToggle(false);
@@ -22,7 +24,7 @@ const PaymentSettingLayout = ({tabsVal}: PaymentSettingLayoutProps) => {
 
 	const {data: bankAccountData, isLoading} = useGetLinkedBankAccountViewModel(
 		restaurantID as string,
-		{enabled: !!restaurantID},
+		{enabled: !!restaurantID && hasAccess('payment_integration:view')},
 	);
 
 	const {data: paymentAccountInfoData, isLoading: isLoadingPaymentAccountInfo} =
@@ -54,7 +56,8 @@ const PaymentSettingLayout = ({tabsVal}: PaymentSettingLayoutProps) => {
 				) : (
 					<>
 						<PaymentInformationMolecules />
-						{bankAccountData && <PaymentOptionForm />}
+						{hasAccess('payment_integration:manage_payment_method') &&
+							bankAccountData && <PaymentOptionForm />}
 					</>
 				)}
 

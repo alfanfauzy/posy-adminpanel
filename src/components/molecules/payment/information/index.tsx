@@ -1,3 +1,4 @@
+import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import {Image} from 'antd';
 import {Button} from 'posy-fnb-core';
@@ -5,6 +6,7 @@ import React, {useContext} from 'react';
 import {PaymentSettingContext} from 'store/context/PaymentContext';
 
 const PaymentInformationEmptyStateMolecules = () => {
+	const {hasAccess} = useAccessControl();
 	const {handleOpenModal} = useContext(PaymentSettingContext);
 	const {value: isShowImage, toggle: handleToggleShowImage} = useToggle(false);
 
@@ -25,7 +27,9 @@ const PaymentInformationEmptyStateMolecules = () => {
 						What`s the different?
 					</span>
 				</p>
-				<Button onClick={handleOpenModal}>Add Bank Account</Button>
+				{hasAccess('payment_integration:create_bank') && (
+					<Button onClick={handleOpenModal}>Add Bank Account</Button>
+				)}
 			</div>
 			<Image
 				src="https://i.ibb.co/gMnbzYp/payment-comparison.png"
@@ -41,6 +45,7 @@ const PaymentInformationEmptyStateMolecules = () => {
 };
 
 const PaymentInformationWitDataMolecules = () => {
+	const {hasAccess} = useAccessControl();
 	const {
 		handleOpenModal,
 		paymentAccountInfoData,
@@ -84,7 +89,9 @@ const PaymentInformationWitDataMolecules = () => {
 			</div>
 			<div className="mb-4 border border-neutral-40"></div>
 			<div className="flex justify-end">
-				<Button onClick={handleModal}>Edit Information</Button>
+				{hasAccess('payment_integration:update_bank') && (
+					<Button onClick={handleModal}>Edit Information</Button>
+				)}
 			</div>
 		</div>
 	);

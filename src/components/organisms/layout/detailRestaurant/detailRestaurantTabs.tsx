@@ -1,3 +1,4 @@
+import {useAccessControl} from '@/hooks/useAccessControl';
 import ListCategoryMenuLayout from '@/pages/user/categoryMenu';
 import ListUserRestaurantLayout from '@/pages/user/listUserRestaurant';
 import ManageOutletLayout from '@/pages/user/manageOutlet';
@@ -19,6 +20,7 @@ const Item = [
 
 const OrganismDetailRestaurantTabs = () => {
 	const [tabsVal, setTabsVal] = useState(0);
+	const {hasAccess} = useAccessControl();
 
 	const {uuid} = useAppSelector(state => state.restaurant);
 
@@ -31,7 +33,9 @@ const OrganismDetailRestaurantTabs = () => {
 			{tabsVal === 2 && <ListProductMenuLayout restaurant_uuid={uuid} />}
 			{tabsVal === 3 && <ListUserRestaurantLayout restaurant_uuid={uuid} />}
 			{tabsVal === 4 && <UserSubscriptionLayout restaurant_uuid={uuid} />}
-			{tabsVal === 5 && <PaymentSettingLayout tabsVal={tabsVal} />}
+			{hasAccess('payment_integration:view') && tabsVal === 5 && (
+				<PaymentSettingLayout tabsVal={tabsVal} />
+			)}
 		</section>
 	);
 };

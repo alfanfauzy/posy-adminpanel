@@ -81,7 +81,7 @@ const useMenu = () => {
 			{
 				label: 'Payment',
 				icon: <MdAccountBalanceWallet />,
-				show: permissions.includes('report'),
+				show: permissions.includes('payment_integration'),
 				type: typeMenu.singleMenu,
 				path: '/payment/setting',
 			},
