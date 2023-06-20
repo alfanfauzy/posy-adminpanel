@@ -1,9 +1,12 @@
+import useToggle from '@/hooks/useToggle';
+import {Image} from 'antd';
 import {Button} from 'posy-fnb-core';
 import React, {useContext} from 'react';
 import {PaymentSettingContext} from 'store/context/PaymentContext';
 
 const PaymentInformationEmptyStateMolecules = () => {
 	const {handleOpenModal} = useContext(PaymentSettingContext);
+	const {value: isShowImage, toggle: handleToggleShowImage} = useToggle(false);
 
 	return (
 		<>
@@ -15,12 +18,24 @@ const PaymentInformationEmptyStateMolecules = () => {
 			<div className="flex justify-between">
 				<p className="text-m-medium">
 					We provide two types of payment, owned account and manage account.
-					<a href="#" className="text-[#654DE4] underline">
-						What’s the different?
-					</a>
+					<span
+						onClick={handleToggleShowImage}
+						className="cursor-pointer text-[#654DE4] underline"
+					>
+						What`s the different?
+					</span>
 				</p>
 				<Button onClick={handleOpenModal}>Add Bank Account</Button>
 			</div>
+			<Image
+				src="https://i.ibb.co/gMnbzYp/payment-comparison.png"
+				alt="withdraw-example"
+				preview={{
+					visible: isShowImage,
+					onVisibleChange: handleToggleShowImage,
+				}}
+				className="hidden"
+			/>
 		</>
 	);
 };
