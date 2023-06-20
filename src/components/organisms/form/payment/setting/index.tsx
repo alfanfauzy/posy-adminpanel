@@ -81,7 +81,8 @@ const FormPaymentSetting = ({
 		if (!dataBankList) return [];
 
 		const mapOptionsBankList = mapToBankOptions(dataBankList);
-		return mapOptionsBankList;
+
+		return mapOptionsBankList.sort((a, b) => a.label.localeCompare(b.label));
 	}, [dataBankList]);
 
 	/**
@@ -301,6 +302,10 @@ const FormPaymentSetting = ({
 									onChange={e => {
 										setValue('bank_uuid', e);
 										clearErrors('bank_uuid');
+
+										// Clear field account name & account number when change bank
+										setValue('account_name', '');
+										setValue('account_number', '');
 									}}
 									isLoading={isLoadingBankList}
 									options={optionsBankList}
