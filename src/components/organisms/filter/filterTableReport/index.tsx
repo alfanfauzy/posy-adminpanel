@@ -47,6 +47,10 @@ const OPTIONS_STATUS = [
 		label: 'Cancel',
 		value: 'CANCELLED',
 	},
+	{
+		label: 'Refund',
+		value: 'REFUND',
+	},
 ];
 
 const TYPE_OF_ORDER = [
