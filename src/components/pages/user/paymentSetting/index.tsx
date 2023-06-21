@@ -7,7 +7,7 @@ import FormPaymentSetting from '@/organisms/form/payment/setting';
 import {useGetLinkedBankAccountViewModel} from '@/view/bank/view-models/GetLinkedBankAccountViewModel';
 import {useGetPaymentAccountInfoViewModel} from '@/view/payment/view-models/GetPaymentAccountInfoViewModel';
 import {useRouter} from 'next/router';
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {PaymentSettingContext} from 'store/context/PaymentContext';
 
 type PaymentSettingLayoutProps = {
@@ -19,7 +19,7 @@ const PaymentSettingLayout = ({tabsVal}: PaymentSettingLayoutProps) => {
 	const {hasAccess} = useAccessControl();
 	const {restaurantID} = query;
 
-	const {value: isEdit, toggle: handleIsEdit} = useToggle(false);
+	const [isEdit, setIsEdit] = useState(false);
 	const {value: isOpenModal, toggle: handleOpenModal} = useToggle(false);
 
 	const {data: bankAccountData, isLoading} = useGetLinkedBankAccountViewModel(
@@ -41,9 +41,9 @@ const PaymentSettingLayout = ({tabsVal}: PaymentSettingLayoutProps) => {
 			bankAccountData,
 			paymentAccountInfoData,
 			handleOpenModal,
-			handleIsEdit,
+			setIsEdit,
 		}),
-		[bankAccountData, paymentAccountInfoData, handleOpenModal, handleIsEdit],
+		[bankAccountData, paymentAccountInfoData, handleOpenModal, setIsEdit],
 	);
 
 	return (
@@ -67,7 +67,7 @@ const PaymentSettingLayout = ({tabsVal}: PaymentSettingLayoutProps) => {
 						isOpenModal={isOpenModal}
 						handleOpenModal={handleOpenModal}
 						isEdit={isEdit}
-						setIsEdit={handleIsEdit}
+						setIsEdit={setIsEdit}
 					/>
 				)}
 			</PaymentSettingContext.Provider>

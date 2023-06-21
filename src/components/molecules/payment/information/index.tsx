@@ -46,15 +46,11 @@ const PaymentInformationEmptyStateMolecules = () => {
 
 const PaymentInformationWitDataMolecules = () => {
 	const {hasAccess} = useAccessControl();
-	const {
-		handleOpenModal,
-		paymentAccountInfoData,
-		bankAccountData,
-		handleIsEdit,
-	} = useContext(PaymentSettingContext);
+	const {handleOpenModal, paymentAccountInfoData, bankAccountData, setIsEdit} =
+		useContext(PaymentSettingContext);
 
 	const handleModal = () => {
-		handleIsEdit(true);
+		setIsEdit(true);
 		handleOpenModal();
 	};
 

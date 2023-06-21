@@ -32,7 +32,7 @@ type FormPaymentSetting = {
 	isOpenModal: boolean;
 	handleOpenModal: () => void;
 	isEdit: boolean;
-	setIsEdit: () => void;
+	setIsEdit: (value: boolean) => void;
 };
 
 const PAYMENT_ACCOUNT_TYPE = [
@@ -177,7 +177,7 @@ const FormPaymentSetting = ({
 		});
 		onClearImage();
 		handleOpenModal();
-		setIsEdit();
+		setIsEdit(false);
 	};
 
 	/**
