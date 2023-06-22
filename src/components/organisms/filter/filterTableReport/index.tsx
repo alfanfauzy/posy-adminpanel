@@ -10,6 +10,8 @@ import {useGetOutletViewModal} from '@/view/outlet/view-models/GetOutletViewMode
 import {useGetPaymentMethodCategoryViewModal} from '@/view/payment/view-models/GetPaymentMethodCategoryViewModel';
 import {useGetRestaurantViewModal} from '@/view/restaurant/view-models/GetRestaurantViewModel';
 import {DatePicker, TreeSelect} from 'antd';
+import type {RangePickerProps} from 'antd/es/date-picker';
+import dayjs from 'dayjs';
 import {Select} from 'posy-fnb-core';
 import React, {useMemo, useState} from 'react';
 
@@ -300,6 +302,12 @@ const FilterTableReport = ({
 		node => !node.is_integration,
 	);
 
+	// eslint-disable-next-line arrow-body-style
+	const disabledDate: RangePickerProps['disabledDate'] = current => {
+		// Can not select days before today and today
+		return current && current >= dayjs().endOf('day');
+	};
+
 	return (
 		<div className="mb-2 grid grid-cols-3 gap-3 pb-3">
 			<div>
@@ -333,6 +341,11 @@ const FilterTableReport = ({
 					onChange={(_, dateStrings) => handleChangeRangePicker(dateStrings)}
 					className="h-[42px] px-3"
 					allowClear={false}
+					disabledDate={disabledDate}
+					defaultValue={[
+						dayjs(new Date()).subtract(1, 'month'),
+						dayjs(new Date()),
+					]}
 				/>
 			</div>
 			<div>
