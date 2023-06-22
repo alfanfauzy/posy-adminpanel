@@ -201,7 +201,7 @@ const FilterTableReport = ({
 				...prevState,
 				{
 					field: 'created_at',
-					value: `${startDate}&${endDate}`,
+					value: `${startDate}&&${endDate}`,
 				},
 			]);
 		}
@@ -332,6 +332,7 @@ const FilterTableReport = ({
 				<RangePicker
 					onChange={(_, dateStrings) => handleChangeRangePicker(dateStrings)}
 					className="h-[42px] px-3"
+					allowClear={false}
 				/>
 			</div>
 			<div>
