@@ -193,7 +193,7 @@ const FilterTableReport = ({
 
 			const updateSearch = updateValueParam(
 				'created_at',
-				`${startDate}&${endDate}`,
+				`${startDate}&&${endDate}`,
 			);
 
 			setSearchParams(updateSearch);
@@ -342,10 +342,7 @@ const FilterTableReport = ({
 					className="h-[42px] px-3"
 					allowClear={false}
 					disabledDate={disabledDate}
-					defaultValue={[
-						dayjs(new Date()).subtract(1, 'month'),
-						dayjs(new Date()),
-					]}
+					defaultValue={[dayjs().subtract(1, 'month'), dayjs()]}
 				/>
 			</div>
 			<div>
