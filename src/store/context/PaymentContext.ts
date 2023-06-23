@@ -7,12 +7,12 @@ type PaymentSettingContextProps = {
 	bankAccountData: LinkedBankAccountBased | undefined;
 	paymentAccountInfoData: PaymentAccountInfoBased | undefined;
 	handleOpenModal: () => void;
-	handleIsEdit: (value: boolean) => void;
+	setIsEdit: (value: boolean) => void;
 };
 
 export const PaymentSettingContext = createContext<PaymentSettingContextProps>({
 	bankAccountData: undefined,
 	paymentAccountInfoData: undefined,
 	handleOpenModal: () => {},
-	handleIsEdit: () => {},
+	setIsEdit: () => {},
 });

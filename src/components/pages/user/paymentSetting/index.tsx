@@ -1,4 +1,5 @@
 import {Loading} from '@/atoms/loading';
+import {useAccessControl} from '@/hooks/useAccessControl';
 import useToggle from '@/hooks/useToggle';
 import PaymentInformationMolecules from '@/molecules/payment/information';
 import PaymentOptionForm from '@/organisms/form/payment/options';
@@ -6,7 +7,7 @@ import FormPaymentSetting from '@/organisms/form/payment/setting';
 import {useGetLinkedBankAccountViewModel} from '@/view/bank/view-models/GetLinkedBankAccountViewModel';
 import {useGetPaymentAccountInfoViewModel} from '@/view/payment/view-models/GetPaymentAccountInfoViewModel';
 import {useRouter} from 'next/router';
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {PaymentSettingContext} from 'store/context/PaymentContext';
 
 type PaymentSettingLayoutProps = {
@@ -15,14 +16,15 @@ type PaymentSettingLayoutProps = {
 
 const PaymentSettingLayout = ({tabsVal}: PaymentSettingLayoutProps) => {
 	const {query} = useRouter();
+	const {hasAccess} = useAccessControl();
 	const {restaurantID} = query;
 
-	const {value: isEdit, toggle: handleIsEdit} = useToggle(false);
+	const [isEdit, setIsEdit] = useState(false);
 	const {value: isOpenModal, toggle: handleOpenModal} = useToggle(false);
 
 	const {data: bankAccountData, isLoading} = useGetLinkedBankAccountViewModel(
 		restaurantID as string,
-		{enabled: !!restaurantID},
+		{enabled: !!restaurantID && hasAccess('payment_integration:view')},
 	);
 
 	const {data: paymentAccountInfoData, isLoading: isLoadingPaymentAccountInfo} =
@@ -39,9 +41,9 @@ const PaymentSettingLayout = ({tabsVal}: PaymentSettingLayoutProps) => {
 			bankAccountData,
 			paymentAccountInfoData,
 			handleOpenModal,
-			handleIsEdit,
+			setIsEdit,
 		}),
-		[bankAccountData, paymentAccountInfoData, handleOpenModal, handleIsEdit],
+		[bankAccountData, paymentAccountInfoData, handleOpenModal, setIsEdit],
 	);
 
 	return (
@@ -54,7 +56,8 @@ const PaymentSettingLayout = ({tabsVal}: PaymentSettingLayoutProps) => {
 				) : (
 					<>
 						<PaymentInformationMolecules />
-						{bankAccountData && <PaymentOptionForm />}
+						{hasAccess('payment_integration:manage_payment_method') &&
+							bankAccountData && <PaymentOptionForm />}
 					</>
 				)}
 
@@ -64,7 +67,7 @@ const PaymentSettingLayout = ({tabsVal}: PaymentSettingLayoutProps) => {
 						isOpenModal={isOpenModal}
 						handleOpenModal={handleOpenModal}
 						isEdit={isEdit}
-						setIsEdit={handleIsEdit}
+						setIsEdit={setIsEdit}
 					/>
 				)}
 			</PaymentSettingContext.Provider>

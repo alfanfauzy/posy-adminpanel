@@ -22,7 +22,7 @@ const PaymentSettingLayout = () => {
 		schema: UpdateStatusPaymentMethodCategoryFormSchema,
 	});
 
-	const {reset} = methodsForm;
+	const {reset, watch} = methodsForm;
 
 	const hooksParams: GetFilterPaymentMethodCategory = useMemo(
 		() => ({
@@ -43,8 +43,9 @@ const PaymentSettingLayout = () => {
 		useGetPaymentMethodCategoryViewModal(hooksParams, {
 			onSuccess(data) {
 				reset({
-					payment_method_category: data.data.objs.map(
-						paymentMethodCategory => ({
+					payment_method_category: data.data.objs
+						.sort((a, b) => a.priority - b.priority)
+						.map(paymentMethodCategory => ({
 							uuid: paymentMethodCategory.uuid,
 							is_show: paymentMethodCategory.is_show,
 							payment_method: paymentMethodCategory.payment_method.map(
@@ -53,8 +54,7 @@ const PaymentSettingLayout = () => {
 									is_show: paymentMethod.is_show,
 								}),
 							),
-						}),
-					),
+						})),
 				});
 			},
 		});
@@ -74,12 +74,16 @@ const PaymentSettingLayout = () => {
 		updatePaymentMethodCategory(mapPayload);
 	};
 
-	const GeneralPaymentMethodCategory = ListPaymentMethodCategory?.filter(
-		paymentMethodCategory => paymentMethodCategory.is_integration === false,
+	const SortPaymentMethod = ListPaymentMethodCategory?.sort(
+		(a, b) => a.priority - b.priority,
 	);
 
-	const IntegrationPaymentMethodCategory = ListPaymentMethodCategory?.filter(
-		paymentMethodCategory => paymentMethodCategory.is_integration === true,
+	const GeneralPaymentMethodCategory = SortPaymentMethod?.filter(
+		paymentMethodCategory => !paymentMethodCategory.is_integration,
+	);
+
+	const IntegrationPaymentMethodCategory = SortPaymentMethod?.filter(
+		paymentMethodCategory => paymentMethodCategory.is_integration,
 	);
 
 	return (
@@ -110,15 +114,13 @@ const PaymentSettingLayout = () => {
 							)}
 
 						{tabsVal === 1 &&
-							IntegrationPaymentMethodCategory?.map(
-								(paymentMethodCategory, idx) => (
-									<PaymentSetting
-										data={paymentMethodCategory}
-										key={paymentMethodCategory.uuid}
-										idx={idx}
-									/>
-								),
-							)}
+							IntegrationPaymentMethodCategory?.map(paymentMethodCategory => (
+								<PaymentSetting
+									data={paymentMethodCategory}
+									key={paymentMethodCategory.uuid}
+									idx={4}
+								/>
+							))}
 					</div>
 					<div className="mt-3 flex justify-end">
 						<Button isLoading={isLoadingUpdatePaymentMethodCategory}>

@@ -20,6 +20,7 @@ const PaymentOptionForm = () => {
 					value: 'true',
 				},
 				{field: 'is_integration', value: 'true'},
+				{field: 'is_show', value: 'true'},
 			],
 			sort: {field: 'created_at', value: 'desc'},
 			page: 1,

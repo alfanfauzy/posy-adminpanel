@@ -32,7 +32,7 @@ type FormPaymentSetting = {
 	isOpenModal: boolean;
 	handleOpenModal: () => void;
 	isEdit: boolean;
-	setIsEdit: () => void;
+	setIsEdit: (value: boolean) => void;
 };
 
 const PAYMENT_ACCOUNT_TYPE = [
@@ -81,7 +81,8 @@ const FormPaymentSetting = ({
 		if (!dataBankList) return [];
 
 		const mapOptionsBankList = mapToBankOptions(dataBankList);
-		return mapOptionsBankList;
+
+		return mapOptionsBankList.sort((a, b) => a.label.localeCompare(b.label));
 	}, [dataBankList]);
 
 	/**
@@ -176,7 +177,7 @@ const FormPaymentSetting = ({
 		});
 		onClearImage();
 		handleOpenModal();
-		setIsEdit();
+		setIsEdit(false);
 	};
 
 	/**
@@ -197,7 +198,18 @@ const FormPaymentSetting = ({
 		event: React.ChangeEvent<HTMLInputElement>,
 		prefix: string,
 	) => {
+		// Max size 2MB
+		const maxSize = 2 * 1024 * 1024;
+
 		if (event.target.files && event.target.files[0]) {
+			const fileSize = event.target.files[0].size;
+
+			// Check filesize, don't allow when file more than 2MB
+			if (fileSize > maxSize) {
+				toast.error(`File size cann't more than 2MB`);
+				return;
+			}
+
 			setBankProofURL(URL.createObjectURL(event.target.files[0]));
 
 			const formDataUploadImagePrivate = new FormData();
@@ -290,6 +302,10 @@ const FormPaymentSetting = ({
 									onChange={e => {
 										setValue('bank_uuid', e);
 										clearErrors('bank_uuid');
+
+										// Clear field account name & account number when change bank
+										setValue('account_name', '');
+										setValue('account_number', '');
 									}}
 									isLoading={isLoadingBankList}
 									options={optionsBankList}
