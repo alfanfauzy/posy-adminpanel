@@ -47,6 +47,7 @@ export const AuthSlice = createSlice({
 			state.permission = action.payload.permission;
 		},
 		onChangeToken: (state: AuthState, action: PayloadAction<DataLogin>) => {
+			state.isLoggedIn = false;
 			state.authData = action.payload;
 		},
 

@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
+import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
 // eslint-disable-next-line import/no-cycle
 import {store} from 'store/index';
@@ -28,6 +29,7 @@ axiosApiInstance.interceptors.response.use(
 	},
 	async err => {
 		const {config, response} = err;
+		const router = useRouter();
 		const originalRequest = config;
 		const statusCode = response.status;
 
@@ -55,6 +57,7 @@ axiosApiInstance.interceptors.response.use(
 				}
 			} catch (_error) {
 				toast.error('Session time out. Please login again.');
+				router.push('/auth/login');
 				return Promise.reject(_error);
 			}
 		}
