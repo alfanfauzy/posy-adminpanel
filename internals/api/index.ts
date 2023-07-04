@@ -4,7 +4,7 @@ import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
 // eslint-disable-next-line import/no-cycle
 import {store} from 'store/index';
-import {onChangeToken} from 'store/slice/auth';
+import {onChangeToken, onLogout} from 'store/slice/auth';
 
 const axiosApiInstance = axios.create();
 
@@ -56,6 +56,7 @@ axiosApiInstance.interceptors.response.use(
 					store.dispatch(onChangeToken(newPayload));
 				}
 			} catch (_error) {
+				store.dispatch(onLogout());
 				toast.error('Session time out. Please login again.');
 				router.push('/auth/login');
 				return Promise.reject(_error);
