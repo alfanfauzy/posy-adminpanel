@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
-import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
 // eslint-disable-next-line import/no-cycle
 import {store} from 'store/index';
@@ -29,10 +28,8 @@ axiosApiInstance.interceptors.response.use(
 	},
 	async err => {
 		const {config, response} = err;
-		const router = useRouter();
 		const originalRequest = config;
 		const statusCode = response.status;
-
 		// Access Token was expired
 		if (statusCode === 401 && !originalRequest._retry) {
 			originalRequest._retry = true;
@@ -58,7 +55,7 @@ axiosApiInstance.interceptors.response.use(
 			} catch (_error) {
 				store.dispatch(onLogout());
 				toast.error('Session time out. Please login again.');
-				router.push('/auth/login');
+				window.location.href = '/auth/login';
 				return Promise.reject(_error);
 			}
 		}
