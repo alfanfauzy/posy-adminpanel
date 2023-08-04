@@ -10,6 +10,8 @@ import {useRouter} from 'next/router';
 import React, {useMemo, useState} from 'react';
 import {PaymentSettingContext} from 'store/context/PaymentContext';
 
+import PaymentReportLayout from '../paymentReport';
+
 type PaymentSettingLayoutProps = {
 	tabsVal: number;
 };
@@ -58,6 +60,7 @@ const PaymentSettingLayout = ({tabsVal}: PaymentSettingLayoutProps) => {
 						<PaymentInformationMolecules />
 						{hasAccess('payment_integration:manage_payment_method') &&
 							bankAccountData && <PaymentOptionForm />}
+						{bankAccountData && <PaymentReportLayout />}
 					</>
 				)}
 

@@ -75,6 +75,7 @@ const OrganismFormProduct = ({
 		reset,
 		trigger,
 		clearErrors,
+		setFocus,
 	} = methodsForm;
 
 	const {fields, append, remove} = useFieldArray({
@@ -111,7 +112,7 @@ const OrganismFormProduct = ({
 				if (data) {
 					const mapperProductDetail = mapToDetailProductModel(data.data);
 					setValue('force_outlet_update', false);
-					setImageProduct(mapperProductDetail.product_image_url);
+					setImageProduct(mapperProductDetail.product_image_url ?? '');
 					setValue('product_image_url', mapperProductDetail.product_image_url);
 					setValue('product_name', mapperProductDetail.name);
 					setValue(
@@ -283,7 +284,6 @@ const OrganismFormProduct = ({
 	}, [getValues('price'), getValues('price_discount_percentage')]);
 
 	const titleText = isEdit ? 'Edit Product Menu' : 'Add New Product Menu';
-
 	return (
 		<ModalForm
 			isLoading={isLoadingProductDetail}
