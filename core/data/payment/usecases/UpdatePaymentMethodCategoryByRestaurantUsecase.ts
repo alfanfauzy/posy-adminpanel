@@ -1,4 +1,4 @@
-import {useUpdatePaymentMethodCategoryByRestaurantMutationMutation} from '@/data/payment/sources/UpdateMethodCategoryByRestaurantMutation';
+import {useUpdatePaymentMethodCategoryByRestaurantMutation} from '@/data/payment/sources/UpdateMethodCategoryByRestaurantMutation';
 import {UpdatePaymentMethodCategoryResponse} from '@/data/payment/types';
 import {PaymentMethodCategoryByRestaurantPayload} from '@/domain/payment/models';
 import {MutationOptions} from 'core/domain/vo/BaseMutation';
@@ -7,12 +7,12 @@ export const useUpdatePaymentMethodCategoryByRestaurantUsecase = (
 	options?: MutationOptions<UpdatePaymentMethodCategoryResponse>,
 ): any => {
 	const {mutate, data, ...rest} =
-		useUpdatePaymentMethodCategoryByRestaurantMutationMutation(options);
+		useUpdatePaymentMethodCategoryByRestaurantMutation(options);
 
 	const updatePaymentMethodCategory = (
-		payload: PaymentMethodCategoryByRestaurantPayload,
+		param: PaymentMethodCategoryByRestaurantPayload,
 	) => {
-		mutate(payload);
+		mutate(param);
 	};
 
 	return {

@@ -1,72 +1,32 @@
-import {PaymentMethod} from '@/domain/payment/models';
-import {GetFilterPaymentMethod} from '@/domain/payment/repositories/PaymentRepositories';
-import MoleculesSwitchStatusPaymentMethod from '@/molecules/moleculesSwitch/payment';
-import {useGetPaymentMethodViewModal} from '@/view/payment/view-models/GetPaymentMethodViewModel';
-import {Table} from 'antd';
-import {ColumnsType} from 'antd/es/table';
-import {useRouter} from 'next/router';
-import React, {useMemo} from 'react';
+import PaymentOptionTable from '@/molecules/payment-option';
+import {Tabs} from 'posy-fnb-core';
+import React, {useState} from 'react';
+
+export type PaymentOptionType = 'pos' | 'digital-menu';
+
+const Item = [
+	{key: 'pos', label: 'POS'},
+	{key: 'digital-menu', label: 'Digital Menu'},
+];
 
 const PaymentOptionForm = () => {
-	const {query} = useRouter();
-	const {restaurantID} = query;
+	const [tabsVal, setTabsVal] = useState(0);
 
-	const hooksParams: GetFilterPaymentMethod = useMemo(
-		() => ({
-			search: [
-				{field: 'restaurant_uuid', value: restaurantID as string},
-				{
-					field: 'with_payment_method',
-					value: 'true',
-				},
-				{field: 'is_integration', value: 'true'},
-				{field: 'is_show', value: 'true'},
-			],
-			sort: {field: 'created_at', value: 'desc'},
-			page: 1,
-			limit: 10,
-		}),
-		[restaurantID],
-	);
+	const GenerateTablePaymentOption = (value: number): React.ReactNode => {
+		const TablePaymentOption: Record<number, React.ReactNode> = {
+			0: <PaymentOptionTable type="pos" />,
+			1: <PaymentOptionTable type="digital-menu" />,
+		};
 
-	const {data: PaymenetMethod, isLoading} =
-		useGetPaymentMethodViewModal(hooksParams);
-
-	const columns: ColumnsType<PaymentMethod> = [
-		{
-			title: 'Payment Method',
-			key: 'name',
-			dataIndex: 'name',
-		},
-		{
-			title: 'MDR',
-			key: 'charge_fee',
-			dataIndex: 'charge_fee',
-		},
-		{
-			title: 'Settlement Date',
-			key: 'settlement_info',
-			dataIndex: 'settlement_info',
-		},
-		{
-			title: 'Show at Digital Menu',
-			key: 'is_show',
-			dataIndex: 'is_show',
-			render: (data, item) => {
-				return <MoleculesSwitchStatusPaymentMethod item={item} data={data} />;
-			},
-		},
-	];
+		return TablePaymentOption[value];
+	};
 
 	return (
 		<div className="pt-5">
-			<h1 className="mb-4 text-l-bold">Payment Option</h1>
-			<Table
-				loading={isLoading}
-				columns={columns}
-				dataSource={PaymenetMethod}
-				pagination={false}
-			/>
+			<h1 className="mb-4 text-l-bold">Payment Options</h1>
+			<Tabs value={tabsVal} items={Item} onChange={e => setTabsVal(e)} />
+
+			{GenerateTablePaymentOption(tabsVal)}
 		</div>
 	);
 };
