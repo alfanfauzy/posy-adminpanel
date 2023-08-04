@@ -1,4 +1,8 @@
-import {UseMutationResult, UseQueryResult} from 'react-query';
+import {
+	UseInfiniteQueryResult,
+	UseMutationResult,
+	UseQueryResult,
+} from 'react-query';
 
 export type Response<TData = unknown> = {
 	code: number;
@@ -36,4 +40,11 @@ export type Datalist<TData> = {
 export type UpdateParams<TData> = {
 	id: string;
 	payload: TData;
+};
+
+export type ResultInfinite<TData = unknown, TError = unknown> = Omit<
+	UseInfiniteQueryResult<unknown, TError>,
+	'data'
+> & {
+	data: TData;
 };

@@ -122,3 +122,21 @@ export const DownloadFile = (data: any, fileName = 'excel') => {
 	link.click();
 	link.remove();
 };
+
+/**
+ * Function to convert a ammount of numbers to a Rupiah currency
+ * @param ammount
+ * @returns {string}
+ *
+ * @example
+ * FormatToRupiah(1000) // 1.000
+ * FormatToRupiah(10000) // 10.000
+ */
+export const FormatToCurrency = (ammount: number) =>
+	new Intl.NumberFormat('id-ID', {
+		style: 'currency',
+		currency: 'IDR',
+		minimumFractionDigits: 0,
+	})
+		.format(ammount)
+		.replace('Rp', '');

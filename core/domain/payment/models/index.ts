@@ -6,8 +6,11 @@ export type PaymentMethodBased = {
 	logo_url: string;
 	is_show: boolean;
 	is_integration: boolean;
+	integration_code: string;
 	charge_fee: number;
-	charge_fee_unit: string;
+	unit: string;
+	settlement_info: string;
+	charge_fee_unit: 'percent' | 'flat';
 	show_for_dm: boolean;
 	show_for_pos: boolean;
 };

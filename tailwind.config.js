@@ -11,6 +11,9 @@ module.exports = {
 	presets: [preset],
 	theme: {
 		extend: {
+			textColor: {
+				'yellow-warning': '#C69A00',
+			},
 			width: {
 				'big-500': '500px',
 			},

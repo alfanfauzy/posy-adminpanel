@@ -34,7 +34,7 @@ const OrganismDetailRestaurant = () => {
 				</div>
 
 				{/** --- Detail Section ----- */}
-				<div className="flex justify-between">
+				<div className="flex justify-start gap-20">
 					<div className="flex flex-col gap-3">
 						<div>
 							<h3 className="text-s-regular text-gray-400">Restaurant Email</h3>

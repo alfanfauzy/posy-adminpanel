@@ -2,6 +2,7 @@ import {
 	GetPaymentAccountInfoResponse,
 	GetPaymentMethodCategoryListResponse,
 	GetPaymentMethodListResponse,
+	GetPaymentReportListResponse,
 } from '@/data/payment/types';
 import {
 	PaymentAccountInfo,
@@ -9,6 +10,10 @@ import {
 	PaymentMethods,
 } from '@/domain/payment/models';
 import {PaymentMethodCategoryPayload} from '@/domain/payment/models/index';
+import {PaymentsReport} from '@/domain/payment/models/payment-report';
+import {PaymentReportDetail} from '@/domain/payment/models/payment-report/GetPaymentReportDetailModel';
+
+import {GetPaymentReportDetailResponse} from '../types/GetPaymentReportDetailType';
 
 export const mapToPaymentMethodCategoryModel = (
 	datas: Array<GetPaymentMethodCategoryListResponse>,
@@ -30,9 +35,12 @@ export const mapToPaymentMethodCategoryModel = (
 			is_show: el.is_show,
 			is_integration: el.is_integration,
 			charge_fee: el.charge_fee,
+			settlement_info: el.settlement_info,
 			charge_fee_unit: el.charge_fee_unit,
+			unit: el.unit,
 			show_for_dm: el.show_for_dm,
 			show_for_pos: el.show_for_pos,
+			integration_code: el.integration_code,
 		})),
 	}));
 
@@ -74,9 +82,12 @@ export const mapToPaymentMethod = (
 		is_show: data.is_show,
 		is_integration: data.is_integration,
 		charge_fee: data.charge_fee,
+		unit: data.unit,
+		settlement_info: data.settlement_info,
 		charge_fee_unit: data.charge_fee_unit,
 		show_for_dm: data.show_for_dm,
 		show_for_pos: data.show_for_pos,
+		integration_code: data.integration_code,
 	}));
 
 export const mapToPaymentMethodCategorySelectObject = (
@@ -97,3 +108,76 @@ export const mapToPaymentMethodCategorySelectObject = (
 				  }))
 				: [],
 	}));
+
+export const mapToPaymentReportList = (
+	datas: GetPaymentReportListResponse,
+): PaymentsReport => ({
+	hasMore: datas?.has_more ?? undefined,
+	link: datas?.links[0]?.href ?? [],
+	data: datas?.objs.map(obj => ({
+		id: obj.id,
+		reference_id: obj.reference_id,
+		transaction_id: obj.reference_detail.code,
+		date: obj.metadata.created_at,
+		outlet: obj.reference_detail.organization_name,
+		category: obj.reference_detail.type,
+		payment_method: obj.payment_method.name,
+		ammount_received: obj.net_amount,
+		setlement_status: obj.settlement_status,
+		amount: obj.amount,
+		cashflow: obj.cashflow,
+		currency: obj.currency,
+		estimated_settlement_time: obj.estimated_settlement_time,
+		fee: obj.fee,
+		fee_detail: {
+			charge_amount: obj.fee_detail?.charge_amount,
+			charge_fee: obj.fee_detail?.charge_fee,
+			charge_fee_unit: obj.fee_detail?.charge_fee_unit,
+			vat_amount: obj.fee_detail?.vat_amount,
+		},
+		net_amount: obj.net_amount,
+		settlement_status: obj.settlement_status,
+		status: obj.status,
+	})),
+});
+
+export const mapToPaymentReportDetailModal = (
+	data: GetPaymentReportDetailResponse,
+): PaymentReportDetail => ({
+	amount: data.amount,
+	cashflow: data.cashflow,
+	id: data.id,
+	reference_id: data.reference_id,
+	reference_detail: {
+		type: data.reference_detail.type,
+		code: data.reference_detail.code,
+		created_at: data.reference_detail.created_at,
+		organization_type: data.reference_detail.organization_type,
+		organization_name: data.reference_detail.organization_name,
+	},
+	type: data.type,
+	payment_method: {
+		name: data.payment_method.name,
+		logo_url: data.payment_method.logo_url,
+		category_name: data.payment_method.category_name,
+	},
+	currency: data.currency,
+	fee: data.fee,
+	fee_detail: {
+		charge_fee: data.fee_detail.charge_fee,
+		charge_fee_unit: data.fee_detail.charge_fee_unit,
+		charge_amount: data.fee_detail.charge_amount,
+		vat_amount: data.fee_detail.vat_amount,
+		withholding_tax_amount: data.fee_detail.withholding_tax_amount,
+		third_party_withholding_tax_amount:
+			data.fee_detail.third_party_withholding_tax_amount,
+	},
+	net_amount: data.net_amount,
+	status: data.status,
+	settlement_status: data.settlement_status,
+	estimated_settlement_time: data.estimated_settlement_time,
+	metadata: {
+		created_at: data.metadata.created_at,
+		updated_at: data.metadata.created_at,
+	},
+});
