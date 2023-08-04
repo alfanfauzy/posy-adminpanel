@@ -22,17 +22,17 @@ export const mapToPaymentMethodCategoryModel = (
 		is_show: data.is_show,
 		is_integration: data.is_integration,
 		payment_method: data.payment_method.map(el => ({
-			code: el.code,
-			is_integration: el.is_integration,
-			is_show: el.is_show,
-			logo_url: el.logo_url,
-			name: el.name,
-			payment_method_category_uuid: el.payment_method_category_uuid,
-			priority: el.priority,
 			uuid: el.uuid,
-			integration_code: el.integration_code,
+			code: el.code,
+			name: el.name,
+			description: el.description,
+			logo_url: el.logo_url,
+			is_show: el.is_show,
+			is_integration: el.is_integration,
 			charge_fee: el.charge_fee,
-			settlement_info: el.settlement_info,
+			charge_fee_unit: el.charge_fee_unit,
+			show_for_dm: el.show_for_dm,
+			show_for_pos: el.show_for_pos,
 		})),
 	}));
 
@@ -66,17 +66,17 @@ export const mapToPaymentMethod = (
 	datas: Array<GetPaymentMethodListResponse>,
 ): PaymentMethods =>
 	datas.map(data => ({
-		code: data.code,
-		is_integration: data.is_integration,
-		is_show: data.is_show,
-		logo_url: data.logo_url,
-		name: data.name,
-		payment_method_category_uuid: data.payment_method_category_uuid,
-		priority: data.priority,
 		uuid: data.uuid,
-		integration_code: data.integration_code,
+		code: data.code,
+		name: data.name,
+		description: data.description,
+		logo_url: data.logo_url,
+		is_show: data.is_show,
+		is_integration: data.is_integration,
 		charge_fee: data.charge_fee,
-		settlement_info: data.settlement_info,
+		charge_fee_unit: data.charge_fee_unit,
+		show_for_dm: data.show_for_dm,
+		show_for_pos: data.show_for_pos,
 	}));
 
 export const mapToPaymentMethodCategorySelectObject = (

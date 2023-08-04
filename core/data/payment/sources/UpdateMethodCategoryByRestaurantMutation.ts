@@ -9,11 +9,12 @@ import {toast} from 'react-toastify';
 import {ErrorType} from 'types/index';
 
 export const UpdatePaymentMethodCategoryByRestaurantService = async (
-	payload: PaymentMethodCategoryByRestaurantPayload,
+	param: PaymentMethodCategoryByRestaurantPayload,
 ): Promise<Response<UpdatePaymentMethodCategoryResponse>> => {
+	const {payload, payment_method_uuid, restaurant_uuid} = param;
 	try {
 		const response = await Post({
-			endpoint: `/api/fnb-order-service/internal/payment-method/update/setting/restaurant`,
+			endpoint: `/api/fnb-order-service/v2/internal/payment-method/update/${payment_method_uuid}?restaurant_uuid=${restaurant_uuid}`,
 			payload,
 		});
 
@@ -24,12 +25,12 @@ export const UpdatePaymentMethodCategoryByRestaurantService = async (
 	}
 };
 
-export const useUpdatePaymentMethodCategoryByRestaurantMutationMutation = (
+export const useUpdatePaymentMethodCategoryByRestaurantMutation = (
 	options?: MutationOptions<UpdatePaymentMethodCategoryResponse>,
 ) =>
 	useMutation({
-		mutationFn: (payload: PaymentMethodCategoryByRestaurantPayload) =>
-			UpdatePaymentMethodCategoryByRestaurantService(payload),
+		mutationFn: (param: PaymentMethodCategoryByRestaurantPayload) =>
+			UpdatePaymentMethodCategoryByRestaurantService(param),
 		onError(error: ErrorType) {
 			toast.error(error.message);
 		},

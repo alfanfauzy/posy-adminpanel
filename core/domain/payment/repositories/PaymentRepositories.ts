@@ -3,6 +3,7 @@ import {
 	PaymentAccountInfo,
 	PaymentMethod,
 	PaymentMethodCategory,
+	PaymentMethodCategoryByRestaurantPayload,
 	PaymentMethodCategoryPayload,
 	PaymentMethodCategorys,
 	PaymentMethods,
@@ -33,13 +34,18 @@ export type GetPaymentMethodCategoryResult = ResultQuery<PaymentMethodCategory>;
  * UPDATE
  */
 
-export type UpdatePaymentMethodCategoryParams = PaymentMethodCategoryPayload;
+export type UpdatePaymentMethodCategoryParams =
+	PaymentMethodCategoryByRestaurantPayload;
 
 export type UpdatePaymentMethodCategoryResult =
 	ResultMutation<UpdatePaymentMethodCategoryResponse>;
 
-export type UpdatePaymentMethodCategoryRepository = {
+export type UpdatePaymentMethodCategoryByRestaurantRepository = {
 	updatePaymentMethodCategory(payload: UpdatePaymentMethodCategoryParams): void;
+} & UpdatePaymentMethodCategoryResult;
+
+export type UpdatePaymentMethodCategoryRepository = {
+	updatePaymentMethodCategory(payload: PaymentMethodCategoryPayload): void;
 } & UpdatePaymentMethodCategoryResult;
 
 /**
@@ -53,17 +59,20 @@ export type GetPaymentAccountInfoResult = ResultQuery<
  * Get Payment Method
  */
 
+export type PayloadPaymentMethod = {
+	restaurant_uuid: string;
+	payload: GetFilterPaymentMethod;
+};
+
 export type GetFilterPaymentMethod = FilterInputVariables<
 	'created_at',
 	| keyof Pick<PaymentMethod, 'is_integration' | 'is_show'>
 	| 'with_payment_method'
 	| 'restaurant_uuid'
+	| 'show_for_pos'
+	| 'show_for_dm'
 >;
 
-export type GetPaymentMethodsResult = ResultQuery<
-	PaymentMethods | undefined
-> & {
-	pagination: Pagination | undefined;
-};
+export type GetPaymentMethodsResult = ResultQuery<PaymentMethods | undefined>;
 
 export type GetPaymentMethodResult = ResultQuery<PaymentMethod>;

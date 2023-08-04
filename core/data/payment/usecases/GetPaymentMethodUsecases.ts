@@ -2,36 +2,29 @@ import {mapToPaymentMethod} from '@/data/payment/mappers/PaymentMethodMapper';
 import {useGetPaymentMethodQuery} from '@/data/payment/sources/GetPaymentMethod';
 import {GetPaymentMethodListResponse} from '@/data/payment/types';
 import {
-	GetFilterPaymentMethod,
 	GetPaymentMethodsResult,
+	PayloadPaymentMethod,
 } from '@/domain/payment/repositories/PaymentRepositories';
-import {Datalist, Response} from '@/domain/vo/BaseResponse';
+import {Response} from '@/domain/vo/BaseResponse';
 import {UseQueryOptions} from 'react-query';
 
 export const useGetPaymentMethodUsecase = (
-	input?: GetFilterPaymentMethod,
-	options?: UseQueryOptions<Response<Datalist<GetPaymentMethodListResponse>>>,
+	input: PayloadPaymentMethod,
+	options?: UseQueryOptions<Response<Array<GetPaymentMethodListResponse>>>,
 ): GetPaymentMethodsResult => {
 	const {data, ...rest} = useGetPaymentMethodQuery(input, options);
 
-	if (data?.data.objs) {
-		const paymentMethodMapper = mapToPaymentMethod(data.data.objs);
+	if (data?.data) {
+		const paymentMethodMapper = mapToPaymentMethod(data.data);
 
 		return {
 			data: paymentMethodMapper,
-			pagination: {
-				curr_page: data.data.curr_page,
-				per_page: data.data.per_page,
-				total_objs: data.data.total_objs,
-				total_page: data.data.total_page,
-			},
 			...rest,
 		};
 	}
 
 	return {
 		data: undefined,
-		pagination: undefined,
 		...rest,
 	};
 };

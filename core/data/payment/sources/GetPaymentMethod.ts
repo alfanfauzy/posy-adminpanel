@@ -1,17 +1,18 @@
 import {GetPaymentMethodListResponse} from '@/data/payment/types/index';
-import {GetFilterPaymentMethod} from '@/domain/payment/repositories/PaymentRepositories';
-import {Datalist, Response} from '@/domain/vo/BaseResponse';
+import {PayloadPaymentMethod} from '@/domain/payment/repositories/PaymentRepositories';
+import {Response} from '@/domain/vo/BaseResponse';
 import Post from 'api/post';
 import {AxiosError} from 'axios';
 import {useQuery, UseQueryOptions} from 'react-query';
 
 export const GetPaymentMethod = async (
-	input?: GetFilterPaymentMethod,
-): Promise<Response<Datalist<GetPaymentMethodListResponse>>> => {
+	params: PayloadPaymentMethod,
+): Promise<Response<Array<GetPaymentMethodListResponse>>> => {
+	const {payload, restaurant_uuid} = params;
 	try {
 		const response = await Post({
-			endpoint: `/api/fnb-order-service/internal/payment/method/get-list`,
-			payload: input,
+			endpoint: `/api/fnb-order-service/v2/internal/payment-method/get-list?restaurant_uuid=${restaurant_uuid}`,
+			payload: payload,
 		});
 
 		return response;
@@ -22,14 +23,14 @@ export const GetPaymentMethod = async (
 };
 
 export const useGetPaymentMethodQuery = (
-	input?: GetFilterPaymentMethod,
-	options?: UseQueryOptions<Response<Datalist<GetPaymentMethodListResponse>>>,
+	params: PayloadPaymentMethod,
+	options?: UseQueryOptions<Response<Array<GetPaymentMethodListResponse>>>,
 ) =>
-	useQuery<Response<Datalist<GetPaymentMethodListResponse>>>(
-		['payment-method/list', JSON.stringify(input)],
-		() => GetPaymentMethod(input),
+	useQuery<Response<Array<GetPaymentMethodListResponse>>>(
+		['payment-method/list', JSON.stringify(params)],
+		() => GetPaymentMethod(params),
 		{
-			enabled: !!JSON.stringify(input),
+			enabled: !!JSON.stringify(params),
 			...options,
 		},
 	);

@@ -1,18 +1,24 @@
 import AtomSwitch from '@/atoms/switch';
-import {PaymentMethodBased} from '@/domain/payment/models';
+import {
+	PaymentMethodBased,
+	PaymentMethodCategoryByRestaurantPayload,
+} from '@/domain/payment/models';
 import {queryClient} from '@/hooks/react-query';
 import useToggle from '@/hooks/useToggle';
+import {PaymentOptionType} from '@/organisms/form/payment/options';
 import {useUpdatePaymentMethodCategoryByRestaurantViewModal} from '@/view/payment/view-models/UpdatePaymentMethodCategoryByRestaurantViewModel';
 import {useRouter} from 'next/router';
 import React from 'react';
 import {toast} from 'react-toastify';
 
 type MoleculesSwitchProps = {
+	type: PaymentOptionType;
 	data: boolean;
 	item: PaymentMethodBased;
 };
 
 const MoleculesSwitchStatusPaymentMethod = ({
+	type,
 	data,
 	item,
 }: MoleculesSwitchProps) => {
@@ -31,20 +37,13 @@ const MoleculesSwitchStatusPaymentMethod = ({
 		});
 
 	const handleCheckedChange = async (checked: boolean) => {
-		const payload = {
-			restaurant_uuid: restaurantID,
-			payment_method_category: [
-				{
-					uuid: item.payment_method_category_uuid,
-					is_show: true,
-					payment_method: [
-						{
-							uuid: item.uuid,
-							is_show: checked,
-						},
-					],
-				},
-			],
+		const payload: PaymentMethodCategoryByRestaurantPayload = {
+			restaurant_uuid: restaurantID as string,
+			payment_method_uuid: item.uuid,
+			payload: {
+				field: type,
+				status: checked,
+			},
 		};
 
 		updatePaymentMethodCategory(payload);
